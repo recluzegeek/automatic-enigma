@@ -1,0 +1,659 @@
+---
+title: "CS-428A Compiler Construction"
+author: "M. Salman - 212370003"
+date: "| \\textbf{Instructor: Nazifa Fatima}\n\\textbf{Last Updated: `r format(Sys.Date(),
+  '%Y-%m-%d')`}"
+output:
+  pdf_document:
+    toc: yes
+    number_sections: yes
+    latex_engine: pdflatex
+    includes:
+      input: preamble.tex
+      in_header: mysty.sty
+fontfamily: palatino
+header-includes:
+- \usepackage{titling, caption, geometry}
+- \usepackage{booktabs}
+- \usepackage{tabularray}
+- \usepackage{threeparttable}
+- \usepackage{lscape}
+- \pretitle{\begin{center} \includegraphics[width=1in,height=1in]{gift_logo.jpg}\LARGE\\}
+- \posttitle{\end{center}}
+- \thispagestyle{empty}
+subtitle: "| Assignment-02\n\"Top-Down Parser\""
+---
+
+```{r global_options, R.options=knitr::opts_chunk$set(warning=FALSE, message=FALSE)}
+```
+\newpage
+
+# Grammar - 01
+
+***After Left Factoring***
+
+assignment_question → question_body ?^(1)^\
+question_body → identifier EQ expression^(2)^ \| logical_expression^(3)^ \| arithmetic_expression^(4)^\
+expression → logical_expression^(5)^ \| arithmetic_expression^(6)^\
+logical_expression → logical_term logical_expression_tail^(7)^\
+logical_expression_tail → OR logical_term logical_expression_tail^(8)^ \| $\epsilon$^(9)^\
+logical_term → logical_factor logical_term_tail^(10)^\
+logical_term_tail → AND logical_factor logical_term_tail^(11)^ \| $\epsilon$^(12)^\
+*logical_factor → logical_atom LF'^(13)^*\
+*LF' → NOT^(14)^ \|* $\epsilon$^*(15)*^\
+logical_atom → identifier^(16)^ \| TRUE^(17)^ \| FALSE^(18)^ \| ( logical_expression )^(19)^\
+arithmetic_expression → term arithmetic_expression_tail^(20)^\
+*arithmetic_expression_tail → term arithmetic_expression_tail AET'^(21)^ \|* $\epsilon$^*(22)*^\
+*AET' → PLUS^(23)^ \| MINUS^(24)^*\
+term → factor term_tail^(25)^\
+*term_tail → factor term_tail TT'^(26)^ \|* $\epsilon$^*(27)*^\
+*TT' → MULTIPLY^(28)^ \| DIVIDE^(29)^*\
+factor → identifier^(30)^ \| number^(31)^ \| ( arithmetic_expression )^(32)^\
+identifier → ID^(33)^\
+number → INTEGER^(34)^ \| FLOAT^(35)^
+
+## FIRST Sets
+
+-   FIRST(**assignment_question**) = FIRST(**question_body**) = FIRST(identifier) $\cup$ FIRST(logical_expression) $\cup$ FIRST(arithmetic_expression) = {ID, TRUE, FALSE, (, INTEGER, FLOAT}
+-   FIRST(**expression**) = FIRST(logical_expression) $\cup$ FIRST(arithmetic_expression)\
+    \hspace*{8.4em}= {ID, TRUE, FALSE, (, INTEGER, FLOAT}
+-   FIRST(**logical_expression**) = FIRST(**logical_term**) = {ID, TRUE, FALSE, (}
+-   FIRST(**logical_expression_tail**) = {OR, $\epsilon$}
+-   FIRST(**logical_term_tail**) = {AND, $\epsilon$}
+-   FIRST(**logical_factor**) = FIRST(logical_atom) = {ID, TRUE, FALSE, (}
+-   FIRST(**LF'**) = {NOT, $\epsilon$}
+-   FIRST(**logical_atom**) = FIRST(identifier) $\cup$ {TRUE, FALSE, (} = {ID, TRUE, FALSE, (}
+-   FIRST(**arithmetic_expression**) = FIRST(**term**) = {(, ID, INTEGER, FLOAT}
+-   FIRST(**arithmetic_expression_tail**) = FIRST(term) $\cup$ {$\epsilon$} {$\epsilon$, (, ID, INTEGER, FLOAT}
+-   FIRST(**AET'**) = {PLUS, MINUS}
+-   FIRST(**term**) = FIRST(factor) = {(, ID, INTEGER, FLOAT}
+-   FIRST(**term_tail**) = FIRST(factor) $\cup$ {$\epsilon$} {$\epsilon$, (, ID, INTEGER, FLOAT}
+-   FIRST(**TT'**) = {MULTIPLY, DIVIDE}
+-   FIRST(**factor**) = FIRST(identifier) $\cup$ FIRST(number) $\cup$ {(} = {(, ID, INTEGER, FLOAT}
+-   FIRST(**identifier**) = {ID}
+-   FIRST(**number**) = {INTEGER, FLOAT}
+
+## FOLLOW Sets
+
+-   FOLLOW(**assignment_question**) = {\$}
+-   FOLLOW(**expression**) = FOLLOW(**question_body**) = {?}
+-   FOLLOW(**logical_expression**) = FOLLOW(question_body) $\cup$ FOLLOW(expression) $\cup$ {)} = {?, )}
+-   FOLLOW(**logical_expression_tail**) = FOLLOW(**logical_expression**) = {?, )}
+-   FOLLOW(**logical_term_tail**) = FOLLOW(**logical_term**) = FIRST(logical_expression_tail) = {OR, $\epsilon$}
+-   FOLLOW(**LF'**) = FOLLOW(**logical_factor**) = FIRST(logical_term_tail) = {AND, $\epsilon$}
+-   FOLLOW(**logical_atom**) = FIRST(LF') = {NOT, $\epsilon$}
+-   FOLLOW(**arithmetic_expression**) = FOLLOW(question_body) $\cup$ FOLLOW(expression) $\cup$ {)} = {?, )}
+-   FOLLOW(**AET'**) = FOLLOW(**arithmetic_expression_tail**) = FOLLOW(arithmetic_expression) = {?, )}
+-   FOLLOW(**term**) = FIRST(arithmetic_expression_tail) = {$\epsilon$, (, INTEGER, FLOAT}
+-   FOLLOW(**TT'**) = FOLLOW(**term_tail**) = FOLLOW(term) = {$\epsilon$, (, INTEGER, FLOAT}
+-   FOLLOW(**factor**) = FIRST(term_tail) = {$\epsilon$, (, ID, INTEGER, FLOAT}
+-   FOLLOW(**identifier**) = FOLLOW(logical_atom) $\cup$ FOLLOW(factor) $\cup$ {EQ}\
+    \hspace*{9.4em}= {EQ, NOT, $\epsilon$, (, ID, INTEGER, FLOAT}
+-   FOLLOW(**number**) = FOLLOW(factor) = {$\epsilon$, (, ID, INTEGER, FLOAT}
+
+## Parse Table
+
+-   The parsing table is shown in Table \ref{tab:grammar01}.
+
+## LL(1)
+
+-   From Table \ref{tab:grammar01}, we can see that the cells have multiple entries of the production rules. Therefore, given grammar is not LL(1).
+
+## Predictive Parser's Moves
+
+|                            **STACK**                            |                    **INPUT**                    |
+|:-----------------------------------------:|:---------------------------:|
+|                   assignment_question \$                    |      INTEGER MULTIPLY FLOAT PLUS ID \$      |
+|                     question_body ? \$                      |      INTEGER MULTIPLY FLOAT PLUS ID \$      |
+|                 arithmetic_expression ? \$                  |      INTEGER MULTIPLY FLOAT PLUS ID \$      |
+|            term arithmetic_expression_tail ? \$             |      INTEGER MULTIPLY FLOAT PLUS ID \$      |
+|      factor term_tail arithmetic_expression_tail ? \$       |      INTEGER MULTIPLY FLOAT PLUS ID \$      |
+|      number term_tail arithmetic_expression_tail ? \$       |      INTEGER MULTIPLY FLOAT PLUS ID \$      |
+|      INTEGER term_tail arithmetic_expression_tail ? \$      |      INTEGER MULTIPLY FLOAT PLUS ID \$      |
+| ~~***INTEGER***~~ term_tail arithmetic_expression_tail ? \$ | ~~***INTEGER***~~ MULTIPLY FLOAT PLUS ID \$ |
+| term_tail factor term_tail arithmetic_expression_tail ? \$  |          MULTIPLY FLOAT PLUS ID \$          |
+
+: Moves made by a predictive parser on input \`**NUMBER MULTIPLY FLOAT PLUS ID**\`
+
+-   The predictive parser made moves on the input **NUMBER MULTIPLY FLOAT PLUS ID**, but it encountered an error because the given grammar is not LL(1). This issue arose because there is no production rule in the grammar that allows the parser to predict the expansion of the non-terminal "**term_tail**" when it encounters the terminal "**MULTIPLY**" in the input.
+
+```{=tex}
+\begin{landscape}
+\begin{table}
+\centering
+\caption{Parsing Table \textbf{\textit{A}} for Grammar 01}
+\label{tab:grammar01}       % Label
+\begin{threeparttable} % Wrapping the table with threeparttable environment
+\captionsetup{justification=centering}
+\begin{tblr}{
+  colspec = {c*{16}{c}},    % center align the table content
+  vline{2, Z} = {2pt}, % Solid border after the first and last column
+  vline{3-Y} = {dashed}, % Vertical borders for columns 2 onwards
+  hline{1,Z} = {2pt},
+  hline{2} = {1pt},
+  hline{3-Y} = {dashed}
+}
+                             & \textbf{?} & \textbf{EQ} & \textbf{OR} & \textbf{AND} & \textbf{NOT} & \textbf{TRUE} & \textbf{FALSE} & \textbf{(} & \textbf{)} & \textbf{+ }\tnote{a} & \textbf{- }\tnote{b} & \textbf{* }\tnote{c} & \textbf{/ }\tnote{d} & \textbf{ID} & \textbf{INTEGER} & \textbf{FLOAT} & \textbf{\$} \\
+\textbf{assignment\_question}         &            &             &             &              &              & 1             & 1              & 1          &            &               &                &                   &                 & 1           & 1                & 1              &             \\
+\textbf{question\_body}               &            &             &             &              &              & 3             & 3              & 3, 4       &            &               &                &                   &                 & 2, 3, 4     & 4                & 4              &             \\
+\textbf{expression}                   &            &             &             &              &              & 5, 6          & 5, 6           & 5, 6       &            &               &                &                   &                 & 5, 6        &                  &                &             \\
+\textbf{logical\_expression}          &            &             &             &              &              & 7             & 7              & 7          &            &               &                &                   &                 & 7           &                  &                &             \\
+\textbf{logical\_expression\_tail}    & 9          &             & 8           &              &              &               &                &            & 9          &               &                &                   &                 &             &                  &                &             \\
+\textbf{logical\_term}                &            &             &             &              &              & 10            & 10             & 10         &            &               &                &                   &                 & 10          &                  &                &             \\
+\textbf{logical\_term\_tail}          &            &             & 12          & 11           &              &               &                &            &            &               &                &                   &                 &             &                  &                & 12          \\
+\textbf{logical\_facctor}             &            &             &             &              &              & 13            & 13             & 13         &            &               &                &                   &                 & 13          &                  &                &             \\
+\textbf{LF'}                          &            &             &             & 15           & 14           &               &                &            &            &               &                &                   &                 &             &                  &                & 15          \\
+\textbf{logical\_atom}                &            &             &             &              &              & 17            & 18             & 19         &            &               &                &                   &                 & 16          &                  &                &             \\
+\textbf{arithmetic\_expression}       &            &             &             &              &              &               &                & 20         &            &               &                &                   &                 & 20          & 20               & 20             &             \\
+\textbf{arithmetic\_expression\_tail} & 22         &             &             &              &              &               &                & 21         & 22         &               &                &                   &                 & 21          & 21               & 21             &             \\
+\textbf{AET'}                         &            &             &             &              &              &               &                &            &            & 23            & 24             &                   &                 &             &                  &                &             \\
+\textbf{term}                         &            &             &             &              &              &               &                & 25         &            &               &                &                   &                 & 25          & 25               & 25             &             \\
+\textbf{term\_tail}                   &            &             &             &              &              &               &                & 26, 27     &            &               &                &                   &                 & 26          & 26, 27           & 26, 27         & 27          \\
+\textbf{TT"}                          &            &             &             &              &              &               &                &            &            &               &                & 28                & 29              &             &                  &                &             \\
+\textbf{factor}                       &            &             &             &              &              &               &                & 32         &            &               &                &                   &                 & 30          & 31               & 31             &             \\
+\textbf{identifier}                   &            &             &             &              &              &               &                &            &            &               &                &                   &                 & 33          &                  &                &             \\
+\textbf{number}                       &            &             &             &              &              &               &                &            &            &               &                &                   &                 &             & 34               & 35             &            
+\end{tblr}
+\begin{tablenotes}[flushleft]\footnotesize
+\item[a] Symbol used for the terminal 'PLUS'.
+\item[b] Symbol used for the terminal 'MINUS'.
+\item[c] Symbol used for the terminal 'MULTIPY'.
+\item[d] Symbol used for the terminal 'DIVIDE'.
+\item \textbf{\textit{The table uses shorter symbols to ensure it fits within the page.}}
+\end{tablenotes}
+\end{threeparttable} % Closing threeparttable environment
+\end{table}
+\end{landscape}
+```
+# Grammar - 02
+
+***After Left Factoring***
+
+sentence → noun_phrase verb_phrase^(1)^\
+*noun_phrase → determiner noun NP'^(2)^ \| proper_noun^(3)^ \| pronoun^(4)^*\
+*NP' →* $\epsilon$^(5)^ \| adjective^(6)^\
+*verb_phrase → verb VP'^(7)^*\
+*VP' →* $\epsilon$^(8)^ \| adverb^(9)^ \| noun_phrase VP" ^(10)^\
+*VP" →* $\epsilon$^(11)^ \| preposition^(12)^\
+adjective → "happy"^(13)^ \| "red"^(14)^ \| "big"^(15)^\
+adverb → "quickly"^(16)^ \| "carefully"^(17)^\
+determiner → "the"^(18)^ \| "a"^(19)^ \| "an"^(20)^\
+preposition → "in"^(21)^ \| "on"^(22)^ \| "under"^(23)^\
+verb → "run"^(24)^ \| "jump"^(25)^ \| "sing"^(26)^ \| "eat"^(27)^\
+noun → "dog"^(28)^ \| "cat"^(29)^ \| "apple"^(30)^ \| "table"^(31)^\
+proper_noun → "John"^(32)^ \| "London"^(33)^ \| "July"^(34)^\
+pronoun → "he"^(35)^ \| "she"^(36)^ \| "it"^(37)^ \| "they"^(38)^
+
+## FIRST Sets
+
+-   FIRST(**sentence**) = FIRST(noun_phrase)\
+    \hspace*{7.8em}= {the, a, an, John, London, July, he, she, it, they, run, jump, sing, eat} 
+-   FIRST(**noun_phrase**) = FIRST(determiner) $\cup$ FIRST(proper_noun) $\cup$ FIRST(pronoun)\
+    \hspace*{9.3em} = {the, a, an, John, London, July, he, she, it, they}
+-   FIRST(**NP'**) = {$\epsilon$, happy, red, big}
+-   FIRST(**verb_phrase**) = FIRST(**verb**) = {run, jump, sing, eat}
+-   FIRST(**VP'**) = {$\epsilon$, quickly, carefully, the, a, an John, London, July, he, she, it, they}
+-   FIRST(**VP"**) = {$\epsilon$, in, on, under}
+-   FIRST(**adjective**) = {happy, red, big}
+-   FIRST(**adverb**) = {quickly, carefully}
+-   FIRST(**determiner**) = {the, a, an}
+-   FIRST(**preposition**) = {in, on, under}
+-   FIRST(**noun**) = {dog, cat, apple, table}
+-   FIRST(**proper_noun**) = {John, London, July}
+-   FIRST(**pronoun**) = {he, she, it, they}
+
+## FOLLOW Sets
+
+-   FOLLOW(**adverb**) = FOLLOW(**VP'**) = FOLLOW(**verb_phrase**) = FOLLOW(**sentence**) = {\$}
+-   FOLLOW(**NP'**) = FOLLOW(**noun_phrase**) = FIRST(verb_phrase) = {run, jump, sing, eat}
+-   FOLLOW(**adjective**) = FOLLOW(NP') = {run, jump, sing, eat}
+-   FOLLOW(**determiner**) = FIRST(noun) = {dog, cat, apple, table}
+-   FOLLOW(**preposition**) = FIRST(**VP"**) = {\$}
+-   FOLLOW(**verb**) = FIRST(VP') = {$\epsilon$, quickly, carefully, the, a, an, John, London, July, he, she, it, they}
+-   FOLLOW(**noun**) = FIRST(NP') = {$\epsilon$, happy, red, big}
+-   FOLLOW(**pronoun**) = FOLLOW(**proper_noun**) = FOLLOW(noun_phrase) = {run, jump, sing, eat}
+
+## Parse Table
+
+-   The parsing table is shown in Table \ref{tab:grammar02}.\
+
+## LL(1)
+
+-   The given grammar is an LL(1) grammar, as there is a single atomic value in each cell of the parse table. See Table \ref{tab:grammar02}.
+
+## Predictive Parser's Moves
+
+|   **MATCHED**    |         **STACK**          |      **INPUT**      |
+|:-----------------|:--------------------------:|:--------------------|
+|                  |        sentence \$         | John run quickly \$ |
+|                  | noun_phrase verb_phrase \$ | John run quickly \$ |
+|                  | proper_noun verb_phrase \$ | John run quickly \$ |
+|                  |    John verb_phrase \$     | John run quickly \$ |
+|       John       |       verb_phrase \$       |   run quickly \$    |
+|       John       |        verb VP' \$         |   run quickly \$    |
+|       John       |         run VP' \$         |   run quickly \$    |
+|     John run     |           VP' \$           |     quickly \$      |
+|     John run     |         adverb \$          |     quickly \$      |
+|     John run     |         quickly \$         |     quickly \$      |
+| John run quickly |             \$             |         \$          |
+
+: Moves made by a predictive parser on input \`**John run quickly**\`
+
+```{=tex}
+\begin{landscape}
+\begin{table}
+\centering
+\caption{Parsing Table \textbf{\textit{B}} for Grammar 02}
+\label{tab:grammar02}       % Label
+\begin{threeparttable} % Wrapping the table with threeparttable environment
+\captionsetup{justification=centering}
+\begin{tblr}{
+  colspec = {c*{16}{c}},    % center align the table content
+  vline{2, Z} = {2pt}, % Solid border after the first and last column
+  vline{3-Y} = {dashed}, % Vertical borders for columns 2 onwards
+  hline{1,Z} = {2pt},
+  hline{2} = {1pt},
+  hline{3-Y} = {dashed}
+}
+
+                              & \textbf{sentence} & \textbf{noun\_phrase} & \textbf{NP'} & \textbf{verb\_phrase} & \textbf{VP'} & \textbf{VP\textbf{\textit{"}}} & \textbf{adj }\tnote{a} & \textbf{adv }\tnote{b} & \textbf{determiner} & \textbf{preps }\tnote{c} & \textbf{verb} & \textbf{noun} & \textbf{proper\_noun} & \textbf{pronoun} \\
+    \textbf{\$}        &                   &                       &              &                       & 8            & 11            &              &              &                     &                &               &               &                       &                  \\
+    \textbf{happy}     &                   &                       & 6            &                       &              &               & 13           &              &                     &                &               &               &                       &                  \\
+    \textbf{red}       &                   &                       & 6            &                       &              &               & 14           &              &                     &                &               &               &                       &                  \\
+    \textbf{big}       &                   &                       & 6            &                       &              &               & 15           &              &                     &                &               &               &                       &                  \\
+    \textbf{quickly}   &                   &                       &              &                       & 9            &               &              & 16           &                     &                &               &               &                       &                  \\
+    \textbf{carefully} &                   &                       &              &                       & 9            &               &              & 17           &                     &                &               &               &                       &                  \\
+    \textbf{the}       & 1                 & 2                     &              &                       & 10           &               &              &              & 18                  &                &               &               &                       &                  \\
+    \textbf{a}         & 1                 & 2                     &              &                       & 10           &               &              &              & 19                  &                &               &               &                       &                  \\
+    \textbf{an}        & 1                 & 2                     &              &                       & 10           &               &              &              & 20                  &                &               &               &                       &                  \\
+    \textbf{in}        &                   &                       &              &                       &              & 12            &              &              &                     & 21             &               &               &                       &                  \\
+    \textbf{on}        &                   &                       &              &                       &              & 12            &              &              &                     & 22             &               &               &                       &                  \\
+    \textbf{under}     &                   &                       &              &                       &              & 12            &              &              &                     & 23             &               &               &                       &                  \\
+    \textbf{run}       &                   &                       & 5            & 7                     &              &               &              &              &                     &                & 24            &               &                       &                  \\
+    \textbf{jump}      &                   &                       & 5            & 7                     &              &               &              &              &                     &                & 25            &               &                       &                  \\
+    \textbf{sing}      &                   &                       & 5            & 7                     &              &               &              &              &                     &                & 26            &               &                       &                  \\
+    \textbf{eat}       &                   &                       & 5            & 7                     &              &               &              &              &                     &                & 27            &               &                       &                  \\
+    \textbf{dog}       &                   &                       &              &                       &              &               &              &              &                     &                &               & 28            &                       &                  \\
+    \textbf{cat}       &                   &                       &              &                       &              &               &              &              &                     &                &               & 29            &                       &                  \\
+    \textbf{apple}     &                   &                       &              &                       &              &               &              &              &                     &                &               & 30            &                       &                  \\
+    \textbf{table}     &                   &                       &              &                       &              &               &              &              &                     &                &               & 31            &                       &                  \\
+    \textbf{John}      & 1                 & 3                     &              &                       & 10           &               &              &              &                     &                &               &               & 32                    &                  \\
+    \textbf{London}    & 1                 & 3                     &              &                       & 10           &               &              &              &                     &                &               &               & 33                    &                  \\
+    \textbf{July}      & 1                 & 3                     &              &                       & 10           &               &              &              &                     &                &               &               & 34                    &                  \\
+    \textbf{he}        & 1                 & 4                     &              &                       & 10           &               &              &              &                     &                &               &               &                       & 35               \\
+    \textbf{she}       & 1                 & 4                     &              &                       & 10           &               &              &              &                     &                &               &               &                       & 36               \\
+    \textbf{it}        & 1                 & 4                     &              &                       & 10           &               &              &              &                     &                &               &               &                       & 37               \\
+    \textbf{they}      & 1                 & 4                     &              &                       & 10           &               &              &              &                     &                &               &               &                       & 38                       
+\end{tblr}
+\begin{tablenotes}[flushleft]\footnotesize
+\item[a] Symbol used for the terminal 'adjective'.
+\item[b] Symbol used for the terminal 'adverb'.
+\item[c] Symbol used for the terminal 'preposition'.
+\item \textbf{\textit{Note}}: The first column of the table contains terminal symbols, while the first row contain non-terminals.
+\end{tablenotes}
+\end{threeparttable} % Closing threeparttable environment
+\end{table}
+\end{landscape}
+```
+
+# Grammar - 03
+
+***After Removing Left Recursion & Left Factoring***
+
+program → decl_list^(1)^\
+*decl_list → declaration decl_list'^(2)^*\
+*decl_list' → declaration decl_list'^(3)^ \|* $\epsilon$^(4)^\
+declaration → var_decl^(5)^ \| func_decl^(6)^\
+var_decl → type ID ;^(7)^\
+type → int^(8)^ \| float^(9)^ \| char^(10)^\
+func_decl → type ID ( params ) compound_stmt^(11)^\
+params → param_list^(12)^ \| void^(13)^\
+*param_list → param param_list'^(14)^*\
+*param_list' → , param param_list'^(15)^ \|* $\epsilon$^(16)^\
+param → type ID^(17)^\
+compound_stmt → { local_decls stmt_list }^(18)^\
+*local_decls →* $\epsilon$ *local_decls'^(19)^*\
+*local_decls' → var_decl local_decls'^(20)^ \|* $\epsilon$^(21)^\
+*stmt_list →* $\epsilon$ stmt_list'^(22)^\
+*stmt_list' → stmt stmt_list'^(23)^ \|* $\epsilon$^(24)^\
+stmt → expr_stmt^(25)^ \| compound_stmt^(26)^ \| selection_stmt^(27)^ \| iteration_stmt^(28)^ \|return_stmt^(29)^\
+expr_stmt → expression ;^(30)^ \| ;^(31)^\
+expression → ID = expression^(32)^ \| simple_expression^(33)^\
+*simple_expression → additive_expression SE' ^(34)^*\
+*SE' → relop additive_expression^(35)^ \|* $\epsilon$^(36)^\
+*additive_expression → term additive_expression'^(37)^*\
+*additive_expression' → addop term additive_expression'^(38)^ \|* $\epsilon$^(39)^\
+*term → factor term'^(40)^*\
+*term' → mulop factor term'^(41)^ \|* $\epsilon$^(42)^\
+factor → ( expression )^(43)^ \| ID^(44)^ \| NUM^(45)^\
+relop → \<^(46)^ \| \<=^(47)^ \| \>^(48)^ \| \>=^(49)^ \| ==^(50)^ \| !=^(51)^\
+addop → +^(52)^ \| -^(53)^\
+mulop → \*^(54)^ \| /^(55)^\
+*selection_stmt → if ( expression ) stmt SS'^(56)^*\
+*SS' →* $\epsilon$ ^(57)^ \| else stmt^(58)^\
+iteration_stmt → while ( expression ) stmt^(59)^\
+return_stmt → return expression ;^(60)^
+
+## FIRST Sets
+
+-   FIRST(**program**) = FIRST(**decl_list**) = FIRST(**decl_list'**) = FIRST(declaration) = {int,float,char} 
+-   FIRST(**declaration**) = FIRST(var_decl) $\cup$ FIRST(func_decl) = {int, float, char} 
+-   FIRST(**var_decl**) = FIRST(**func_decl**) = FIRST(**type**) = {int,float,char} 
+-   FIRST(**params**) = FIRST(param_list) $\cup$ {void} = {int, float, char, void}
+-   FIRST(**param_list**) = FIRST(**param**) = FIRST(type) = {int, char, float}
+-   FIRST(**param_list'**) = {, , $\epsilon$}
+-   FIRST(**compound_stmt**) = {{} 
+-   FIRST(**local_decls**) = FIRST(**stmt_list**) = {$\epsilon$} 
+-   FIRST(**stmt_list'**) = FIRST(stmt) = {;, ID, (, NUM, {, if, while, return}
+-   FIRST(**local_decls'**) = FIRST(var_decls) $\cup$ {$\epsilon$} = {int, float, char, $\epsilon$}
+-   FIRST(**stmt**) = {ID, (, NUM, {, if, while, return, ;} 
+-   FIRST(**expr_stmt**) = FIRST(expression) $\cup$ {;} = {;, ID, (, NUM)} 
+-   FIRST(**expression**) = {ID} $\cup$ FIRST(simple_expression) = {ID, NUM, (} 
+-   FIRST(**simple_expression**) = FIRST(**additive_expression**) = FIRST(term) = {(, ID, NUM}
+-   FIRST(**SE'**) = FIRST(relop) $\cup$ {$\epsilon$} = {$\epsilon$, \<, \<=, \>, \>=,==, !=}
+-   FIRST(**additive_expression'**) = FIRST(addop) $\cup$ {$\epsilon$} = {+, -, $\epsilon$}
+-   FIRST(**term**) = FIRST(factor) = {(, ID, NUM} 
+-   FIRST(**term'**) = FIRST(mulop) $\cup$ {$\epsilon$} = {$\epsilon$, /, \*} 
+-   FIRST(**factor**) = {(, ID, NUM} 
+-   FIRST(**relop**) = {\<, \<=, \>, \>=, ==, !=} 
+-   FIRST(**addop**) = {+, -} 
+-   FIRST(**mulop**) = {\*, /} 
+-   FIRST(**selection_stmt**) = {if} 
+-   FIRST(**SS'**) = {$\epsilon$, else}
+-   FIRST(**iteration_stmt**) = {while} 
+-   FIRST(**return_stmt**) = {return}
+
+## FOLLOW Sets
+
+-   FOLLOW(**decl_list'**) = FOLLOW(**decl_list**) = FOLLOW(**program**) = {\$}
+-   FOLLOW(**func_decl**) = FOLLOW(**declaration**) = FIRST(decl_list) $\cup$ FIRST(decl_list')\
+    \hspace*{9.5em}= {int, float, char}
+-   FOLLOW(**var_decl**) = FOLLOW(declaration) $\cup$ FIRST(local_decls)\
+    \hspace*{9.1em}= {int, float, char, $\epsilon$}
+-   FOLLOW(**type**) = {ID}
+-   FOLLOW(**param_list'**) = FOLLOW(**param_list**) = FOLLOW(**params**) = {)}
+-   FOLLOW(**param**) = FIRST(param_list) $\cup$ FIRST(param_list') = {int, char, float, $\epsilon$, ,}
+-   FOLLOW(**compound_stmt**) = FOLLOW(func_decl) $\cup$ FOLLOW(stmt)\
+    \hspace*{12.7em}= {else, int, float, char, ID, NUM, }, if, while, return, ;}
+-   FOLLOW(**local_decls'**) = FOLLOW(**local_decls**) = FIRST(stmt_list) = {$\epsilon$}
+-   FOLLOW(**stmt_list**) = FOLLOW(**stmt_list'**) = {}}
+-   FOLLOW(**stmt**) = FIRST(stmt_list') $\cup$ FOLLOW(selection_stmt) $\cup$ FOLLOW(iteration_stmt) $\cup$ {else}\
+    \hspace*{7.3em}= {else, ;, ID, NUM, {, if, while, return}
+-   FOLLOW(**expr_stmt**) = FOLLOW(stmt) = {else, ;, ID, NUM, {, if, while, return}
+-   FOLLOW(**SE'**) = FOLLOW(**simple_expression**) = FOLLOW(**expression**) = {;, )}
+-   FOLLOW(**additive_expression'**) = FOLLOW(**additive_expression**) = FIRST(SE') $\cup$ FOLLOW(SE') 
+    \hspace*{14.9em}= {\<, \<=, \>, \>=, ==, !=, ;, )}
+-   FOLLOW(**relop**) = FIRST(additive_expression) = {(, ID, NUM}
+-   FOLLOW(**term'**) = FOLLOW(**term**) = FIRST(additive_expression') = {+, -, $\epsilon$}
+-   FOLLOW(**factor**) = FIRST(term') = {\*, /, $\epsilon$}
+-   FOLLOW(**mulop**) = FOLLOW(**addop**) = FIRST(term) = {(, ID, NUM}
+-   FOLLOW(**SS'**) = FOLLOW(**selection_stmt**) = FOLLOW(**iteration_stmt**) = FOLLOW(**return_stmt**) = FOLLOW(stmt)\
+    \hspace*{6.8em} = {else, ;, ID, NUM, {, if, while, return}
+
+\newpage
+
+## LL(1)
+
+-   From Table \ref{tab:grammar03}, we can see there are multiple values in the cells. Therefore, grammar is not LL(1).
+
+## Predictive Parser's Moves
+
+| **MATCHED**               | **STACK**                                      | **INPUT**                      |
+|-------------------|--------------------------------|---------------------|
+|                           | program \$                                     | float ID; int ID (void) { } \$ |
+|                           | decl_list \$                                   | float ID; int ID (void) { } \$ |
+|                           | declaration decl_list' \$                      | float ID; int ID (void) { } \$ |
+|                           | var_decl func_decl decl_list' \$               | float ID; int ID (void) { } \$ |
+|                           | type ID; func_decl decl_list" \$               | float ID; int ID (void) { } \$ |
+|                           | float ID; func_decl decl_list' \$              | float ID; int ID (void) { } \$ |
+| float                     | ID; func_decl decl_list' \$                    | ID; int ID (void) { } \$       |
+| float ID                  | ; func_decl decl_list' \$                      | ; int ID (void) { } \$         |
+| float ID;                 | func_decl decl_list' \$                        | int ID (void) { } \$           |
+| float ID;                 | type ID (params)compound_stmt decl_list' $ | int ID (void) { } \$           |
+| float ID;                 | int ID ( params ) compound_stmt decl_list'\$   | int ID (void) { } \$           |
+| float ID; int             | ID ( params ) compound_stmt decl_list'\$      | ID (void) { } \$               |
+| float ID; int ID          | ( params ) compound_stmt decl_list' \$         | (void) { } \$                  |
+| float ID; int ID (        | params ) compound_stmt decl_list' \$           | void) { } \$                   |
+| float ID; int ID (        | void ) compound_stmt decl_list' \$             | void) { } \$                   |
+| float ID; int ID (void    | ) compound_stmt decl_list' \$                  | ) { } \$                       |
+| float ID; int ID (void)   | compound_stmt decl_list' \$                    | { } \$                         |
+| float ID; int ID (void)   | { local_decls stmt_list } decl_list' \$        | { } \$                         |
+| float ID; int ID (void) { | local_decls stmt_list' } decl_list' \$         | } \$                           |
+
+: Moves made by a predictive parser on input **\`float ID; int ID (void) { }\`**
+
+-   The grammar is not LL(1) due to the presence of multiple values in a single cell of the parse table. There is no production rule in the grammar that allows the parser to predict the expansion of the non-terminal "**local_decls**" when it encounters the terminal "**}**" in the input, thus halting.
+
+## Parse Table
+
+```{=tex}
+\begin{table}[h]
+\centering
+\captionsetup{justification=centering}
+\caption{Parsing Table \textbf{\textit{C}} for Grammar 03}
+\label{tab:grammar03}       % Label
+\setcounter{table}{5}
+\begin{threeparttable} % Wrapping the table with threeparttable environment
+\begin{tblr}{
+  colspec = {X[5, c]*{16}{X[c]}},
+  colspec = {c*{16}{c}},    % center align the table content
+  vline{2, Z} = {2pt}, % Solid border after the first and last column
+  vline{3-Y} = {dashed}, % Vertical borders for columns 2 onwards
+  hline{1,Z} = {2pt},
+  hline{2} = {1pt},
+  hline{3-Y} = {dashed}
+}
+
+& \textbf{\textless{}} & \textbf{\textless{}=} & \textbf{\textgreater{}} & \textbf{\textgreater{}=} & \textbf{==} & \textbf{!=} & \textbf{+} & \textbf{-} & \textbf{*} & \textbf{/} & \textbf{\$} \\
+    \textbf{SE'}                   & 35                   & 35                    & 35                      & 35                       & 35          & 35          &            &            &            &            &             \\
+    \textbf{additive\_expression'} & 39                    & 39                     & 39                       & 39                        & 39           & 39           & 38         & 38         &            &            & 39             \\
+    \textbf{term'}                 &                      &                       &                         &                          &             &             & 42         & 42         & 41         & 41         & 42          \\
+    \textbf{relop}                 & 46                   & 47                    & 48                      & 49                       & 50          & 51          &            &            &            &            &             \\
+    \textbf{addop}                 &                      &                       &                         &                          &             &             & 52         & 53         &            &            &             \\
+    \textbf{mulop}                 &                      &                       &                         &                          &             &             &          &          & 54            & 55            &             \\
+
+\end{tblr}
+\begin{tablenotes}[flushleft]\footnotesize
+\item \textbf{\textit{* The table has been split, and certain non-terminals like additive\_expression' and SE' have production rules that span across both parts of the table (partial).}}
+\end{tablenotes}
+\end{threeparttable} % Closing threeparttable environment
+\end{table}
+```
+
+```{=tex}
+\begin{landscape}
+\begin{table}
+\centering
+\captionsetup{justification=centering}
+\caption{Parsing Table \textbf{\textit{C}} for Grammar 03 (...Continued...)}
+\label{tab:grammar03}       % Label
+\begin{tblr}{
+  colspec = {c*{16}{c}},    % center align the table content
+  vline{2, Z} = {2pt}, % Solid border after the first and last column
+  vline{3-Y} = {dashed}, % Vertical borders for columns 2 onwards
+  hline{1,Z} = {2pt},
+  hline{2} = {1pt},
+  hline{3-Y} = {dashed}
+}
+                      & ID                     & ;                      & int                  & float                & char                 & (                    & )                    & void                 & \{                     & \}                   & NUM                    & if                     & else                       & while                  & return                 & \$                  \\
+    \textbf{program}               &                        &                        & 1                    & 1                    & 1                    &                      &                      &                      &                        &                      &                        &                        &                            &                        &                        &                     \\
+    \textbf{decl\_list}            &                        &                        & 2                    & 2                    & 2                    &                      &                      &                      &                        &                      &                        &                        &                            &                        &                        &                     \\
+    \textbf{decl\_list'}           &                        &                        & 3                    & 3                    & 3                    &                      &                      &                      &                        &                      &                        &                        &                            &                        &                        & 4                   \\
+    \textbf{declaration}           &                        &                        & 5, 6                 & 5, 6                 & 5, 6                 &                      &                      &                      &                        &                      &                        &                        &                            &                        &                        &                     \\
+    \textbf{var\_decl}             &                        &                        & 7                    & 7                    & 7                    &                      &                      &                      &                        &                      &                        &                        &                            &                        &                        &                     \\
+    \textbf{type}                  &                        &                        & 8                    & 9                    & 10                   &                      &                      &                      &                        &                      &                        &                        &                            &                        &                        &                     \\
+    \textbf{func\_decl}            &                        &                        & 11                   & 11                   & 11                   &                      &                      &                      &                        &                      &                        &                        &                            &                        &                        &                     \\
+    \textbf{params}                &                        &                        & 12                   & 12                   & 12                   &                      &                      & 13                   &                        &                      &                        &                        &                            &                        &                        &                     \\
+    \textbf{param\_list}           &                        &                        & 14                   & 14                   & 14                   &                      &                      &                      &                        &                      &                        &                        &                            &                        &                        &                     \\
+    \textbf{param\_list'}          &                        &                        & 15                   & 15                   & 15                   &                      & 16                   &                      &                        &                      &                        &                        &                            &                        &                        &                     \\
+    \textbf{param}                 &                        &                        & 17                   & 17                   & 17                   &                      &                      &                      &                        &                      &                        &                        &                            &                        &                        &                     \\
+    \textbf{compound\_stmt}        &                        &                        &                      &                      &                      &                      &                      &                      & 18                     &                      &                        &                        &                            &                        &                        &                     \\
+    \textbf{local\_decls}          &                        &                        &                      &                      &                      &                      &                      &                      &                        &                      &                        &                        &                            &                        &                        & 19                  \\
+    \textbf{local\_decls'}         &                        &                        & 20                   & 20                   & 20                   &                      &                      &                      &                        &                      &                        &                        &                            &                        &                        & 21                  \\
+    \textbf{stmt\_list}            &                        &                        &                      &                      &                      &                      &                      &                      & 22                     &                      &                        &                        &                            &                        &                        &                     \\
+    \textbf{stmt\_list'}           & 23                     & 23                     &                      &                      &                      & 23                   &                      &                      & 23                     & 24                   & 23                     & 23                     &                            & 23                     & 23                     &                     \\
+    \textbf{stmt}                  & 25                     & 25                     &                      &                      &                      & 25                   &                      &                      & 26                     &                      & 25                     & 27                     &                            & 28                     & 29                     &                     \\
+    \textbf{expr\_stmt}            & 30                     & 31                     &                      &                      &                      & 30                   &                      &                      &                        &                      & 30                     &                        &                            &                        &                        &                     \\
+    \textbf{expression}            & 32                     & 33                     &                      &                      &                      & 33                   &                      &                      &                        &                      & 33                     &                        &                            &                        &                        &                     \\
+    \textbf{simple\_expression}    &                        & 34                     &                      &                      &                      & 34                   &                      &                      &                        &                      & 34                     &                        &                            &                        &                        &                     \\
+    \textbf{SE'}                   &                        & 36                     &                      &                      &                      &                      & 36                   &                      &                        &                      &                        &                        &                            &                        &                        &                     \\
+    \textbf{additive\_expression}  & 37                     &                        &                      &                      &                      & 37                   &                      &                      &                        &                      & 37                     &                        &                            &                        &                        &                     \\
+    \textbf{additive\_expression'} &                        & 39                     &                      &                      &                      & 39                   &                      &                      &                        &                      &                        &                        &                            &                        &                        &                     \\
+    \textbf{term}                  & 40                     &                        &                      &                      &                      & 40                   &                      &                      &                        &                      & 40                     &                        &                            &                        &                        &                     \\
+    \textbf{factor}                & 44                     &                        &                      &                      &                      & 43                   &                      &                      &                        &                      & 45                     &                        &                            &                        &                        &                     \\
+    \textbf{selection\_stmt}       &                        &                        &                      &                      &                      &                      &                      &                      &                        &                      &                        & 56                     &                            &                        &                        &                     \\
+    \textbf{SS'}                   & 57 & 57 &  &  &  &  &  &  & 57 &  & 57 & 57 & {57, 58} & 57 & 57 &  \\
+    \textbf{iteration\_stmt}       &                        &                        &                      &                      &                      &                      &                      &                      &                        &                      &                        &                        &                            & 59                     &                        &                     \\
+    \textbf{return\_stmt}          &                        &                        &                      &                      &                      &                      &                      &                      &                        &                      &                        &                        &                            &                        & 60                     &                     
+\end{tblr}
+\end{table}
+\end{landscape}
+```
+# Grammar - 04
+
+S → AaBbCc^(1)^ \| dDeEfFgG^(2)^ \| hH^(3)^ \| $\epsilon$^(4)^\
+A → aA^(5)^ \| $\epsilon$^(6)^\
+B → bB^(7)^ \| $\epsilon$^(8)^\
+C → cC^(9)^ \| $\epsilon$^(10)^\
+D → dD^(11)^ \| $\epsilon$^(12)^\
+E → eE^(13)^ \| $\epsilon$^(14)^\
+F → fF^(15)^ \| $\epsilon$^(16)^\
+G → gG^(17)^ \| $\epsilon$^(18)^\
+H → hH^(19)^ \| $\epsilon$^(20)^
+
+## FIRST Sets
+
+-   FIRST(**S**) = {d, h, $\epsilon$} $\cup$ FIRST(A) = {a, d, h, $\epsilon$} 
+-   FIRST(**A**) = {a , $\epsilon$} 
+-   FIRST(**B**) = {b , $\epsilon$} 
+-   FIRST(**C**) = {c , $\epsilon$} 
+-   FIRST(**D**) = {d , $\epsilon$} 
+-   FIRST(**E**) = {e , $\epsilon$} 
+-   FIRST(**F**) = {f , $\epsilon$} 
+-   FIRST(**G**) = {g , $\epsilon$} 
+-   FIRST(**H**) = {h , $\epsilon$}
+
+## FOLLOW Sets
+
+-   FOLLOW(**S**) = FOLLOW(**G**) = FOLLOW(**H**) = {\$} 
+-   FOLLOW(**A**) = {a} 
+-   FOLLOW(**B**) = {b} 
+-   FOLLOW(**C**) = {c} 
+-   FOLLOW(**D**) = {e} 
+-   FOLLOW(**E**) = {f} 
+-   FOLLOW(**F**) = {g}
+
+## Parse Table
+
+-   The parsing table is shown in Table \ref{tab:grammar04}. 
+
+## LL(1)
+
+-   Given grammar is not an LL(1) grammar as there are multiple values in single cell of parse table.
+
+```{=tex}
+\begin{table}
+\centering
+\captionsetup{justification=centering}
+\caption{Parsing Table \textbf{\textit{D}} for Grammar 04}
+\label{tab:grammar04}       % Label
+\begin{tblr}{
+  colspec = {c*{16}{c}},    % center align the table content
+  vline{2, Z} = {2pt}, % Solid border after the first and last column
+  vline{3-Y} = {dashed}, % Vertical borders for columns 2 onwards
+  hline{1,Z} = {2pt},
+  hline{2} = {1pt},
+  hline{3-Y} = {dashed}
+}
+
+& \textbf{a} & \textbf{b} & \textbf{c} & \textbf{d} & \textbf{e} & \textbf{f} & \textbf{g} & \textbf{h} & \textbf{\$} \\
+    \textbf{S} & 1          &            &            & 2          &            &            &            & 3          & 4, 1        \\
+    \textbf{A} & 5, 6       &            &            &            &            &            &            &            &             \\
+    \textbf{B} &            & 7, 8       &            &            &            &            &            &            &             \\
+    \textbf{C} &            &            & 9, 10      &            &            &            &            &            &             \\
+    \textbf{D} &            &            &            & 11         & 12         &            &            &            &             \\
+    \textbf{E} &            &            &            &            & 13         & 14         &            &            &             \\
+    \textbf{F} &            &            &            &            &            & 15         & 16         &            &             \\
+    \textbf{G} &            &            &            &            &            &            & 17         &            & 18          \\
+    \textbf{H} &            &            &            &            &            &            &  20          & 19         &            
+
+\end{tblr}
+\end{table}
+```
+## Predictive Parser's Moves
+
+| **MATCHED** | **STACK** | **INPUT** |         **ACTION**          |
+|:-----------:|:---------:|:---------:|:---------------------------:|
+|             |    S\$    | aabbcc\$  |                             |
+|             | AaBbCc\$  | aabbcc\$  |      output S → AaBbCc      |
+|             | aAaBbCc\$ | aabbcc\$  | output A → aA \| $\epsilon$ |
+|      a      | AaBbCc\$  |  abbcc\$  | output A → aA \| $\epsilon$ |
+|      a      | aAaBbCc\$ |  abbcc\$  |           match a           |
+|     aa      | AaBbCc\$  |  bbcc\$   |   entry D[A, b] is blank    |
+
+: Moves made by a predictive parser on input **'aabbcc'**
+
+-   The grammar is not LL(1) because there are multiple values present in a single cell of the parse table. Specifically, there is no unique production to predict when encountering terminal 'b' after matching 'aa'.
+
+# Grammar - 05
+
+S → aA^(1)^ \| Bb^(2)^ \| cC^(3)^\
+A → d^(4)^ \| $\epsilon$^(5)^\
+B → eB^(6)^ \| f^(7)^\
+C → gC^(8)^ \| h^(9)^ \| $\epsilon$^(10)^
+
+## FIRST Sets
+
+-   FIRST(**S**) = {a, c} $\cup$ FIRST(B) = {a, e, f, c}
+-   FIRST(**A**) = {d, $\epsilon$}
+-   FIRST(**B**) = {e, f}
+-   FIRST(**C**)= {g, h, $\epsilon$}
+
+## FOLLOW Sets
+
+-   FOLLOW(**S**) = FOLLOW(A) = FOLLOW(C) = {\$} 
+-   FOLLOW(**B**) = {b}
+
+## Parse Table
+
+```{=tex}
+\begin{table}[h]
+\centering
+\captionsetup{justification=centering}
+\caption{Parsing Table \textbf{\textit{E}} for Grammar 05}
+\label{tab:grammar05}       % Label
+\begin{tblr}{
+  colspec = {c*{16}{c}},    % center align the table content
+  vline{2, Z} = {2pt}, % Solid border after the first and last column
+  vline{3-Y} = {dashed}, % Vertical borders for columns 2 onwards
+  hline{1,Z} = {2pt},
+  hline{2} = {1pt},
+  hline{3-Y} = {dashed}
+}
+
+& \textbf{a} & \textbf{b} & \textbf{c} & \textbf{d} & \textbf{e} & \textbf{f} & \textbf{g} & \textbf{h} & \textbf{\$} \\
+    \textbf{S} & 1          &            & 3          &            & 2          & 2          &            &            &             \\
+    \textbf{A} &            &            &            & 4          &            &            &            &            & 5           \\
+    \textbf{B} &            &            &            &            & 6          & 7          &            &            &             \\
+    \textbf{C} &            &            &            &            &            &            & 8          & 9          & 10
+
+\end{tblr}
+\end{table}
+```
+## LL(1)
+
+-   Given grammar is LL(1) as only atomic values are present in each cell of the parse table.
+
+## Predictive Parser's Moves
+
+| **MATCHED** | **STACK** | **INPUT** |  **ACTION**   |
+|:-----------:|:---------:|:---------:|:-------------:|
+|             |    S\$    |   efb\$   |               |
+|             |   Bb\$    |   efb\$   | output S → Bb |
+|             |   eBb\$   |   efb\$   | ouput B → eB  |
+|      e      |   Bb\$    |   fb\$    |    match e    |
+|      e      |   fb\$    |   fb\$    | output B → f  |
+|     ef      |    b\$    |    b\$    |    match f    |
+|     efb     |    \$     |    \$     |    match b    |
+
+: Moves made by a predictive parser on input **\`efb\`**

@@ -1,0 +1,773 @@
+---
+title: | 
+    | \textbf{Requirements and Design Specification Document} \vspace{2cm}
+    |  BidHub
+subtitle: "\"Revolutionizing Auctions in the Digital Age\""
+author: |-
+  | \textbf{Project Code:} --- --- ---
+  | \textbf{Advisor:} Aneeka Shayan
+  | \textbf{Project Team:} M. Salman, M. Sami Fayyaz, Ameer Hamza
+   \textbf{Last Compiled:} `r format(Sys.Date(), '%d %b, %Y')`
+## classoption: a3paper
+acronyms:
+  insert_loa: false
+  insert_links: false
+  loa_title: ""
+  keys:
+    - shortname: ISI
+      longname: Institute Surplus Item
+    - shortname: VAR
+      longname: Virtual Auction Room
+output:
+  pdf_document:
+    pandoc_args: !expr acronymsdown::add_filter()
+    number_sections: true
+    toc: true
+    latex_engine: pdflatex
+    includes:
+      input: preamble.tex
+      in_header: mysty.sty
+
+fontfamily: palatino
+header-includes:
+- \thispagestyle{empty}
+- \usepackage{fancyhdr}
+- \usepackage{float}
+- \usepackage{pdfpages}
+- \pagestyle{fancy}
+- \usepackage{pgf-umlsd}
+- \fancyhead[L]{BidHub}
+- \fancyhead[C]{Requirements and Design Specifications Document}
+- \fancyhead[R]{Version 1.1}
+---
+\listoffigures
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(dev = 'pdf')
+```
+
+\vspace{5cm}
+
+| **Category**          | **Information**           |
+|-----------------------|---------------------------|
+| **Customer**          |                           |
+| **Project**           | BidHub          |
+| **Document**          | Requirement Specification |
+| **Document Version**  | 1.1                       |
+| **Identifier**        |                           |
+| **Status**            | Draft                     |
+| **Author(s)**         | M. Salman                 |
+| **Approver(s)**       |                           |
+| **Issue Date**        |                           |
+| **Document Location** |                           |
+| **Distribution**      |                           |
+
+\newpage
+
+# Introduction
+
+The BidHub represents the fusion of traditional auction concepts with modern digital convenience. The system will be paperless, transparent, and secure, providing a safe environment for online users. The main users of the system consist of registered bidders, sellers, and institutes(private and government). Institutes will have the capability to list their surplus items, referred to as \acr{ISI}. This document serves as your gateway to understanding the essence of this system, its objectives, and its role in reshaping the auction landscape.
+
+## Scope
+
+The scope of the BidHub is determined by the variety of things it can do to help with online auctions. It includes user registration, allowing buyers and sellers to create accounts; auction listings, enabling sellers to list items for auction; bidding, permitting registered buyers to place bids; auction management tools for sellers; transparent transactions through displayed bidder information; notifications for auction outcomes; separate dashboards for buyers and sellers; secure escrow service for holding funds during auctions; relisting option for unsold items; and a specialized verification process for government organizations as sellers. Exclusions from the system involve financial transactions, shipping, legal advice, customer support, and item authentication. The BidHub aims to streamline online auctions, ensuring transparency, convenience, and accessibility while leaving aspects like payments, shipping, and legal considerations to external processes and services.
+
+## Definition of Terms, Acronyms and Abbreviations
+
+\printacronyms
+
+## References
+
+1\. [Research Gate - Analysis, Design and Implementation of a Web -Based Online Auction System](https://www.researchgate.net/publication/353521317_Online_Auction_System)
+
+2\. [Relevant Software - Guide to Building an Auction Website or System](https://relevant.software/blog/how-to-build-bidding-website/)
+
+3\. [IJRPR - Online Auction System](https://ijrpr.com/uploads/V3ISSUE4/IJRPR3608.pdf)
+
+# Overall Description
+
+The BidHub operates as an online platform, linking buyers and sellers in a virtual auction environment. It offers a digital alternative to traditional auctions, enabling remote participation and convenient bidding. Users can register as buyers or sellers, create auction listings, place bids, and manage auctions. The system ensures transparency by displaying bidder information and implements an escrow service to hold funds during transactions. It caters to diverse users, including registered buyers, sellers, and institutes looking to list surplus items (referred to as an ISI) participating as sellers.The system adheres to secure online transactions and data privacy regulations. It relies on stable internet connectivity and assumes users have basic computer literacy. Dependencies include external payment gateways for financial transactions and accurate product descriptions from sellers. With requirements divided into subsets, including user registration, auction management, and specialized verification for institute sellers, the system establishes a seamless online auction experience.
+
+# Specific Requirements
+
+## Functional Requirements
+
+### User Registration
+
+-   The system shall allow users to register as buyers.
+-   The system shall provide users with the option to register as either buyers or sellers.
+
+### User Authentication and Role-based Access
+
+-   The system must securely authenticate users.
+-   The system shall grant access to users based on their assigned roles, which can include roles such as buyers and sellers.
+
+### Account Verification and Password Reset
+
+-   During the registration process, the system shall require users to complete account verification.
+-   Additionally, the system shall offer an optional feature for users to reset their passwords.
+
+### Distinct Virtual Auction Rooms
+
+-   The system shall provide separate virtual auction rooms categorized by item types.
+
+### Auction Listing Creation
+
+-   The system shall enable sellers to create auction listings within relevant item categories.
+-   Additionally, the system shall allow organizations to register as sellers and list items for auction.
+
+### Auction Viewing and Bidding
+
+-   The system shall provide buyers with the capability to view and access designated auction rooms.
+-   Buyers shall have the ability to place competitive bids on items of interest.
+
+### Bid Verification and Confirmation
+
+-   The system shall prompt users to verify and confirm the bid amount before confirming a bid.
+-   Additionally, the system shall perform the following checks:
+    -   If it's the user's first bid, their account funds must be greater than the base price of the item.
+    -   If others have placed bids, the user's funds must be greater than the latest bid or the top bid.
+
+### Multiple Bids on a Single Item
+
+-   The system shall allow users to place multiple bids on a single item if desired.
+
+### Real-time Bid Updates
+
+-   The system must provide real-time updates to reflect the current highest bid during an auction.
+
+### Top Bids Display
+
+-   The system shall display the top five (or top three) bids for each auctioned item.
+
+### Transparency in Bidding
+
+-   The system shall display bidder information, including usernames or aliases, alongside bid details for transparency.
+
+### Auction Notifications
+
+-   The system shall send notifications to the winning bidder upon the completion of an auction.
+-   Additionally, the system shall notify all participants when an auction concludes.
+
+### Buyers' Dashboard
+
+-   The system shall provide buyers with dashboards that enable them to manage their active bids, review their bidding history, and access information about won auctions.
+
+### Sellers' Dashboard
+
+-   The system shall offer sellers dashboards that allow them to manage their auction listings, oversee ongoing auctions, and adjust their account settings.
+
+### Escrow Service
+
+-   The system shall implement an escrow service that will hold funds until the completion of a successful auction.
+
+### Auction Management for Sellers
+
+-   Sellers shall possess the capability to manage their auction listings, make updates to item details, and initiate the closure of auctions.
+-   For items that remain unsold for a period of two weeks, the system shall provide a relisting option. After two weeks of duration, users may list the item again.
+
+## Non-Functional Requirements
+
+### Usability
+
+-   The user interface should be intuitive and easy to use, catering to both experienced and new users. It will feature clear menus, buttons, and navigation elements, all designed with consistent patterns for a seamless experience. The system will prioritize user-centric design to ensure usability without a steep learning curve.
+-   All user interactions and actions should have clear and concise instructions.
+-   The system shall provide tooltips and contextual help to guide users through complex processes.
+-   Fonts, colors, and layout elements should be chosen to enhance readability and visual appeal.
+
+### Reliability
+
+-   The system shall have a target uptime of 99.9%, minimizing downtime and disruptions to users.
+-   Critical data shall be backed up regularly to prevent data loss in case of hardware failures or system crashes.
+-   The system should have built-in error handling mechanisms to gracefully manage unexpected errors and prevent crashes.
+
+### Performance
+
+-   The system shall support concurrent access by a large number of users, with a target response time of under 2 seconds for most user interactions.
+-   The system should be able to handle a high volume of simultaneous bids and auctions without significant performance degradation.
+-   Load testing will be conducted to ensure the system's performance under peak usage conditions.
+
+### Supportability
+
+-   The system shall be compatible with modern web browsers, including Chrome, Firefox, Safari, and Edge.
+-   The system shall provide clear and accessible documentation for users, administrators, and developers.
+-   Maintenance and updates should be easily deployable without causing disruptions to users.
+
+### Design Constraints
+
+-   The system's user interface design shall comply with modern design principles, incorporating responsive design for optimal viewing on different devices.
+-   The system's architecture shall be designed to ensure data security and user privacy, adhering to industry best practices and legal regulations.
+-   The system shall utilize existing technology stacks, including the MERN (MongoDB, Express.js, React, Node.js) stack for web development.
+
+## Online User Documentation and Help System Requirements
+
+-   **User Documentation:** The system aims to offer comprehensive online documentation accessible to users. This documentation will provide clear guidance on system features and procedures, aiding users in navigating the platform effortlessly.
+
+-   **Frequently Asked Questions (FAQ):** The system will include a dedicated "Frequently Asked Questions" section. This section will compile commonly asked questions along with their answers to provide quick solutions to users' inquiries.
+
+-   **Contact Us Page:** A "Contact Us" page will be available to users for direct communication with the support team. Users can submit queries, concerns, or feedback through this page, ensuring timely and personalized assistance.
+
+## Licensing Requirements
+
+The licensing requirements for the BidHub encompass the following considerations:
+
+-   **Updates and Upgrades:** The licensing terms guarantee that users are entitled to receive software updates and upgrades throughout the 6-month subscription period. This ensures the BidHub remains up-to-date with the latest features and security enhancements.
+
+-   **Support and Maintenance:** Licensing agreements specify that maintenance will be available for 24/6 on-premise, and it will be charged separately from the subscription. Technical support includes assistance in resolving technical issues, software bugs, and related support during the subscription period.
+
+-   **Usage Restrictions:** Licensing terms establish usage restrictions, limiting DDOS protection to 500 requests every 30 minutes to prevent abuse.
+
+-   **Compliance:** The licensing agreement ensures compliance with relevant laws, regulations, and industry standards. It also outlines the consequences of non-compliance.
+
+-   **Transferability:** Users understand that the subscription license is non-transferable and applies only to the original purchaser or organization.
+
+-   **Termination Clause:** The agreement outlines conditions for license termination, such as violation of terms, non-payment, or stipulated scenarios.
+
+-   **Ownership:** Clarification of software ownership is provided. Licensing specifies that users are granted the right to use the software within the subscription period, while ownership remains with the vendor.
+
+-   **Jurisdiction:** The agreement specifies the jurisdiction under which any legal disputes related to the licensing will be resolved.
+
+Please carefully review and adhere to these licensing requirements before subscribing to and utilizing the BidHub.
+
+## Legal, Copyright, and Other Notices
+
+The legal, copyright, and other notices for the BidHub encompass the following aspects:
+
+### Copyright Notice
+
+The BidHub is protected by copyright law. All rights are reserved. This notice specifies ownership of the software and any associated materials. It outlines the rights and restrictions related to the use, distribution, and modification of the software.
+
+### Disclaimer of Liability
+
+The BidHub's use is at your own risk. The system's disclaimer of liability outlines the extent of the software's responsibility for potential issues or damages. It clarifies that the software provider is not liable for any direct or indirect consequences of using the software.
+
+### Terms of Use
+
+By accessing the BidHub, users agree to the terms of use. These terms define the conditions under which users can access and utilize the system. It covers aspects such as acceptable usage, prohibited activities, and user responsibilities.
+
+### Privacy Policy
+
+Protecting user data is essential. The privacy policy outlines how user data is collected, stored, and used within the system. It addresses data protection, user consent, and measures taken to safeguard sensitive information.
+
+### Third-Party Notices
+
+The BidHub may include third-party software or components. Relevant notices about these components are provided here, including attributions, licenses, and any modifications made to these components.
+
+### Jurisdiction
+
+Any legal disputes or concerns related to the BidHub will be addressed within the jurisdiction specified in the notices.
+\newpage
+
+# Usecase Diagram
+
+\begin{figure}[H]
+\centering
+\includepdf[pages=-]{/home/recluzegeek/Downloads/usecase.pdf}
+\end{figure}
+\newpage
+
+# Sequence Diagrams
+<!-- Registration -->
+\begin{figure}[H]
+\begin{sequencediagram}
+    \newthread{u}{User}{}
+    \newinst[3]{rp}{Registration Page}{}
+    \newinst[3]{bed}{Backend}{}
+    \newinst[3]{udb}{User Database}{}
+    \newinst[3]{db}{Web Dashboard}{}
+
+    \begin{call}{u}{Enter Details}{rp}{Account Created Successfully}
+        \begin{call}{rp}{Sanitize Input}{rp}{Fetch Input}
+            \begin{sdblock}{Alt}{Invalid Input}
+                \begin{messcall}{rp}{Display Error Message}{u}
+                \end{messcall}
+            \end{sdblock}
+        \end{call}
+        \begin{call}{rp}{Send Input Details}{bed}{Successs}
+            \begin{call}{bed}{User Existence}{udb}{User Doesn't Exist}
+                \begin{sdblock}{Alt}{User Exists}
+                    \begin{messcall}{udb}{User Already Exists}{rp}
+                        \begin{messcall}{rp}{Redirect to Login Page}{u}
+                        \end{messcall}
+                    \end{messcall}
+                \end{sdblock}
+            \end{call}
+        \end{call}
+    \end{call}
+\end{sequencediagram}
+\caption{Registeration — Sequence Diagram}
+\end{figure}
+
+ <!-- Login -->
+
+\begin{figure}[H]
+\centering
+\begin{sequencediagram}
+    \newthread{u}{User}{}
+    \newinst[3]{lp}{Login Page}{}
+    \newinst[4]{bed}{Backend}{}
+    \newinst[3]{udb}{User Database}{}
+    \newinst[3]{db}{Web Dashboard}{}
+
+    \begin{call}{u}{Enter Credentials}{lp}{Redirecting}
+      \begin{call}{lp}{Sanitize Input}{lp}{Fetch Details}
+      \end{call}
+        \begin{call}{lp}{Send Credentials}{bed}{Redirect to Dashboard}
+          \begin{sdblock}{alt}{User Not Found}
+            \begin{call}{bed}{User Exists}{udb}{Error}
+            \end{call}
+            \begin{messcall}{bed}{User Not Found}{lp}
+              \begin{messcall}{lp}{Prompt for Login Details}{u}
+              \end{messcall}
+            \end{messcall}
+            \begin{sdblock}{else if}{Invalid Credentials}
+              \begin{call}{bed}{Credentials Invalid}{udb}{Credentials Not Matched}
+              \end{call}
+              \begin{messcall}{bed}{Incorrect Username or Password}{lp}
+                \begin{messcall}{lp}{Prompt for Login Details}{u}
+                \end{messcall}
+              \end{messcall}
+            \end{sdblock}
+          \end{sdblock}
+            \begin{call}{bed}{Verify Credentials}{udb}{Fetch User Data}
+            \end{call}
+        \end{call}
+    \end{call}
+\end{sequencediagram}
+\caption{Authentication — Sequence Diagram}
+\end{figure}
+
+ <!-- Password Reset  -->
+\begin{figure}[H]
+  \centering
+  \begin{sequencediagram}
+    \newthread{User}{User}{}
+    \newinst[4]{App}{System}{}
+    \newinst[3]{Server}{Server}{}
+    \newinst[2]{Email}{Email Service}{}
+    
+    \begin{call}{User}{Request Password Reset}{App}{Popup Notification}
+      \begin{call}{App}{Generate Reset Token}{Server}{}
+        \begin{call}{Server}{Send Email}{Email}{Mail Sent}
+        \end{call}
+      \end{call}
+    \end{call}
+    
+    \begin{call}{User}{Clicked Reset Token}{App}{Success}
+      \begin{call}{App}{Validate Token}{Server}{}
+        \begin{sdblock}{alt}{Token is Valid}
+          \begin{call}{App}{Prompt for New Password}{User}{New Password}
+          \end{call}
+          \begin{messcall}{User}{Submit New Password}{App}
+          \end{messcall}
+          \begin{call}{App}{Confirm Password Change}{Server}{Confirmation}
+          \end{call}
+         \begin{messcall}{App}{Password Reset Successful}{User}
+         \end{messcall}
+        \begin{sdblock}{else}{Invalid Token}
+          \begin{messcall}{App}{Try Again. Execution Aborted}{User}
+          \end{messcall}
+        \end{sdblock}
+      \end{sdblock}
+      \end{call}
+    \end{call}
+  \end{sequencediagram}
+  \caption{Password Reset — Sequence Diagram}
+\end{figure}
+
+ <!-- Auction Creation -->
+
+\begin{figure}[H]
+\centering
+\begin{sequencediagram}
+    \newthread{Seller}{Seller}
+    \newinst[3]{WebDashboard}{Web Dashboard}
+    \newinst[3]{Backend}{Backend}
+    \newinst[3]{Database}{Database}
+
+    \begin{call}{Seller}{Request to create listing}{WebDashboard}{Listing Request Successful}
+        \begin{sdblock}{alt}{Data Validation Failed}
+            \begin{call}{WebDashboard}{Validation failed message}{WebDashboard}{Show Error}
+            \end{call}
+        \end{sdblock}
+        \begin{call}{WebDashboard}{CreateListingRequest}{Backend}{Acknowledege Request}
+            \begin{call}{Backend}{Save listing data}{Database}{Listing data saved}
+            \end{call}
+        \end{call}
+    \end{call}
+\end{sequencediagram}
+\caption{Create Auction Listing — Sequence Diagram}
+\end{figure}
+
+ <!-- Browse Auction -->
+
+\begin{figure}[H]
+\centering
+\begin{sequencediagram}
+  \newthread{Buyer}{Buyer}
+  \newinst[2.5]{WebDashboard}{Web Dashboard}
+  \newinst[3]{Backend}{Backend}
+  \newinst[5]{Database}{Database}
+
+  \begin{call}{Buyer}{Request to browse auctions}{WebDashboard}{Display Auctions}
+    \begin{call}{WebDashboard}{FetchAuctionsRequest}{Backend}{Send list of auctions}
+      \begin{call}{Backend}{Query auctions}{Database}{List of auctions}
+      \end{call}
+    \end{call}
+  \end{call}
+  \begin{sdblock}{opt}{Filter and Sorting}
+    \begin{call}{Buyer}{Set filters and Sortings}{WebDashboard}{Display Req. auctions}
+          \begin{call}{WebDashboard}{ApplyFiltersAndSort}{Backend}{Send filtered and sorted list}
+      \begin{call}{Backend}{Query auctions with filters and sorting}{Database}{List of filtered and sorted auctions}
+      \end{call}
+    \end{call}
+    \end{call}
+  \end{sdblock}
+\end{sequencediagram}
+\caption{Browse Auctions — Sequence Diagram}
+\end{figure}
+
+ <!-- Access Virtual Auction Room -->
+\begin{figure}[H]
+\centering
+\begin{sequencediagram}
+    \newthread{User}{User}
+    \newinst[3]{Web}{Web Application}
+    \newinst[2]{AuctionSys}{Auction System}
+    \newinst[2]{AuctionRoom}{Virtual Auction Room}
+  
+    \begin{call}{User}{Request Auction}{Web}{}
+        \begin{call}{Web}{Access Auction}{AuctionSys}{Auction Info Displayed}
+            \begin{sdblock}{alt}{Auction Not Found}
+                \begin{call}{AuctionSys}{Notify User}{Web}{Auction Not Found}
+                \end{call}
+            \end{sdblock}
+            \begin{call}{AuctionSys}{Load Auction}{AuctionRoom}{Auction Data Provided}
+            \end{call}
+        \end{call}
+    \end{call}
+    
+    \begin{call}{User}{View Item Details}{Web}{Item Details Displayed}
+        \begin{call}{Web}{Request Item Details}{AuctionRoom}{Item Details}
+        \end{call}
+    \end{call}
+    
+    \begin{call}{User}{View Top 5 Bids}{Web}{Top 5 Bids Displayed}
+        \begin{call}{Web}{Request Top 5 Bids}{AuctionRoom}{Top 5 Bids}
+        \end{call}
+    \end{call}
+    
+    \begin{call}{User}{View Additional Info}{Web}{Info Displayed}
+        \begin{call}{Web}{Request Additional Info}{AuctionRoom}{Additional Info}
+        \end{call}
+    \end{call}
+\end{sequencediagram}
+\caption{Access Virtual Auction Room — Sequence Diagram (View Item Details)}
+\end{figure}
+
+ <!-- Place Bids -->
+
+\begin{figure}[H]
+\centering
+\begin{sequencediagram}
+    \newthread{Buyer}{Buyer}
+    \newinst[3]{WebDashboard}{Web Dashboard}
+    \newinst[3]{System}{System}
+    \newinst[3]{Database}{Database}
+
+    \begin{call}{Buyer}{Request to place a bid}{WebDashboard}{Bid Validation Result}
+        \begin{call}{WebDashboard}{Check bid validity}{System}{Notify bid validation}
+            \begin{call}{System}{Verify bid details}{Database}{Bid details verified}
+            \end{call}
+        \end{call}
+    \end{call}
+    \begin{sdblock}{alt}{Bid Valid}
+      \begin{call}{Buyer}{PlaceBidRequest}{WebDashboard}{Bid Placed Successfully}
+        \begin{call}{WebDashboard}{Process Bid}{System}{Notify Bid Placed}
+          \begin{call}{System}{Record Bid}{Database}{Bid Recorded}
+          \end{call}
+        \end{call}
+          \begin{call}{WebDashboard}{Confirm Bid Placement}{Buyer}{Confirmed}
+          \end{call}
+      \end{call}
+    \end{sdblock}
+
+\end{sequencediagram}
+\caption{Place Bid — Sequence Diagram}
+\end{figure}
+
+ <!-- Verify Sufficient Funds -->
+
+\begin{figure}[H]
+\centering
+\begin{sequencediagram}
+    \newthread{Bidder}{Bidder}
+    \newinst[3]{WebDashboard}{Web Dashboard}
+    \newinst[3]{PaymentGateway}{Payment Gateway}
+    \newinst[3]{Database}{Database}
+
+    % Step 1: Place Bid Request
+    \begin{call}{Bidder}{Place Bid Request}{WebDashboard}{Acknowledge}
+        \begin{call}{WebDashboard}{Check Bid Validity}{Database}{Check Passed}
+        \end{call}
+    \end{call}
+
+    % Step 2: Verify Sufficient Funds
+    \begin{call}{WebDashboard}{Verify Sufficient Funds}{PaymentGateway}{Funds Verified}
+    \end{call}
+
+    % Step 3: Record Bid
+    \begin{call}{WebDashboard}{Record Bid}{Database}{Bid Recorded}
+    \end{call}
+
+    % Step 4: Notify Bid Placement
+    \begin{call}{WebDashboard}{Notify Bid Placement}{Bidder}{Bid Placed}
+    \end{call}
+\end{sequencediagram}
+\caption{Sufficient Funds — Sequence Diagram}
+\end{figure}
+
+ <!-- Display Highest Bid -->
+
+\begin{figure}[H]
+\centering
+\begin{sequencediagram}
+    \newthread{Auctioneer}{Auctioneer}
+    \newinst[2]{AuctionSys}{Auction System}
+    \newinst[2]{BidProcessor}{Bid Processor}
+    \newinst[3]{AuctionRoom}{Item Auction Room}
+  
+    \begin{call}{Auctioneer}{Start Auction}{AuctionSys}{Display Highest Bid}
+        \begin{call}{AuctionSys}{Bid Placed}{BidProcessor}{Top Bid Updated}
+            \begin{sdblock}{Iterate}{Process Bids}
+                \begin{call}{BidProcessor}{Receive Bid}{BidProcessor}{Bid Received}
+                    \begin{call}{BidProcessor}{Process Bid}{AuctionRoom}{Top 5 Bids Updated}
+                    \end{call}
+                \end{call}
+            \end{sdblock}
+        \end{call}
+    \end{call}
+\end{sequencediagram}
+\caption{Real-time Highest Bid Update — Sequence Diagram}
+\end{figure}
+
+<!-- Display Bids -->
+\begin{figure}[H]
+\centering
+\begin{sequencediagram}
+    \newthread{Buyer}{Buyer}
+    \newinst[3]{WebDashboard}{Web Dashboard}
+    \newinst[3]{Backend}{Backend}
+    \newinst[3]{Database}{Database}
+
+    % Step 1: Request to View Bids
+    \begin{call}{Buyer}{Request to View Bids}{WebDashboard}{Bids Displayed}
+        \begin{call}{WebDashboard}{Retrieve Bids}{Backend}{Bids Retrieved}
+            \begin{call}{Backend}{Query Bids for Auction Item}{Database}{Bids Found}
+            \end{call}
+        \end{call}
+    \end{call}
+
+    
+\end{sequencediagram}
+\caption{Display Bids — Sequence Diagram}
+\end{figure}
+
+
+ <!-- Auction Outcome Notification -->
+\begin{figure}[H]
+\centering
+\begin{sequencediagram}
+  \newthread{Auctioneer}{Auctioneer}
+  \newinst[2]{System}{Auction System}
+  \newinst[4]{Bidder}{Winning Bidder}
+  \newinst[2]{Others}{Bidders}
+
+  \begin{call}{Auctioneer}{Start Auction}{System}{Acknowledge Start}
+    \begin{call}{System}{Auction Started}{Others}{}
+    \end{call}
+  \end{call}
+
+  \begin{sdblock}{Auction Loop}{Bids keep flowing}
+    \begin{call}{Others}{Place Bids}{System}{Keep Biding}
+    \end{call}
+  \end{sdblock}
+
+  \begin{call}{Auctioneer}{End Auction}{System}{Acknowledge End}
+    \begin{call}{System}{Determine Winning Bid}{System}{}[+5]
+      \begin{call}{System}{Notify Winning Bidder}{Bidder}{Acknowledge Notification}
+      \end{call}
+      \begin{call}{System}{Notify Non-Winning Bidders}{Others}{Ack. Notified}[+5]
+      \end{call}
+    \end{call}
+  \end{call}
+\end{sequencediagram}
+\caption{Notify Auction Outcome — Sequence Diagram}
+\end{figure}
+
+
+ <!-- Update Item Details -->
+\begin{figure}[H]
+\centering
+\begin{sequencediagram}
+    \newthread{Seller}{Seller}
+    \newinst[4]{System}{System}
+    \newinst[4]{Database}{Database}
+    
+    \begin{call}{Seller}{Request to update Item Details}{System}{Selects Item for edit}
+      \begin{call}{System}{Retrieve Item Details}{Database}{Current Item Details}
+      \end{call}
+    \end{call}
+    \begin{sdblock}{alt}{Seller Edits Item Details}
+      \begin{call}{Seller}{Send Updated Item Details}{System}{Confirmation of Update}
+        \begin{call}{System}{Update Item Details}{Database}{Updated Item Details}
+        \end{call}
+      \end{call}
+      \begin{sdblock}{else}{Seller Cancels Edit}
+        \begin{call}{Seller}{Cancel Edit}{System}{Editing Cancelled}
+          \begin{call}{System}{Editing Cancelled}{Database}{No change in Details}
+          \end{call}
+        \end{call}
+      \end{sdblock}
+    \end{sdblock}
+
+\end{sequencediagram}
+\caption{Modify Auction Details — Sequence Diagram}
+\end{figure}
+
+ <!-- Relist Items -->
+
+\begin{figure}[H]
+\centering
+  \begin{sequencediagram}
+    \newthread{Seller}{Seller}
+    \newinst[4]{System}{System}
+    \newinst[4]{Database}{Database}
+  
+    \begin{call}{Seller}{Request to Relist Unsold Items}{System}{Provides List of Unsold Items}
+      \begin{call}{System}{Retrieve Unsold Items}{Database}{List of Unsold Items}
+      \end{call}
+    \end{call}
+    
+    \begin{sdblock}{alt}{Seller chooses Items to Relist}
+      \begin{call}{Seller}{Select Items to Relist}{System}{Relisting Confirmed}
+        \begin{call}{System}{Relist selected Items}{Database}{Confirmation of Relisting}
+        \end{call}
+      \end{call}
+      \begin{sdblock}{else}{Seller cancels Relisting}
+        \begin{call}{Seller}{Cancel Relisting}{System}{Relisting Cancelled}
+          \begin{call}{System}{Cancel Relisting}{Database}{Set Item Status to Unsold}
+          \end{call}
+        \end{call}
+      \end{sdblock}
+    \end{sdblock}
+  \end{sequencediagram}
+\caption{Relist Items — Sequence Diagram}
+\end{figure}
+
+<!-- Close Auction -->
+\begin{figure}[H]
+\centering
+\begin{sequencediagram}
+    \newthread{Auctioneer}{Auctioneer}
+    \newinst[3]{AuctionSystem}{Auction System}
+    \newinst[3]{Bidder}{Bidder}
+    \newinst[3]{Database}{Database}
+
+    % Phase 1: Announce Closing
+    \begin{call}{Auctioneer}{Set Closing Time}{AuctionSystem}{Closing Time Notified}
+      \begin{call}{AuctionSystem}{Notify Closing Time}{Bidder}{Acknowledged}
+      \end{call}
+    \end{call}
+    
+    
+    % Phase 2: Monitor Bidding
+    \begin{call}{Auctioneer}{Disable New Bids}{AuctionSystem}{}
+      \begin{call}{AuctionSystem}{Bidding Closed}{Bidder}{Bidding Disabled}
+      \end{call}
+    \end{call}
+
+    % Phase 3: Declare Winners
+    \begin{call}{Auctioneer}{Declare Winners}{AuctionSystem}{Auction Closed}
+        % Phase 4: Notify Winners
+      \begin{call}{AuctionSystem}{Notify Winners}{Bidder}{Winners Notified}
+      \end{call}
+      \begin{call}{AuctionSystem}{Record Payment}{Database}{Payment Recorded}
+      \end{call}
+      %\begin{messcall}{Bidder}{Make Payments}{AuctionSystem}{Acknowledge Payment}
+      %\end{messcall}
+      \begin{messcall}{AuctionSystem}{Acknowledge Payment}{Auctioneer}
+      \end{messcall}
+    \end{call}
+
+\end{sequencediagram}
+\caption{Closing Auction - Sequence Diagram}
+\end{figure}
+
+
+ <!-- Bidding History -->
+\begin{figure}[H]
+  \centering
+   \begin{sequencediagram}
+      \newthread{Bidder}{Bidder}
+      \newinst[3]{System}{System}
+      \newinst[4]{Database}{Database}
+  
+      \begin{sdblock}{loop}{Authentication}
+        \begin{call}{Bidder}{Enter credentials}{System}{Authentication Failed}
+          \begin{call}{System}{Check for credentials}{Database}{Invalid Credentials}
+          \end{call}
+        \end{call}
+      \end{sdblock}
+      \begin{call}{Bidder}{Request Bidding History}{System}{Retrieve Bidding History}
+        \mess{System}{Retrieve Bidding History}{Database}
+        \mess{Database}{Bidding History}{System}
+        \mess{System}{Provide Bidding History}{Bidder}
+      \end{call}
+    \end{sequencediagram}
+  \caption{Bidding History — Sequence Diagram}
+\end{figure}
+
+ <!-- View Auction Listings -->
+
+\begin{figure}[H]
+\begin{sequencediagram}
+    \newthread{Seller}{Seller}
+    \newinst[4]{WebDashboard}{Web Dashboard}
+    \newinst[3]{Backend}{Backend}
+    \newinst[3]{Database}{Database}
+
+    % Step 1: Seller Requests to View Auction Listings
+    \begin{messcall}{Seller}{Request to View Auction Listings}{WebDashboard}
+        \begin{call}{WebDashboard}{Retrieve Seller's Listings}{Backend}{Listings Retrieved}
+            \begin{call}{Backend}{Query Seller's Listings}{Database}{Listings Found}
+            \end{call}
+        \end{call}
+    \end{messcall}
+
+    % Step 2: Display Seller's Auction Listings
+    \begin{call}{WebDashboard}{Display Seller's Auction Listings}{Seller}{Listings Displayed}
+    \end{call}
+
+    % Additional Steps: Seller Performs Operations
+    \begin{call}{Seller}{Perform Operations on Listings}{WebDashboard}{Operations Performed}
+    \end{call}
+\end{sequencediagram}
+\caption{View Auction Listing — Sequence Diagram (Seller's View)}
+\end{figure}
+\newpage
+
+# UML Class Diagram
+
+\begin{figure}[H]
+\centering
+\includepdf[pages=-]{/home/recluzegeek/Downloads/Bidhub_ClassDiagram.pdf}
+\end{figure}
+<!-- ![Alt](/home/recluzegeek/Downloads/Auction_UML.drawio.pdf){width=100%} -->
+\newpage
+
+# Screenshots
+- Rendered onto the next page
+\includepdf[pages=-]{/home/recluzegeek/Downloads/Bidhub_frontend.pdf}
