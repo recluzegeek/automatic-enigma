@@ -1,47 +1,46 @@
 ---
 title: js-basics
-updated: 2023-06-25 12:28:41Z
+updated: 2023-10-07 12:28:41Z
 created: 2023-05-28 05:28:23Z
-latitude: 51.50735090
-longitude: -0.12775830
-altitude: 0.0000
 ---
 
-# Resources to Look for Guidance
+# JS Basics
+
+## Resources to Look Info For
 
 - [JavaScript.Info](https://javascript.info/)
 - [MDN](https://developer.mozilla.org/en-US/docs/web/javascript/)
 
-## Variables
+## Variables & Constants
 
-- Variables are created using `let` keyword after `es6` and datatype of any variable can be found out using `typeof` reserved word like this `typeof name`
+- Variables are created using `let` keyword after `es6` and datatype of any variable can be found out using `typeof` operator like this `typeof operand`
 
     ```js
-        let name = 'Salman' // String literal
-        let profitRate = 5.6 // Number literal
-        let age = 21 // Number literal
-        let isPassed = true // Boolean literal
-        let selectedColor = null // clear the value of variable
+    let name = 'Recluze Geek' // String literal
+    let profitRate = 5.6 // Number literal
+    let age = 21 // Number literal
+    let isPassed = true // Boolean literal
+    let selectedColor = null // clear the value of variable
+    console.log(typeof 42);//  output: "number"
+    console.log(typeof 'blubber');// output: "string"
     ```
-
-## Constant
 
 - Constants in js are declared using `const` keyword
 
-```js
+    ```js
     const interestRate = 4.5
-```
+    ```
 
 ## Objects - Also Dynamic as JS Variables and Arrays are
 
 - Collection of key-value pair, properties that're highly related are encapsulated into objects
-- Grouping related variables
+  - Grouping related variables
 
     ```js
-        let person = {
-            name: 'Salman',
-            age: 20
-        };
+    let person = {
+        name: 'Recluze Geek',
+        age: 20
+    };
     ```
 
 - Accessing person object's attributes
@@ -49,40 +48,40 @@ altitude: 0.0000
   - Dot Notation
 
     ```js
-        person.name = 'Muhammad Salman'
-        console.log(person.name) // prints 'Muhammad Salman' on console
+    person.name = 'Recluze Geek'
+    console.log(person.name) // prints 'Recluze Geek'
     ```
 
   - Brackets Notation, better for accessing properties on run-time means we can assign variable to it like
 
     ```js
-        let selectedProperty = 'someSelectedProperty';
-        console.log(person[selectedProperty]);
-        
-        person['name'] = 'Shehryar Salman'
-        console.log(person['name']) // prints 'Shehryar Salman' on console
-        
+    let selectedProperty = 'someSelectedProperty';
+    console.log(person[selectedProperty]);
+    
+    person['name'] = 'Recluze Geek'
+    console.log(person['name']) // prints 'Recluze Geek'    
     ```
 
 - ### Elaboration
 
-    ```js
-        // Object Literal syntax for Object Creation
-        const circle = {
-            radius: 1,
-            location: {
-                x: 1,
-                y: 1
-            },
-            isVisible: true,
-            draw: function(){
-                console.log('Circle Drawn');
-            }
-        };
+  - We can also have nested objects within an object.
 
-        // Method: A function associated with an object
-        // Function: Standalone block of reusable code
-        circle.draw(); // Method
+    ```js
+    // Object Literal syntax for Object Creation
+    const circle = {
+        radius: 1,
+        location: {
+            x: 1,
+            y: 1
+        },
+        isVisible: true,
+        draw: function(){
+            console.log('Circle Drawn');
+        }
+    };
+    // Method: A function associated with an object
+    // Function: Standalone block of reusable code
+    circle.draw(); // Method
     ```
 
 - ### Factory Functions - For Object Creation with CamelCase Notation
@@ -91,8 +90,8 @@ altitude: 0.0000
 
     ```js
     // Factory Function to create Circle
-    function circleFactory(radius, location = 
-    { x: 1, y: 1 }, isVisible) {
+    function circleFactory(radius, location = { x: 1, y: 1 }, isVisible) {
+      // Object Creation
       return {
         radius,
         location,
@@ -111,18 +110,18 @@ altitude: 0.0000
 - ### Constructor Functions - For Object Creation with Pascal Notation
 
   - ```js
-        // Constructor Function for Circle
-        function Circle(radius, location = {x: 1, y: 1}, isVisible){
-            this.radius = radius,
-            this.location = location,
-            this.isVisible = isVisible
-            this.draw = draw(){
+    // Constructor Function for Circle
+    function Circle(radius, location = {x: 1, y: 1}, isVisible) {
+        this.radius = radius;
+        this.location = location;
+        this.isVisible = isVisible;
+        this.draw = function() {
             console.log('Circle Created');
-            }
-        }
-            
-        const newCircle = new Circle(20, true);
-        newCircle.draw();
+        };
+    }
+
+    const newCircle = new Circle(20, {x: 2, y: 3}, true);
+    newCircle.draw();
     ```
 
 - ### Dynamic Nature of JS Objects
@@ -131,7 +130,7 @@ altitude: 0.0000
 
     ```js
     const student = {
-        name: 'Muhammad Salman',
+        name: 'Recluze Geek',
         age: 21,
         cgpa: 3.85
     };
@@ -141,22 +140,22 @@ altitude: 0.0000
     console.log(student)
     ```
 
-![959c5fca0c256218b29d386f5e3c41af.png](../_resources/959c5fca0c256218b29d386f5e3c41af.png)
+![Code Snippet Result](../_resources/959c5fca0c256218b29d386f5e3c41af.png)
 
 - ### Constructor Property
 
   - References the constructor used to construct that very specific object
 
     ```js
-        let vehicle = {};
-        // Behind the doors
-        // let vehicle = new Object();
-        
-        // Prints ƒ Object() { [native code] }
-        vehicle.constructor; 
-        new String(); // '', "", ``
-        new Boolean(); // true, false
-        new Number(); // 1, 2, 3, ...
+    let vehicle = {};
+    // Behind the doors
+    // let vehicle = new Object();
+    
+    // Prints ƒ Object() { [native code] }
+    vehicle.constructor; 
+    new String(); // '', "", ``
+    new Boolean(); // true, false
+    new Number(); // 1, 2, 3, ...
     ```
 
 - ### Functions are Objects
@@ -165,28 +164,25 @@ altitude: 0.0000
 
 - Primitives are copied by their values, whereas Objects are copied by their references.
 
-```js
- // Pass by value example
- let num = 10;
- function increment(num){
-  num++;
- }
- increment(num);
- // Prints 10 on console as both variables are independent
- console.log(num); 
-
- // Pass by reference example
- let obj = {value: 10};
- function increment(obj){
-  obj.value++;
- }
- increment(obj);
- // Prints 11 on console as obj reference is passed
- console.log(obj); 
-
-```
-
-<center>
+    ```js
+     // Pass by value example
+     let num = 10;
+     function increment(num){
+      num++;
+     }
+     increment(num);
+     // Prints 10 on console as both variables are independent
+     console.log(num); 
+    
+     // Pass by reference example
+     let obj = {value: 10};
+     function increment(obj){
+      obj.value++;
+     }
+     increment(obj);
+     // Prints 11 on console as obj reference is passed
+     console.log(obj); 
+    ```
 
 | **Value Types** | **Reference Types / Objects** |
 |-----------------|---------------------|
@@ -197,8 +193,6 @@ altitude: 0.0000
 | undefined       |
 | null            |
 
-</center>
-
 - ### Enumerating the properties of Object
 
   - Objects are not iterable
@@ -207,16 +201,16 @@ altitude: 0.0000
 
     ```js
     const circle = {
-    radius: 1,
-    draw(){
-    console.log('Circle drawn');
-    }
+        radius: 1,
+        draw(){
+            console.log('Circle drawn');
+        }
     };
     
     // Method 1: Brute force / Older Way
     const another = {};
     for(let key in circle)
-    another[key] = circle[key]
+        another[key] = circle[key]
     console.log(another) // prints the circle object to console
     
     // Method 2: Using Object.assign
@@ -235,7 +229,6 @@ altitude: 0.0000
     // Another demonstration fo Spread Operator
     const yetYetAnother = { ...circle, ...yetAnother }
     console.log(yetYetAnother)
-
     ```
 
 - ### Garbage Collection - Works same like JAVA
@@ -248,16 +241,14 @@ altitude: 0.0000
 
     ```js
     // Starts with backtick ``, unlike quotes '', ""
-    const name = 'Shehryar'
+    const name = 'Recluze Geek'
     const message = `Hi ${name}
     Thanks for joining my mailing list.
     
     Regards,
-    Salman
+    Recluze Geek
     `
-    
     // Outputs the message as we typed in our code
-    
     ```
 
 - ### Date - Same as JAVA
@@ -266,17 +257,17 @@ altitude: 0.0000
 
 ## Arrays → Object
 
+- JS Arrays like the JS variables are also dynamic (both array length and object datatype), we can store data of different datatypes in same JS Array
 - Array literals have following syntax in the js and follows the same indexing principles like java, e.g. index starts from 0
-- JS Arrays like the JS variables are also dynamic (both array length and object datatype), we store data of different datatypes in same JS Array
 
-```js
-     let stdMarks = [12, 38, 48, 34, 22];
-     console.log(stdMarks[1]) // prints 38 on console
-     stdMarks[5] = 29;
-     stdMarks[1] = 'Thirty Eight'
-     console.log(stdMarks[1])
-     // Result
-      (6) [12, 'Thirty Eight', 48, 34, 22, 29]
+    ```js
+    let stdMarks = [12, 38, 48, 34, 22];
+    console.log(stdMarks[1]) // prints 38 on console
+    stdMarks[5] = 29;
+    stdMarks[1] = 'Thirty Eight'
+    console.log(stdMarks[1])
+    // Result
+    (6) [12, 'Thirty Eight', 48, 34, 22, 29]
         0: 12
         1: "Thirty Eight"
         2: 48
@@ -284,29 +275,32 @@ altitude: 0.0000
         4: 22
         5: 29
         length: 6
-        
-```
+            
+    ```
 
 - ### Adding elements to Array
 
-```js
- const numbers = [2, 3]
- 
- // End
- numbers.push(4, 5)
- // Beginning
- numbers.unshift(1, 2)
- // Middle
- numbers.splice(2, 0, 'a', 'b', c)
- 
- console.log(numbers) 
-```
+   ```js
+    const numbers = [2, 3]
 
-- ### Finding Elements in Array
+    // End
+    numbers.push(4, 5)
+    // Beginning
+    numbers.unshift(1, 2)
+    // Middle
+    // Remove Zero(0) elements before index 2, and insert 'a', 'b' and 'c'
+    // You may want to see splice() documentation on MDN
+    numbers.splice(2, 0, 'a', 'b', c)
 
-- Predicate - A function passed as an argument to another function. In the given example, a predicate function is passed as an argument to the `find` method.
-- Callbacks - Predicates are referred to as callbacks because they are called back by the function they are passed to. In the example, the predicate function is called on every iteration by the `find` method
-- Find method stops on first matching criteria
+    console.log(numbers) 
+    ```
+
+- ### Finding Elements in Array {!important}
+
+- [Array.prototype.find()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find)
+  - **Predicate** - A function passed as an argument to another function. In the given example, a predicate function is passed as an argument to the `find` method.
+  - **Callbacks** - Predicates are referred to as callbacks because they are called back by the function they are passed to. In the example, the predicate function is called on every iteration by the `find` method
+    - `find()` stops on first matching criteria
 
     ```js
     // Primitive Types
@@ -321,85 +315,84 @@ altitude: 0.0000
     console.log(std_id.includes(4)?'Number Found' : "Doesn't Exist")
     
     // Reference Types
-    // Same thing for findIndex()
+    
+    // An array of objects
     const courses = [
-    {id: 1, name: 'OS'},
-    {id: 2, name: 'Numerical Analysis'},
-    {id: 3, name: 'Differential Equation'}
+        {id: 1, name: 'Operating Systems'},
+        {id: 2, name: 'Numerical Analysis'},
+        {id: 3, name: 'Differential Equation'}
     ];
     const course = courses.find(function(course){
-    return course.name === 'Numerical Analysis'
-    } 
-    );
+        return course.name === 'Numerical Analysis'
+    });
 
     console.log(course)
-
     ```
 
-- ### Arrow Functions
+- #### Arrow Functions {!important}
 
 - We can use short hand notation of callback or predicate function for more clarity and cleaner code.
-  - Remove the ~~function~~ keyword
+  1. Remove the ~~function~~ keyword
   
-    ```js
-    const course = courses.find((course){
-        return course.name === 'Numerical Analysis'
-    });
-    ```
+        ```js
+        const course = courses.find((course){
+            return course.name === 'Numerical Analysis'
+        });
+        ```
 
-- Seprate the parameters from its body, we use fat-arrow `=>`
-  - Multiple parameters are seprated using commas `,`
+  1. Seprate the parameters from its body, we use fat-arrow `=>`
 
-    ```js
-        const course = courses.find((course)=>{
+        ```js
+        const course = courses.find((course) => {
             return course.name === 'Numerical Analysis'
         });    
-    ```
+        ```
 
-  - Now, if we've just one parameter and is returning a value, we can remove the brackets around that parameter and return keyword to remove nuisance
-   
-    ```js
-    const course = courses.find(course => course.name === 'Numerical Analysis');
-    ```
+  1. Now, if we've just one parameter and is returning a value, we can remove the brackets around that parameter and return keyword to remove nuisance
 
-  - If we've no parameters, we've to pass empty brackets `()`
+        ```js
+        const course = courses.find(course => course.name === 'Numerical Analysis');
+        ```
+
+  1. If we've no parameters, we've to pass empty brackets `()`
   
-    ```js
-    const course = courses.find(()=> {
-        return course.name === 'Numerical Analysis'
-    });
-    ```
+        ```js
+        const course = courses.find(()=> {
+            return course.name === 'Numerical Analysis'
+        });
+        ```
+
+***Note:*** Multiple parameters are seprated using commas `,`
 
 - ### Removing Elements from Array
 
- ```js
-        const num = [1, 2, 3, 4, 5]
-        
-        // End
-        const end = num.pop()
-        console.log(`Removed Element: ${end} Remaining Array: ${num}`)
-        
-        // Beginning
-        const start = num.shift()
-        console.log(`Removed Element: ${start} Remaining Array: ${num}`)
+    ```js
+    const num = [1, 2, 3, 4, 5]
 
-        // Somewhere in Middle
-        const middle = num.splice(2, 2)
-        console.log(`Removed Element: ${middle} Remaining Array: ${num}`)  
- ```
+    // End
+    const end = num.pop()
+    console.log(`Removed Element: ${end} Remaining Array: ${num}`)
 
-- ### Emptying an Array
+    // Beginning
+    const start = num.shift()
+    console.log(`Removed Element: ${start} Remaining Array: ${num}`
+    // Somewhere in Middle
+    const middle = num.splice(2, 2)
+    console.log(`Removed Element: ${middle} Remaining Array: ${num}`)  
+    ```
+
+- #### Emptying an Array
 
   - Reassign the array with a new empty array
   
- ```js
-  let num = [1, 2]
-  num = []
-  console.log(num) // prints []
- ```
+    ```js
+    let num = [1, 2]
+    num = []
+    console.log(num) // prints []
+    ```
 
-- Set the array length to 0  `num.length = 0`
-  - We can use splice as well as pop() and other element removing methods in loop to empty the array
+    - `num.length = 0` assign the array length to zero(0).
+    - We can use `splice()` as well as `pop()` and other element removing methods in loop to empty the array.
 
     ```js
     num.splice(0, num.length) // empties the array
@@ -407,7 +400,7 @@ altitude: 0.0000
         num.pop()
     ```
 
-- ### Combining and Slicing Arrays
+- ### Combining and Slicing Arrays {!important}
 
   - We can use `concat()`  to combine arrays and `slice()` for slicing arrays
   - We can use `slice()` for copying primitive values also
@@ -422,34 +415,32 @@ altitude: 0.0000
     const num4 = num2.slice() // copies num2 to num4
     ```
 
-### Spread Operator
+- ### Reducing an Array {!important}
 
-- ### Reducing an Array
-
-  - Arrays have reduce() method, which reduces all the elements of  array to a single value
+  - Arrays have `reduce()`, which reduces all the elements of  array to a single value
     - Value can be a number, a string. It can be anything
 
-        ```js
-        const itemPrices = [12, 34, 56, 23, 10]
-        const total = itemPrices.reduce((accumulator, currentValue) => {
+    ```js
+    const itemPrices = [12, 34, 56, 23, 10]
+    const total = itemPrices.reduce((accumulator, currentValue) => {
         accumulator + currentValue
-        }, 0)
-        console.log(total)
-        
-        // A more neat and elegant way
-        // 2nd argument is 0 as its the value of accumulator
-        const itemPrices = [12, 34, 56, 23, 10]
-        const total = itemPrices.reduce((accumulator, currentValue) => accumulator + currentValue, 0)
-        console.log(total)
-        
-        // If we don't pass the initial value, one call will be reduces
-        // as the method sets the first value as its initial value
-        // and the second value as current value
-        ```
+    }, 0);
+    console.log(total)
+    
+    // A more neat and elegant way
+    // 2nd argument is 0 as its the value of accumulator
+    const itemPrices = [12, 34, 56, 23, 10]
+    const total = itemPrices.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+    console.log(total)
+    
+    // If we don't pass the initial value, one call will be reduces
+    // as the method sets the first value as its initial value
+    // and the second value as current value
+    ```
 
 ## Functions
 
-```js
+- ```js
     function simple_greeting(fName, lName){
         console.log('Hello ' + fName + ' ' + lName)
     }
@@ -461,7 +452,7 @@ altitude: 0.0000
         console.log(`Hello ${fName} ${lName}`);
     }
 
-    greet_interpolation('Muhammad', 'Salman');
+    greet_interpolation('Recluze', 'Geek');
 
     
     function sum(num1, num2){
@@ -489,7 +480,7 @@ altitude: 0.0000
     }
     
     console.log(square(3))
-```
+    ```
 
 - ### Function Declaration
 
@@ -526,7 +517,7 @@ altitude: 0.0000
   - We can call a function before its declaration, but can't call a function that's declared using function expression before its declaration
 
     ```js
-    // works like charm
+    // works like a charm
     walk()  
     function walk(){
     // some statements here...
@@ -539,27 +530,27 @@ altitude: 0.0000
     }
     ```
 
-- ### Arguments
+- ### Arguments {to check}
 
   - We can pass as many arguments as we want in js, there's no limitation on it
-  - Every function in JS has special object `arguments`
+  - Every function in JS has special object `arguments` which let us pass as many arguments as we want.
   - We can also pass or set default value of parameters.
     - They'll be used when the function call doesn't specify that specific argument
 
         ```js
         function sum(){
-        let total = 0
-        for(let num of arguments)
-            total += num
-        console.log(total)
+            let total = 0
+            for(let num of arguments)
+                total += num
+            console.log(total)
         }
         
         sum(1, 2, 3, 4, 5)
         ```
 
-- ### The REST Operator
+- ### The REST Operator {!nice to have}
 
-  - For passing varying number of parameters to a function, in modern JavaScript we use REST Operator
+  - For passing varying number of parameters to a function, in modern JavaScript we use **REST Operator**
     - Looks exactly the same like SPREAD operator
 
         ```js
@@ -569,7 +560,7 @@ altitude: 0.0000
             console.log(args)
             let total = 0;
             for(let num of args)
-            total += num
+                total += num
             console.log(total)
         }
         
@@ -587,21 +578,21 @@ altitude: 0.0000
   - We can use default params in case a user doesn't provides a value for one.
 
     ```js
-        function sum(x = 0, y = 0){
-            return x + y;
-        }
-
-        console.log(sum(x+y));  //prints 0
-        console.log(sum(10, 20));   //prints 30
+    function sum(x = 0, y = 0){
+        return x + y;
+    }
+    console.log(sum(x + y));  //prints 0
+    console.log(sum(10, 20));   //prints 30
     ```
 
-- ### Let vs Var
+- ### let vs var {to check}
 
   - Var scope is function-scoped and not limited to the block where it was declared as is the case with let.
   - If var is not declared in a function, then it's of global scope and is attached to windows object of the browser
     - can cause issue in our app, if some third party also using that same variable and it can override our variable
   - var => function-scoped(if declared in a function), otherwise global
   - ES6(ES2015) : let => block-scoped
+  - ***Recommended: let***
 
 ## Operators
 
@@ -658,7 +649,6 @@ altitude: 0.0000
         console.log(x <= 20) // evalutes true
         console.log(x > 20) // evalutes false
         console.log(x >= 20) // evalutes false
-        // Equality Operators
         console.log(x === 10) // evalutes true
         console.log(x !== 10 ) // evalutes false
     
@@ -680,63 +670,61 @@ altitude: 0.0000
 - ### Ternary Operators
 
   - Often used as a shorthand for simple conditional statements
-
+    `let result = (condition) ? condition met : else (condition check fails)`
     - Conditional Assignment
 
         ```js
-            let age = 25;
-            let type = (age >= 18) ? "Adult" : "Minor";
+        let age = 25;
+        let type = (age >= 18) ? "Adult" : "Minor";
         ```
 
     - Conditional rendering in UI
 
         ```js
-            const isLoggedIn = true;
-            const greeting = isLoggedIn ? "Welcome back!" : "Please log in.";
-        
+        const isLoggedIn = true;
+        const greeting = isLoggedIn ? "Welcome back!" : "Please log in.";
         ```
 
     - Inline conditionals
 
         ```js
-            // A dynamic message based on the value of points, 
-            // ensuring that the correct pluralization of "point"
-            // is used when needed.
-            let points = 100;
-            let message = `You have ${points} point${points === 1 ? '' : 's'}.`;
-        
+        // A dynamic message based on the value of points, 
+        // ensuring that the correct pluralization of "point"
+        // is used when needed.
+        let points = 100;
+        let message = `You have ${points} point${points === 1 ? '' : 's'}.`;
         ```
 
     - Default or fallback values, also a good example of Short-circuiting
 
         ```js
-            // If the username is falsy (e.g., an empty string), the
-            // ternary operator will assign the fallback value 
-            // "Anonymous" to the displayName variable.
-            let username = "";
-            let displayName = username || "Anonymous";
+        // If the username is falsy (e.g., an empty string), the
+        // ternary operator will assign the fallback value 
+        // "Anonymous" to the displayName variable.
+        let username = "";
+        // let displayName = username ? console.log(username) : console.log('Anonymous');
+        let displayName = username || "Anonymous";
         ```
 
   - General Examples involving the use of ternary operator
 
     ```js
-        // If the customer has more than 100 points, they're 
-        // gold customer, otherwise silver
-        let points = 110;
-        let type = (condition goes here) ? <on true> : <on false>;
-        let type = points > 100 ? 'gold' : 'silver'
-        console.log(type) // prints gold
-        
-        // Another example of using ternary operators
-        let age = 25;
-        let type = (age >= 18) ? "Adult" : "Minor";
-        console.log(type); // Output: "Adult"
+    // If the customer has more than 100 points, they're 
+    // gold customer, otherwise silver
+    let points = 110;
+    let type = (condition goes here) ? <on true> : <on false>;
+    let type = points > 100 ? 'gold' : 'silver';
+    console.log(type) // prints gold
     
+    // Another example of using ternary operators
+    let age = 25;
+    let type = (age >= 18) ? "Adult" : "Minor";
+    console.log(type); // Output: "Adult"
     ```
 
 - ### Logical Operators
 
-```js
+    ```js
     // Logical AND(&&)
         // Returns TRUE only if both operands are TRUE
     // Logical OR(||)
@@ -751,18 +739,16 @@ altitude: 0.0000
         // false
         // NaN
     // Anything that's not falsy → Truthy
-            'Salman' || false // evalutes to true
+            'Recluze Geek' || false // evalutes to true
             '' || false // evalutes to false, as '' is a falsy
             1 || false // evalutes to true
             0 || false // evalutes to false
-
-    // Short-circuiting - The output of this code will be 'Salman',
+    // Short-circuiting - The output of this code will be 'Recluze Geek',
     // as it is the first truthy value encountered in the series of 
     // expressions. 
     // Subsequent operands are not evaluated because the 
     // overall result of the expression is already determined
-        console.log(false || null || 'Salman' || 21 || undefined || 'BSCS');
-
+        console.log(false || null || 'Recluze Geek' || 21 || undefined || 'BSCS');
         // This code outputs 'blue' as its the truthy value
         // If user has set the color (yellow) then that'll be our 
         // current color, not the default one due to short-circuiting
@@ -770,11 +756,11 @@ altitude: 0.0000
         let defaultColor = 'blue'
         let currentColor = userColor || defaultColor
         console.log(currentColor)
-```
+    ```
 
 - ### Bitwise - Works on individual bits
 
-```js
+    ```js
     // 1 = 0000001
     // 2 = 0000010
     // 3 = 0000011 which evalutes to 3 Bitwise OR
@@ -807,7 +793,7 @@ altitude: 0.0000
     // Prints 'You're not allowed to execute this file'
     console.log(message)
     
-```
+    ```
 
 ## Control Flow
 
@@ -828,33 +814,33 @@ altitude: 0.0000
 - #### for...in - Iterate over properties of object or elements of an array
 
     ```js
-        let person = {
-            name: 'Salman',
-            age: 21
-        };
-            // Recommended way to access object's properties at 
-            // runtime is by using bracket's notation.
-            // We can also use for...in to iterate over arrays
-            // but again not recommended after ES6
-        for(let key in person){
-            console.log(key, ' → ' , person[key])
-        }
-    
-            //Iterating over an array using for...in
-        let colors = ['red', 'green', 'yellow', 'black'];
-        for(let index in colors){
-            console.log(index, ' → ', colors[index])
-        }
+    let person = {
+        name: 'Recluze Geek',
+        age: 21
+    };
+        // Recommended way to access object's properties at 
+        // runtime is by using bracket's notation.
+        // We can also use for...in to iterate over arrays
+        // but again not recommended after ES6
+    for(let key in person){
+        console.log(key, ' → ' , person[key])
+    }
+
+        //Iterating over an array using for...in
+    let colors = ['red', 'green', 'yellow', 'black'];
+    for(let index in colors){
+        console.log(index, ' → ', colors[index])
+    }
     ```
 
 - #### for...Of - Recommended way to iterate over arrays in ES6
 
-```js
-     let cities =  ['Hunza', 'Karachi', 'Lahore', 'Gujranwala'];
-     for(let city of cities){
+    ```js
+    let cities =  ['Newyork', 'Paris', 'Lahore', 'Birmingham'];
+    for(let city of cities){
         console.log(city)
-     }
-```
+    }
+    ```
 
 ### Break and Continue
 
