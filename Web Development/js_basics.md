@@ -847,3 +847,14 @@ created: 2023-05-28 05:28:23Z
 - ### break → jumps out of the loop or exit the loop
 
 - ### continue → moves to the next iteration of the loop or skip some iterations of the loop
+
+## Topics to Master
+
+- Array Methods
+  - Array of Objects
+  - `map()`
+  - `splice()`
+  - `reduce()`
+- Functions
+  - Arrow Functions
+- REST and SPREAD operatorWs
