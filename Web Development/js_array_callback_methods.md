@@ -2,6 +2,7 @@
 title: js_array_callback_methods
 updated: 2023-10-08 23:04:29Z
 ---
+
 # Array Callback Methods
 
 ## GOALS
@@ -62,7 +63,7 @@ updated: 2023-10-08 23:04:29Z
 
   > It calls the function for each element of the array and returns the array of results.
   >> It is similar to `forEach` in a sense that it runs the callback on every element of the array and is different in sense that it generates a new array and stores the result of each iteration in the new array.
-  >>> It is a way to map an array from one state to another. It doesn't mutates the original array.
+  >>> It is a way to map an array from one state to another. It doesn't mutates the original array rather transforms a data structure (array in this case) by applying a function to its elements.
 
   ```js
   // Double the values in the array
@@ -121,7 +122,8 @@ updated: 2023-10-08 23:04:29Z
       }
       ```
 
-  - Useful for writing callbacks
+  - Useful for writing callbacks.
+
 ***Note:*** `this` keyword behaves differently inside arrow functions compared to regular functions.
 
 ### Implicit Returns - Only works in Arrow Functions
@@ -182,7 +184,7 @@ updated: 2023-10-08 23:04:29Z
   const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   // Filter only those nums less than 5
-  const res = nums.filter((num) =>{
+  const res = nums.filter((num) => {
     return n < 5;
   });
 
@@ -209,7 +211,7 @@ updated: 2023-10-08 23:04:29Z
 ## reduce
 
 - Executes the reducer function(callback) on each element of the array, resulting in a single value.
-- Goal of `reduce()` is to just boil things down to a single value. It's up to us how we got there.
+- Goal of `reduce()` is to just boil things down to a single value. It's up to us how we get there.
   - It applies the function against an accumulator and each element in the array (from left to right) to reduce it to a single value.
   
     ```js
@@ -231,7 +233,7 @@ updated: 2023-10-08 23:04:29Z
     - **accumulatingValue**: The accumulated result of the previous callback calls (or the initialValue if provided).
     - **currentValue**: The current element being processed in the array.
     - **initialValue** (optional): A value to use as the first argument to the first call of the callback. If no initial value is provided, the first element of the array will be used as the initial accumulator.
-      > At each iteration, first variable gets updated by the prev. return value
+      > At each iteration, first variable gets updated by the prev. return value.
        We can modify the way that variable gets updated to perform useful operations
        such as finding min, max or counting occurrences from an array using reduce().
 
