@@ -89,3 +89,40 @@
     1. Frame for `greet`
 
 As each function completes, its frame is popped off the stack. So, the order of removal is `greet`, `welcome`, and finally, `main`.
+
+## WebAPI's and Single Threaded
+
+- Why to learn Async JS? Answer is **JS is single threaded.**
+  > At any point in time, JS (single thread) is running at most one line of JS code.
+    >> This means that JavaScript code is executed line by line in a sequential manner, and at any given point, only one operation is being processed.
+- However, the web browser environment in which JavaScript often runs is not single-threaded. **Browsers come with additional components** and features that are not part of the JavaScript language itself. One of these components is the Web APIs (Application Programming Interfaces).
+  > Web APIs provide functionality that allows JavaScript to interact with the browser environment. These APIs include, but are not limited to:
+  >
+    >> - **DOM (Document Object Model):** Allows manipulation of HTML and XML documents.
+    >> - **XMLHttpRequest (XHR):** Enables making HTTP requests.
+    >> - **setTimeout, setInterval:** Functions for scheduling code to run asynchronously.
+    >>
+    >>> Browsers come with Web APIs that are able to handle certain tasks in the background (like making requests or setTimeout.)
+    >>>
+    >>>> The JS call stack recognizes these Web API functions and passes them off to browser to take care of.
+    >>>>
+    >>>>> Once the browser finishes those tasks, they return and are pushed onto the stack as a callback.
+
+    ```js
+    console.log("Start");
+
+    setTimeout(function () {
+    console.log("Timeout complete");
+    }, 2000);
+
+    console.log("End");
+    ```
+
+   In this example, "Start" and "End" will be logged first because `setTimeout` is asynchronous and we've asked browser to do it for us (due to its async. nature). After approximately 2 seconds, "Timeout complete" will be logged when the callback function is moved from the callback queue to the call stack.
+
+### Summary
+
+- JavaScript itself is single-threaded, but the browser environment is not.
+
+- Web APIs provide functionality to interact with the browser environment.
+- Asynchronous operations in JavaScript use the callback queue and the event loop to handle tasks outside the main thread of execution.
