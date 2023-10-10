@@ -1,3 +1,8 @@
+---
+title: js_newer_javascript_features
+updated: 2023-10-09 12:56:27Z
+---
+
 # Newer Javascript Features
 
 ## Goals
@@ -13,7 +18,7 @@
   - Before default params, we'd to check whether a param is undefined using one-liner or whatever way suits you.
     > We can use `=` operator to assign default value to any param in the function definition
     >> **Use of undefined**: The default value is used only when the parameter is not provided or is explicitly passed as undefined. It won't override values like `null`, `false`, `0`, or `an empty string`.
-    >>> **Position of default parameters**: Default parameters must be listed after non-default parameters. For example, in the function function example(a, b = 0), a is a non-default parameter, and b is a default parameter.
+    >>> **Position of default parameters**: Default parameters must be listed after non-default parameters. For example, in the function example(a, b = 0), a is a non-default parameter, and b is a default parameter.
     >>>>
     >>>>```js
     >>>>function greet(name, greet = 'Hey there', punc = '!'){
@@ -184,7 +189,7 @@
     squareSum(9, 81, 162, 334) // 4 args
     ```
 
-  - We can also have named parameters alongside `rest param` since its name is `rest parameters` makes sense. Refer below
+- We can also have named parameters alongside `rest param` since its name is `rest parameters` makes sense. Refer below
 
     ```js
     const resultProfile = (name, rollNum, ...subjMarks) => {
@@ -199,7 +204,7 @@
 
 ## Destructuring
 
-- Destructuring let us unpack / extracting / singling-out values from arrays or properties from objects into distinct variables.
+- Destructuring let us unpack / extracting / single-out values from arrays or properties from objects into distinct variables.
   - We can also assign default values to variables in case the said property doesn't exist. (doesn't make much an impact on arrays, but sure on objects and functions).
     >
     > - In the case of arrays, variables receive their **values based on their positions** or indices within the array. The order of variables on the left side of the destructuring assignment corresponds to the indices in the array.
@@ -213,11 +218,11 @@
     >
     >> - Object properties get their **values based on their names.**
     >> - We can also **rename** the variables: `const { born: birthYear } = user;`
-    >>   - We've renamed born to birthYear using a `:`.
+    >>   - We've renamed born to birthYear using a semicolon`:`.
     >> - We can also set **default values** to  the variables: `const { died: deathYear = 'N/A' } = user;`
     >>   - We've renamed as well as set the default value. In case deathYear is not specified, its' default to `N/A.`
     >>
-    >>> Default values in object destructuring are handy when you're extracting properties from objects that might not have certain properties. They help you set fallback values, ensuring your variables get a default if the property is missing, avoiding errors. This is especially useful when dealing with multiple objects where the structure may vary.
+    >>> Default values in object destructuring are handy when we're extracting properties from objects that might not have certain properties. They help us set fallback values, ensuring variables get a default if the property is missing, avoiding errors. Useful when dealing with multiple objects where the structure may vary.
     >>
     >>```js
     >> const { prop1_name, prop2_name, ...remainingProps } = object name from which destructuring will happen.
@@ -269,6 +274,7 @@
 
 - Parameter Destructuring
   - Destructure objects or arrays directly in the function parameter list.
+  - We still need to call the function with the object and we'll destructure the object in function definition.
 
     ```js
     const user = {
@@ -290,7 +296,7 @@
     };
     ```
 
-  - Another Example
+  - Examples
 
     ```js
     const movies = [
