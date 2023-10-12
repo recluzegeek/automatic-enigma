@@ -1,3 +1,7 @@
+---
+title: js_async_javascript
+updated: 2023-10-10 10:44:18Z
+--- 
 
 # Asynchronous Javascript
 
@@ -106,7 +110,7 @@ As each function completes, its frame is popped off the stack. So, the order of 
     >>>
     >>>> The JS call stack recognizes these Web API functions and passes them off to browser to take care of.
     >>>>
-    >>>>> Once the browser finishes those tasks, they return and are pushed onto the stack as a callback.
+    >>>>> Once the browser finishes those tasks, they **return from callback queue** and are **pushed onto the stack as a callback**.
 
     ```js
     console.log("Start");
@@ -126,3 +130,183 @@ As each function completes, its frame is popped off the stack. So, the order of 
 
 - Web APIs provide functionality to interact with the browser environment.
 - Asynchronous operations in JavaScript use the callback queue and the event loop to handle tasks outside the main thread of execution.
+
+## Callback Hell
+
+- Callback hell refers to a situation where multiple nested callbacks are used in asynchronous JavaScript code.
+  - This scenario can occur when dealing with complex and dependent asynchronous tasks, leading to code that is difficult to read, maintain, and reason about.
+    - The deeper the nesting, the more challenging it becomes to understand the flow of the program.
+
+  - Here's an example that might lead to a callback hell.
+
+    ```js
+    getUserData(userId, (userData) => {
+      getProfileDetails(userData.profileId, (profileDetails) => {
+        getPosts(userData.userId, (posts) => {
+          updateUI(userData, profileDetails, posts, () => {
+            // All operations completed, do something else
+          });
+        });
+      });
+    });
+    ```
+
+  - This structure, with callbacks within callbacks, can quickly become difficult to manage as more operations are added. The code's indentation increases, making it harder to understand the logical flow and dependencies.
+
+## Promises
+
+### Creating Promises
+
+- Promise is like a container for a value which might be available now, or in the future, or never.
+- Here's a basic structure of creating a Promise:
+  
+  ```js
+  const myPromise = new Promise((resolve, reject) => {
+  // Asynchronous operation or task
+  // ...
+
+  // If the operation is successful, call resolve with the result
+  // resolve(result);
+
+  // If there is an error, call reject with an error message
+  // reject(error);
+  });
+  ```
+  
+  - The `Promise` constructor takes a single argument, a function commonly referred to as the **executor.** The executor function takes two parameters: resolve and reject.
+
+    - `resolve` is a function to be called when the asynchronous operation is successful, and it accepts a value (the result of the operation).
+
+    - `reject` is a function to be called when there is an error during the asynchronous operation, and it accepts an error message or an error object.
+
+    ```js
+    const delayedColorChange = (nextColor, delay) => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          document.body.style.backgroundColor = nextColor;
+          console.log(`Color changed to ${nextColor}`);
+          resolve();
+        }, delay);
+      });
+    }
+    
+    delayedColorChange('red', 1000)
+      .then(() => delayedColorChange('green', 1000))
+      .then (() => delayedColorChange('blue', 1000))
+      .then(() =>  delayedColorChange('yellow', 1000))
+      .then(() => delayedColorChange('indigo', 1000))
+      .then(() => delayedColorChange('violet', 1000))
+      .then(() => delayedColorChange('orange', 1000))
+    ```
+
+### Working with Promises
+
+- Promises represent the eventual completion of an asynchronous operation, allowing us to handle success or failure gracefully. They offer a more structured approach, especially when dealing with branching paths based on the success or failure of an operation.
+  - Making request or getting Data from API represents an asynchronous operation. Sometimes it would work sometime won't like incorrect credentials, authorization, internet down or doesn't exist
+  - In the past, callbacks were commonly used for asynchronous operations, leading to callback hell when handling multiple dependent actions. For instance:
+
+    ```js
+    const fakeCallBackRequest = (url, success, failure) => {
+      const delay = Math.floor(Math.random() * 4500) + 500;
+      setTimeout( () => {
+        delay > 4000? failure('Connection Timeout :(') : success(`Here is your fake data from ${url}`);
+      }, delay)
+    }
+    // fake request using callback
+    fakeCallBackRequest('books.com', 
+                        (str) => console.log(`It worked!!! ${str}`),
+                        (str) => console.log(`ERROR!!! ${str}`)); 
+    
+    // fake request using callback hell (nested up to 4 dependent actions)                    
+    fakeCallBackRequest('books.com/page1', 
+      (response) => {
+        console.log(`Req. (1) worked!!! ${response}`);
+          fakeCallBackRequest('books.com/page2',
+            (response) => {
+              console.log(`Req. (2) worked!!! ${response}`);
+              fakeCallBackRequest('books.com/page3',
+                (response) => {
+                  console.log(`Req. (3) worked!!! ${response}`);
+                  fakeCallBackRequest('books.com/page4', 
+                    (response) => {
+                      console.log(`Req. (4) worked!!! ${response}`);
+                    }, (error) => {
+                      console.log(`Req. (4) failed!!! ${error}`);
+                    }
+                  )
+                }, (error) => {
+                  console.log(`Req. (3) failed!!! ${error}`)
+                }
+              )
+            }, (error) =>{
+              console.log(`Req. (2) failed!!! ${error}`);
+            }
+          )
+      }, (error) => {
+        console.log(`Req. (1) failed!!! ${error}`)
+      }
+    )
+    ```
+
+- Promises simplify this structure and introduce three states: `pending`, `resolved` and `rejected`.
+- We can attach callbacks on these states, instead of passing callbacks into function.
+  - `then()` for `resolution`
+  - `catch()` for `rejection`
+
+    ```js
+    const fakeRequestPromise = (url) => {
+      return new Promise( (resolve, reject) => {
+          const delay = Math.floor(Math.random() * 4500) + 500;
+          console.log(delay);
+          setTimeout(() => {
+              delay > 4000 ? reject(`connection timeout :(`) : resolve(`here is your data from ${url}`);
+          }, delay);
+      })
+    }
+
+    // nested promises leading to syntax and readability problems also :(
+    fakeRequestPromise('books.com/api/1')
+        .then((response) => {
+            console.log(`Req. (1) worked!!! ${response}`);
+            fakeRequestPromise('books.com/api/2')
+                .then((response) => {
+                    console.log(`Req. (2) worked!!! ${response}`);
+                    fakeRequestPromise('books.com/api/3')
+                        .then((response) => {
+                            console.log(`Req. (3) worked!!! ${response}`);
+                        })
+                        .catch((error) => {
+                            console.log(`Req. (3) failed!!! ${error}`);
+                        });
+                })
+                .catch((error) => {
+                    console.log(`Req. (2) failed!!! ${error}`);
+                });
+        })
+        .catch((error) => {
+            console.log(`Req. (1) failed!!! ${error}`)
+        });
+    ```
+
+- Magic of Promises (Promise Chaining - dependent asynchronous actions) - where promises get better than callbacks
+  - We chain promises not nest them. within the `.then()` of the prev. promise, we can return a new `promise` and call its `.then()` and so on. We may have only one `.catch()` to hold all the errors of async operations. If any one of the request failed, all the subsequent operations are ignored and `.catch()` is executed.
+
+  ```js
+  fakeRequestPromise('books.com/api/1')
+    .then((response) => {
+      console.log(`Req. (1) worked!!! ${response}`);
+      return fakeRequestPromise('books.com/api/2');
+    })
+    .then((response) => {
+      console.log(`Req. (2) worked!!! ${response}`);
+      return fakeRequestPromise('books.com/api/3');
+    })
+    .then((response) => {
+      console.log(`Req. (3) worked!!! ${response}`)
+    })
+    .catch((error) => {
+      console.log(`A request failed!!! ${error}`)
+    });
+  ```
+
+- The magic of promises lies in chaining them, where we return a new promise within the `then()` callback. This leads to a more organized and sequential flow, enhancing code readability and maintainability.
