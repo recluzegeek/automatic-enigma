@@ -3,8 +3,6 @@ title: js_array_callback_methods
 updated: 2023-10-08 23:04:29Z
 ---
 
-# Array Callback Methods
-
 ## GOALS
 
 - Use the new arrow function syntax

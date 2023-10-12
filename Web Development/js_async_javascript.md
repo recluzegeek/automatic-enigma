@@ -1,9 +1,7 @@
 ---
 title: js_async_javascript
-updated: 2023-10-10 10:44:18Z
---- 
-
-# Asynchronous Javascript
+updated: 2023-10-12 13:23:41Z
+---
 
 ## Goals
 
@@ -155,54 +153,10 @@ As each function completes, its frame is popped off the stack. So, the order of 
 
 ## Promises
 
-### Creating Promises
-
-- Promise is like a container for a value which might be available now, or in the future, or never.
-- Here's a basic structure of creating a Promise:
-  
-  ```js
-  const myPromise = new Promise((resolve, reject) => {
-  // Asynchronous operation or task
-  // ...
-
-  // If the operation is successful, call resolve with the result
-  // resolve(result);
-
-  // If there is an error, call reject with an error message
-  // reject(error);
-  });
-  ```
-  
-  - The **`Promise` constructor takes a single argument**, a function commonly referred to as the **executor.** The executor function takes two parameters: `resolve` and `reject`.
-
-    - `resolve` is a function to be called when the asynchronous operation is successful, and it accepts a value (the result of the operation).
-
-    - `reject` is a function to be called when there is an error during the asynchronous operation, and it accepts an error message or an error object.
-
-    ```js
-    const delayedColorChange = (nextColor, delay) => {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          document.body.style.backgroundColor = nextColor;
-          console.log(`Color changed to ${nextColor}`);
-          resolve();
-        }, delay);
-      });
-    }
-    
-    delayedColorChange('red', 1000)
-      .then(() => delayedColorChange('green', 1000))
-      .then (() => delayedColorChange('blue', 1000))
-      .then(() =>  delayedColorChange('yellow', 1000))
-      .then(() => delayedColorChange('indigo', 1000))
-      .then(() => delayedColorChange('violet', 1000))
-      .then(() => delayedColorChange('orange', 1000))
-    ```
-
 ### Working with Promises
 
 - Promises represent the eventual completion of an asynchronous operation, allowing us to handle success or failure gracefully. They offer a more structured approach, especially when dealing with branching paths based on the success or failure of an operation.
-  - Making request or getting Data from API represents an asynchronous operation. Sometimes it would work sometime won't due to incorrect credentials, authorization, internet down or doesn't exist
+  - Making request or getting Data from API represents an asynchronous operation. Sometimes it would work sometime won't due to incorrect credentials, authorization denial, internet down or doesn't exist
   - In the past, callbacks were commonly used for asynchronous operations, leading to callback hell when handling multiple dependent actions. For instance:
 
     ```js
@@ -310,6 +264,50 @@ As each function completes, its frame is popped off the stack. So, the order of 
     ```
 
 - The magic of promises lies in chaining them, where we return a new promise within the `then()` callback. This leads to a more organized and sequential flow, enhancing code readability and maintainability.
+
+### Creating Promises
+
+- Promise is like a container for a value which might be available now, or in the future, or never.
+  - Here's a basic structure of creating a Promise:
+  
+    ```js
+    const myPromise = new Promise((resolve, reject) => {
+    // Asynchronous operation or task
+    // ...
+
+    // If the operation is successful, call resolve with the result
+    // resolve(result);
+
+    // If there is an error, call reject with an error message
+    // reject(error);
+    });
+    ```
+  
+  - The **`Promise` constructor takes a single argument**, a function commonly referred to as the **executor.** The executor function takes two parameters: `resolve` and `reject`.
+
+    - `resolve` is a function to be called when the asynchronous operation is successful, and it accepts a value (the result of the operation).
+
+    - `reject` is a function to be called when there is an error during the asynchronous operation, and it accepts an error message or an error object.
+
+    ```js
+    const delayedColorChange = (nextColor, delay) => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          document.body.style.backgroundColor = nextColor;
+          console.log(`Color changed to ${nextColor}`);
+          resolve();
+        }, delay);
+      });
+    }
+    
+    delayedColorChange('red', 1000)
+      .then(() => delayedColorChange('green', 1000))
+      .then (() => delayedColorChange('blue', 1000))
+      .then(() =>  delayedColorChange('yellow', 1000))
+      .then(() => delayedColorChange('indigo', 1000))
+      .then(() => delayedColorChange('violet', 1000))
+      .then(() => delayedColorChange('orange', 1000))
+    ```
 
 ## Async Functions
 

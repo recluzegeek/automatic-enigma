@@ -1,4 +1,7 @@
-# Box Model
+---
+title: css_box_model
+updated: 2023-10-12 13:52:09Z
+---
 
 - Devtools box model color code
   - `blue` actual content

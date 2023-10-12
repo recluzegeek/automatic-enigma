@@ -3,8 +3,6 @@ title: js_newer_javascript_features
 updated: 2023-10-09 12:56:27Z
 ---
 
-# Newer Javascript Features
-
 ## Goals
 
 - Default Params
