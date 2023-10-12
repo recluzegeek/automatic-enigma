@@ -173,7 +173,7 @@ As each function completes, its frame is popped off the stack. So, the order of 
   });
   ```
   
-  - The `Promise` constructor takes a single argument, a function commonly referred to as the **executor.** The executor function takes two parameters: resolve and reject.
+  - The **`Promise` constructor takes a single argument**, a function commonly referred to as the **executor.** The executor function takes two parameters: `resolve` and `reject`.
 
     - `resolve` is a function to be called when the asynchronous operation is successful, and it accepts a value (the result of the operation).
 
@@ -202,7 +202,7 @@ As each function completes, its frame is popped off the stack. So, the order of 
 ### Working with Promises
 
 - Promises represent the eventual completion of an asynchronous operation, allowing us to handle success or failure gracefully. They offer a more structured approach, especially when dealing with branching paths based on the success or failure of an operation.
-  - Making request or getting Data from API represents an asynchronous operation. Sometimes it would work sometime won't like incorrect credentials, authorization, internet down or doesn't exist
+  - Making request or getting Data from API represents an asynchronous operation. Sometimes it would work sometime won't due to incorrect credentials, authorization, internet down or doesn't exist
   - In the past, callbacks were commonly used for asynchronous operations, leading to callback hell when handling multiple dependent actions. For instance:
 
     ```js
@@ -289,24 +289,87 @@ As each function completes, its frame is popped off the stack. So, the order of 
     ```
 
 - Magic of Promises (Promise Chaining - dependent asynchronous actions) - where promises get better than callbacks
-  - We chain promises not nest them. within the `.then()` of the prev. promise, we can return a new `promise` and call its `.then()` and so on. We may have only one `.catch()` to hold all the errors of async operations. If any one of the request failed, all the subsequent operations are ignored and `.catch()` is executed.
+  - **We chain promises not nest them.** within the `.then()` of the prev. promise, we can return a new `promise` and call its `.then()` and so on. We may have only one `.catch()` to hold all the errors of async operations. If any one of the request failed, all the subsequent operations are ignored and `.catch()` is executed.
 
-  ```js
-  fakeRequestPromise('books.com/api/1')
-    .then((response) => {
-      console.log(`Req. (1) worked!!! ${response}`);
-      return fakeRequestPromise('books.com/api/2');
-    })
-    .then((response) => {
-      console.log(`Req. (2) worked!!! ${response}`);
-      return fakeRequestPromise('books.com/api/3');
-    })
-    .then((response) => {
-      console.log(`Req. (3) worked!!! ${response}`)
-    })
-    .catch((error) => {
-      console.log(`A request failed!!! ${error}`)
-    });
-  ```
+    ```js
+    fakeRequestPromise('books.com/api/1')
+      .then((response) => {
+        console.log(`Req. (1) worked!!! ${response}`);
+        return fakeRequestPromise('books.com/api/2');
+      })
+      .then((response) => {
+        console.log(`Req. (2) worked!!! ${response}`);
+        return fakeRequestPromise('books.com/api/3');
+      })
+      .then((response) => {
+        console.log(`Req. (3) worked!!! ${response}`)
+      })
+      .catch((error) => {
+        console.log(`A request failed!!! ${error}`)
+      });
+    ```
 
 - The magic of promises lies in chaining them, where we return a new promise within the `then()` callback. This leads to a more organized and sequential flow, enhancing code readability and maintainability.
+
+## Async Functions
+
+- Async functions in JavaScript offer a syntax improvement over `Promises`, making asynchronous code more readable and manageable. The combination of `async` and `await` simplifies the syntax and structure of code that involves asynchronous operations.
+
+### Async Function Declaration
+
+- An **async function** is declared using the `async` keyword. This keyword is placed before the function keyword in the function declaration.
+  - An async function always returns a Promise, implicitly wrapping the value it returns in a resolved `Promise`.
+
+  ```js
+  async function myAsyncFunction() {
+    // Async code here
+    return "Hello from async function!";
+  }
+
+  const greet = async () => { // Promise { <state>: "fulfilled", <value>: "Hello from async function" }
+    return "Hello from async function";
+  }
+  ```
+
+  Code Demonstration
+  
+  ```js
+  function delayedColorChange(color, delay) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            document.body.style.backgroundColor = color;
+            console.log(`color changed to ${color}`);
+            resolve();
+        }, delay);
+    })
+  }
+  const rainbow = async () => {
+      await delayedColorChange('yellow', 3000);
+      await delayedColorChange("orange", 2000);
+      await delayedColorChange('teal', 1000)
+  }
+
+  rainbow()
+  ```
+
+- In the `rainbow()`, the await keyword ensures that each call to delayedColorChange is completed before moving on to the next one. This sequential execution simplifies the code, making it more readable.
+
+### Await Keyword
+
+- The `await` keyword can only be used inside an async function. It is used to pause the execution of the async function until the `Promise` is resolved. This **makes asynchronous code look and behave more like synchronous code**.
+
+#### Handling Errors in Async Functions
+
+- The `try` block contains the code where you expect the asynchronous operation to succeed, and the `catch` block handles any errors that may occur.
+  - Any errors that occur during the execution of asynchronous operations are caught and can be handled appropriately.
+
+  ```js
+  const fetchData = async () => {
+  try {
+    const result = await someAsyncOperation();
+    console.log(result);
+  } catch (error) {
+    console.error('An error occurred:', error);
+    }
+  };
+  ```
