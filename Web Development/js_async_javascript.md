@@ -156,7 +156,7 @@ As each function completes, its frame is popped off the stack. So, the order of 
 ### Working with Promises
 
 - Promises represent the eventual completion of an asynchronous operation, allowing us to handle success or failure gracefully. They offer a more structured approach, especially when dealing with branching paths based on the success or failure of an operation.
-  - Making request or getting Data from API represents an asynchronous operation. Sometimes it would work sometime won't due to incorrect credentials, authorization denial, internet down or doesn't exist
+  - Making request or getting Data from API represents an asynchronous operation. Sometimes it would work sometime won't due to incorrect credentials, authorization denial, internet down or end point doesn't exist
   - In the past, callbacks were commonly used for asynchronous operations, leading to callback hell when handling multiple dependent actions. For instance:
 
     ```js
@@ -171,7 +171,7 @@ As each function completes, its frame is popped off the stack. So, the order of 
                         (str) => console.log(`It worked!!! ${str}`),
                         (str) => console.log(`ERROR!!! ${str}`)); 
     
-    // fake request using callback hell (nested up to 4 dependent actions)                    
+    // nested callbacks leading to callback hell
     fakeCallBackRequest('books.com/page1', 
       (response) => {
         console.log(`Req. (1) worked!!! ${response}`);
