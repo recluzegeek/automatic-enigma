@@ -119,23 +119,89 @@ updated: 2023-10-16 21:30:32Z
 
 ## Node.js Package Management Cheat Sheet
 
-| Action                                      | Command                               | Description                                                                                         |
-|---------------------------------------------|---------------------------------------|-----------------------------------------------------------------------------------------------------|
-| **Installing Local Packages**               | `npm install packageName`            | Install a package locally in your project.                                                         |
-|                                             | `npm install packageName --save`     | Install and save the package as a dependency in your `package.json` file.                            |
-|                                             | `npm install packageName --save-dev` | Install and save the package as a development dependency.                                           |
-|                                             |                                       |                                                                                                     |
-| **Removing Local Packages**                 | `npm uninstall packageName`          | Remove a package from your project.                                                                 |
-|                                             | `npm uninstall packageName --save`   | Remove a package and update the `package.json` file.                                               |
-|                                             | `npm uninstall packageName --save-dev`| Remove a development dependency and update `package.json`.                                          |
-|                                             | `npm prune`                           | Remove unused packages from `node_modules` that are not listed as dependencies.                     |
-|                                             |                                       |                                                                                                     |
-| **Installing Global Packages**              | `npm install -g packageName`         | Install a package globally for command-line tools.                                                 |
-|                                             |                                       |                                                                                                     |
-| **Linking Global Package to Project**       | `npm link packageName`               | Link a globally installed package to your project.                                                  |
-|                                             |                                       |                                                                                                     |
-| **Removing Global Packages**                | `npm uninstall -g packageName`       | Remove a globally installed package.                                                               |
-|                                             |                                       |                                                                                                     |
-| **Unlinking Global Package from Project**   | `npm unlink packageName`             | Remove the symbolic link between your project and the global package.                                |
+## Node.js Package Management Cheat Sheet
 
-Remember to replace `packageName` with the actual name of the package you are working with. Exercise caution, especially with global package removal, to avoid unintended consequences.
+    <h2>Node.js Package Management Cheat Sheet</h2>
+
+    <table>
+        <tr>
+            <th>Action</th>
+            <th>Command</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td colspan="3" align="center"><strong>Installing Local Packages</strong></td>
+        </tr>
+        <tr>
+            <td>npm install packageName</td>
+            <td></td>
+            <td>Install a package locally in your project.</td>
+        </tr>
+        <tr>
+            <td>npm install packageName --save</td>
+            <td></td>
+            <td>Install and save the package as a dependency in your <code>package.json</code> file.</td>
+        </tr>
+        <tr>
+            <td>npm install packageName --save-dev</td>
+            <td></td>
+            <td>Install and save the package as a development dependency.</td>
+        </tr>
+        <tr>
+            <td colspan="3" align="center"><strong>Removing Local Packages</strong></td>
+        </tr>
+        <tr>
+            <td>npm uninstall packageName</td>
+            <td></td>
+            <td>Remove a package from your project.</td>
+        </tr>
+        <tr>
+            <td>npm uninstall packageName --save</td>
+            <td></td>
+            <td>Remove a package and update the <code>package.json</code> file.</td>
+        </tr>
+        <tr>
+            <td>npm uninstall packageName --save-dev</td>
+            <td></td>
+            <td>Remove a development dependency and update <code>package.json</code>.</td>
+        </tr>
+        <tr>
+            <td>npm prune</td>
+            <td></td>
+            <td>Remove unused packages from <code>node_modules</code> that are not listed as dependencies.</td>
+        </tr>
+        <tr>
+            <td colspan="3" align="center"><strong>Installing Global Packages</strong></td>
+        </tr>
+        <tr>
+            <td>npm install -g packageName</td>
+            <td></td>
+            <td>Install a package globally for command-line tools.</td>
+        </tr>
+        <tr>
+            <td colspan="3" align="center"><strong>Linking Global Package to Project</strong></td>
+        </tr>
+        <tr>
+            <td>npm link packageName</td>
+            <td></td>
+            <td>Link a globally installed package to your project.</td>
+        </tr>
+        <tr>
+            <td colspan="3" align="center"><strong>Removing Global Packages</strong></td>
+        </tr>
+        <tr>
+            <td>npm uninstall -g packageName</td>
+            <td></td>
+            <td>Remove a globally installed package.</td>
+        </tr>
+        <tr>
+            <td colspan="3" align="center"><strong>Unlinking Global Package from Project</strong></td>
+        </tr>
+        <tr>
+            <td>npm unlink packageName</td>
+            <td></td>
+            <td>Remove the symbolic link between your project and the global package.</td>
+        </tr>
+    </table>
+
+    <p>Remember to replace <code>packageName</code> with the actual name of the package you are working with. Exercise caution, especially with global package removal, to avoid unintended consequences.</p>
