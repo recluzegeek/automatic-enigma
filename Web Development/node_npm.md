@@ -119,7 +119,6 @@ updated: 2023-10-16 21:30:32Z
 
 ## Node.js Package Management Cheat Sheet
 
-
 | Action                                      | Command                               | Description                                                                                         |
 |---------------------------------------------|---------------------------------------|-----------------------------------------------------------------------------------------------------|
 | **Installing Local Packages**               | `npm install packageName`            | Install a package locally in your project.                                                         |
@@ -133,5 +132,3 @@ updated: 2023-10-16 21:30:32Z
 | **Linking Global Package to Project**       | `npm link packageName`               | Link a globally installed package to your project.                                                  |
 | **Removing Global Packages**                | `npm uninstall -g packageName`       | Remove a globally installed package.                                                               |
 | **Unlinking Global Package from Project**   | `npm unlink packageName`             | Remove the symbolic link between your project and the global package.                                |
-
-Remember to replace `packageName` with the actual name of the package you are working with. Exercise caution, especially with global package removal, to avoid unintended consequences.
