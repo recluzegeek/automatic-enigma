@@ -1,6 +1,6 @@
 ---
 title: express_creating_dynamic_html_with_templating
-updated: 2023-10-18 21:14:22Z
+updated: 2023-10-22 15:05:17
 ---
 
 ## Templating
@@ -162,20 +162,34 @@ In Express, we can serve static assets, such as HTML files, images, CSS files, J
 1. **Create a Project Structure**
 
 - First, create a directory structure for your project. For example, you might have a directory structure like this:
-  - **project/**
-├── public/
-│ ├── index.html
-│ ├── css/
-│ │ ├── style.css
-│ ├── images/
-│ │ ├── image.jpg
-│ ├── js/
-│ │ ├── script.js
-├── server.js
+
+  ```bash
+  /mnt/win/My Notes/Web Development/mern/express/
+  ├── partials
+  │   ├── header.ejs
+  │   └── navbar.ejs
+  ├── public
+  │   ├── css
+  │   │   └── bootstrap.min.css
+  │   └── js
+  │       ├── bootstrap.min.js
+  │       └── jquery.min.js
+  ├── views
+  │   ├── 404.ejs
+  │   ├── home.ejs
+  │   ├── random.ejs
+  │   └── subreddit.ejs
+  ├── data.json
+  ├── index.js
+  ├── package.json
+  └── package-lock.json
+  
+  6 directories, 13 files
+  ```
 
 - In this example, the `public` directory contains static assets like HTML files, styles, images, and scripts.
 
-2. **Create an Express App**
+1. **Create an Express App**
 
 - In the `server.js` file, create an Express app and configure it to serve static assets using the `express.static` middleware:
 
