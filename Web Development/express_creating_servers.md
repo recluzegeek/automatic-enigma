@@ -1,6 +1,6 @@
 ---
 title: express_creating_servers
-updated: 2023-10-17 14:10:31Z
+updated: 2023-10-18 21:04:48Z
 ---
 
 ## Installing Express
@@ -64,7 +64,7 @@ app.listen(port, () => {
         res.send(`MEOW!!!`);
     });
 
-    app.get('/dogs', (req, res) =>{
+    app.get('/dogs', (req, res) => {
         res.send(`WOOF!!!`);
     });
 

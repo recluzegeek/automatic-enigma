@@ -267,7 +267,6 @@ updated: 2023-10-09 12:56:27Z
     console.log(`Timeout: ${timeout} milliseconds`);
     console.log(`Enable Logging: ${enableLogging}`);
     console.log(`Max Retry Attempts: ${maxRetries}`);
-
     ```
 
 - Parameter Destructuring
