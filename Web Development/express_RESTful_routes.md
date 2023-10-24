@@ -16,7 +16,7 @@ There are two main HTTP request methods: **GET and POST**.
     - This method allows for sending more data, including various formats like JSON, and is suitable for creating, updating, or deleting resources.
 
 - While **GET** requests are conventionally used for retrieval and **POST** for submission, these are not strict rules. In practice, it's essential to follow the intended usage patterns.
-  - **GET** requests should not have side effects on the server (e.g., no changes to data), while **POST** requests are suitable for actions that create, update, or delete data.    | **UseCases** | Search terms, filtering or sort by queries                 | Posting data that may or may not be secretive |
+  - **GET** requests should not have side effects on the server (e.g., no changes to data), while **POST** requests are suitable for actions that create, update, or delete data.
 
   - **POST** requests offer more flexibility in terms of data size and type, making them versatile for various tasks.
 
@@ -26,6 +26,7 @@ There are two main HTTP request methods: **GET and POST**.
     | **Data Transport**   | Data is sent via query string                     | Data is sent via request body, not a query string |
     | **Data Visibility**  | Information is plainly visible in the URL!        | Data is not visible in the URL              |
     | **Data Flexibility** | Limited amount of data can be sent                 | Can send any sort of data (including JSON)  |
+    | **UseCases** | Search terms, filtering or sort by queries                 | Posting data that may or may not be secretive |
 
 ## Handling POST Requests in Express
 
@@ -123,3 +124,5 @@ To test your `POST` request, use the Thunder Client extension in Visual Studio C
     console.log(`listening on port ${port}`);
   });
   ```
+
+## REST
