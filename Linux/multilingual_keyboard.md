@@ -1,6 +1,6 @@
 # Multilingual Keyboard Input
 
-Used `ibus` on Arch Sway, but honestly felt wasted the whole day.
+I wanted Urdu keyboard on arch and landed on `ibus` on Arch Sway, but honestly felt wasted the whole day.
 
 - `ibus` worked in just `firefox` and `vscode`, while remain ineffective on the system.
 - Started crawling the web and finally found the right tool for the job.
