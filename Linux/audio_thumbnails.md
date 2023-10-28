@@ -375,3 +375,60 @@ ffmpeg -f nut -i - -i "$thumbnail" -map 0 -map 1 -c copy -c:v:1 jpg -disposition
 
 1 directory, 118 files
 ```
+
+### Complete Code
+
+```bash
+#!/bin/bash
+
+# Path to the directory containing the audio files
+audio_dir="/mnt/win/Music/test/"
+
+# Read JSON data from the surah_details.json file
+json_data=$(cat surah_details.json)
+
+# List all MP3 files in the directory
+for audio_file in "$audio_dir"*.mp3; do
+    # Extract the numeric part from the file name (only from the beginning)
+    numeric_part=$(basename "$audio_file" | grep -o -E '^[0-9]+')
+
+    # Find the corresponding JSON entry with the same "id"
+    surah_details=$(echo "$json_data" | jq --arg numeric_part "$numeric_part" '.[] | select(.id == ($numeric_part | tonumber))')
+
+    # Check if Surah details were found and print them
+    if [ -n "$surah_details" ]; then
+        # Extract relevant fields from the JSON data
+        id=$(echo "$surah_details" | jq -r '.id')
+        name=$(echo "$surah_details" | jq -r '.name')
+        transliteration=$(echo "$surah_details" | jq -r '.transliteration')
+        translation=$(echo "$surah_details" | jq -r '.translation')
+        type=$(echo "$surah_details" | jq -r '.type')
+        total_verses=$(echo "$surah_details" | jq -r '.total_verses')
+
+        # Create the formatted string
+        file_name="${id} - ${transliteration} - Al Sudais.mp3"
+        title="$id - $name - $translation -  Al Sudais"
+        details="$type -  $total_verses Verses"
+
+        echo "Formatted File Name: $file_name"
+        echo "Title: $title"
+        echo "Surah Details: $details"
+        echo "------------------------------------------------------------"
+
+convert bg.jpg \
+\( -background none -fill white -font "/usr/share/fonts/TTF/Jameel Noori Nastaleeq Kasheeda.ttf" -pointsize 200 -gravity center label:"﷽" \) -geometry +100-600  -composite  \
+\( -background none -fill "#90f83e" -font "/usr/share/fonts/noto/NotoKufiArabic-Regular.ttf" -pointsize 150 -gravity center label:"سورۃ $name   " \) -geometry +100-200  -composite  \
+\( -background none -fill "#89a4f1" -font "/usr/share/fonts/circular-font-family/ProductSans-BoldItalic.ttf" -pointsize 100 -gravity center label:"$id - $transliteration - $translation - Al Sudais" \)  -geometry +100+100 -composite \
+\( -background none -fill "#89a4f1" -font "/usr/share/fonts/circular-font-family/ProductSans-BoldItalic.ttf" -pointsize 70 -gravity center label:"$details" \)  -geometry +100+300 -composite \
+output_$id.jpg
+
+thumbnail="/mnt/win/Music/test/output_$id.jpg"
+
+ffmpeg -i "$audio_file" -map 0 -map -0:v -c copy -f nut - | ffmpeg -f nut -i - -i "$thumbnail" -map 0 -map 1 -c copy -c:v:1 jpg -disposition:v:1 attached_pic -metadata title="$title" -metadata artist="Al Sudais" -metadata genre="Quran" -metadata comment="$details" -metadata album="Mushaf - Al Sudais" -y "$file_name"
+                rm output_$id.jpg
+                rm $audio_file
+    else
+        echo "No matching Surah details found for $(basename "$audio_file")"
+    fi
+done
+```

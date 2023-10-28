@@ -204,7 +204,17 @@ updated: 2023-10-08 23:04:29Z
   console.log(doubled);
   ```
 
-## find
+## find & filter
+
+| Aspect                  | `filter` Method                                          | `find` Method                            |
+|-------------------------|---------------------------------------------------------|-----------------------------------------|
+| Purpose                 | Creates a new array with all matching elements.         | Finds the first element that matches a condition. |
+| Usage                   | Used when you want to filter multiple elements based on a condition. | Used when you want to find the first element that meets a condition. |
+| Example                 | `const evenNumbers = numbers.filter(number => number % 2 === 0);` | `const firstEvenNumber = numbers.find(number => number % 2 === 0);` |
+| Multiple Matches       | Returns an array with all matching elements.            | Returns the first matching element or `undefined`. |
+| Pros                    | Useful for selecting multiple matching elements.       | Efficient when you need only the first matching element. |
+| Cons                    | Always returns an array, even with a single match.     | Can't find multiple matching elements.          |
+
 
 ## reduce
 

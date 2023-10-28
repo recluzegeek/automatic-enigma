@@ -3,6 +3,10 @@ title: express_RESTful_routes
 updated: 2023-10-22 15:30:15
 ---
 
+## Debug Express
+
+- Debugging may be useful for this section `DEBUG=express:* node index.js`
+
 ## GET vs POST
 
 There are two main HTTP request methods: **GET and POST**.
@@ -10,7 +14,7 @@ There are two main HTTP request methods: **GET and POST**.
 - **GET** requests are typically used to retrieve or get information.
   - They are commonly used for reading web pages, bookmarking, and searching.
     - Data is sent in the query string of the URL, which has limitations in terms of data size.
-
+11
 - **POST** requests are used to submit data that is important for the request.
   - Data is included in the request body, not in the query string.
     - This method allows for sending more data, including various formats like JSON, and is suitable for creating, updating, or deleting resources.
@@ -19,7 +23,7 @@ There are two main HTTP request methods: **GET and POST**.
   - **GET** requests should not have side effects on the server (e.g., no changes to data), while **POST** requests are suitable for actions that create, update, or delete data.
 
   - **POST** requests offer more flexibility in terms of data size and type, making them versatile for various tasks.
-
+2
     |                  | Key Points of GET                                | Key Points of POST                           |
     |------------------|---------------------------------------------------|---------------------------------------------|
     | **Usage**            | Used to retrieve information                      | Used to post data to the server              |
@@ -107,7 +111,7 @@ To test your `POST` request, use the Thunder Client extension in Visual Studio C
   const app = express();
   const port = 3000;
 
-  app.use(express.urlencoded({ extended: true })); // for parsing form data
+  app.use(express.urlencoded({ **extended**: true })); // for parsing form data
   app.use(express.json()); // for parsing application/json
 
   app.get("/tacos", (req, res) => {
@@ -125,4 +129,52 @@ To test your `POST` request, use the Thunder Client extension in Visual Studio C
   });
   ```
 
-## REST
+## RESTful Routes
+
+In Express, RESTful routes refer to a convention for defining routes to perform CRUD (Create, Read, Update, Delete) operations on resources. These routes correspond to the HTTP methods (GET, POST, PUT, DELETE) and are used to create a standardized API for interacting with data.
+
+- `GET` requests:
+  - `GET /resource`: Fetch all items.
+  - `GET /resource/:id`: Fetch a specific item by ID.
+- `POST` requests:
+  - `POST` /resource: Create a new item.
+
+- `PUT/PATCH` requests:
+  - `PUT /resource/:id` or `PATCH /resource/:id`: Update a specific item by ID.
+
+- `DELETE` requests:
+  - `DELETE /resource/:id`: Delete a specific item by ID.
+
+### `method_override`
+
+- HTML `forms` can only submit `GET` or `POST` requests, limiting the ability to use other HTTP methods like `PUT` or `DELETE`. To work around this limitation, the `_method parameter` can be included in the form data to mimic other HTTP methods.
+
+  ```html
+  <form method="POST" action="/resource/:id?_method=DELETE">
+    <!-- Other form fields -->
+    <button type="submit">Delete</button>
+  </form>
+  ```
+
+- Express provides middleware to support method override by examining the `_method` parameter and allowing the corresponding HTTP method to override the actual method:
+
+  ```js
+  const express = require('express');
+  const methodOverride = require('method-override');
+
+  const app = express();
+
+  // Implementing method override
+  app.use(methodOverride('_method'));
+
+  // Routes
+  app.delete('/resource/:id', (req, res) => {
+    // Delete logic
+  });
+
+  // Other routes for GET, POST, PUT, etc.
+
+  app.listen(3000, () => {
+    console.log('Server is running on port 3000');
+  });
+  ```
