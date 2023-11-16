@@ -1,0 +1,2 @@
+- Install `alsa-utils` first. This gives us `amixer` and `alsamixer`
+- Run `amixer sset Master unmute`
