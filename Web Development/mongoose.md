@@ -14,7 +14,7 @@ const mongoose = require('mongoose');
 // Connect to the MongoDB database named "movies" running on the local machine at mongodb://127.0.0.1:27017/movies
 mongoose.connect('mongodb://127.0.0.1:27017/movies');
 
-// Improved error handling using connection events
+// Error handling using connection events
 mongoose.connection.on('connected', () => {
     console.log('Connected Successfully');
 });
@@ -38,7 +38,7 @@ mongoose.connection.on('error', (err) => {
 
 ### Creating Mongoose Model
 
-- **Define a Schema** &mdash; Begin by describing the schema for your collection or table using the Mongoose constructor. The schema serves as a blueprint for what will be stored in the collection. It is an object passed to the mongoose. Schema static constructor.
+- **Define a Schema** &mdash; Begin by describing the schema for the collection or table using the Mongoose constructor. The schema serves as a blueprint for what will be stored in the collection. It is an object passed to the mongoose.
   
   ```js
   const movieSchema = new mongoose.Schema({
@@ -49,13 +49,13 @@ mongoose.connection.on('error', (err) => {
   });
   ```
 
-- **Create Model** &mdash; Model your schema to a JavaScript class. The first argument is the name of the class, capitalized and singular. Mongoose automatically creates a collection from this name in lowercase and pluralized. The second argument is the defined schema.
+- **Create Model** &mdash; Model the schema to a JavaScript class. The first argument is the name of the class, capitalized and singular. Mongoose automatically creates a collection from this name in lowercase and pluralized. The second argument is the defined schema.
 
     ```js
     const Movie = mongoose.model('Movie', movieSchema);
     ```
 
-- **Instantiate and Store** &mdash; Now, you can create instances of the model. Ensure that the class name is capitalized and singular. Instances are constructed on the JavaScript side but are not stored in the database until you explicitly save them.
+- **Instantiate and Store** &mdash; Now, we can create instances of the model. Ensure that the class name is capitalized and singular. Instances are constructed on the JavaScript side but are not stored in the database until you explicitly save them.
 
     ```js
     const amadeus = new Movie({title: 'Amadeus', year: 1985, score: 9.3, rating: 'R'});
@@ -101,7 +101,7 @@ mongoose.connection.on('error', (err) => {
 ### Insert Many &mdash; Insertion with Mongoose
 
 - In Mongoose, the `insertMany` method is used for bulk insertion of documents into a MongoDB collection. It allows the insertion of an array of documents in a single operation, which can be more efficient than inserting them one by one.
-- Assuming you have a Mongoose model for a "movies" collection with the following schema:
+- Assuming a Mongoose model is present for a "movies" collection with the following schema:
 
     ```js
     const movieSchema = new mongoose.Schema({
