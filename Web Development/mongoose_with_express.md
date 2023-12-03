@@ -23,6 +23,11 @@
     app.set('views', path.join(__dirname, 'views'));
     app.set('view engine', 'ejs');
 
+    // for handling html form data via POST request
+    app.use(express.urlencoded({ extended: true }));
+    app.use(methodOverride('_method')); // for handling put, patch, delete requests  
+    app.use(express.json());
+
     app.get('/', (req, res) => {
         res.send('Homepage');
     });
