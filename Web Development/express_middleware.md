@@ -136,4 +136,5 @@ app.listen(PORT, () => {
 In this example:
 
 - The `/dashboard` route is protected and requires authentication. The `authenticate` middleware is used to check if the user is authenticated before allowing access to this route.
+  - In the `/dashboard` route handler, there are two callbacks. The first one, `authenticate`, verifies authentication. Upon successful authentication, it invokes `next()`, which in this context acts as the `(req, res)` callback.
 - The `/` route is not protected and can be accessed without authentication.
