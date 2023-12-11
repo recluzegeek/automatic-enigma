@@ -56,11 +56,7 @@ Here's a breakdown:
 
 - Header and Footer components are defined in their respective files (`Header.js` and `Footer.js`).
 - They are shared with other files using `export default`.
-- In `App.js`, these components are imported using the `import` statement and used seamlessly y, add as customAdd } from './utils';
-
-// Now you can use custom names for the imported functions
-const result = customMultiply(3, 4);
-const sum = customAdd(5, 6);in JSX.
+- In `App.js`, these components are imported using the `import` statement and used seamlessly.
 
 **_Adjust the paths in the `import` statements based on the project's file structure._**
 
@@ -264,3 +260,61 @@ const MyComponent = () => {
     font-size: 18px;
   }
   ```
+
+## RandomPokemon Component
+
+**File: `RandomPokemon.jsx`**
+
+```jsx
+import "./RandomPokemon.css";
+
+export default function RandomPokemon() {
+  const rand = Math.floor(Math.random() * 151) + 1;
+  const pokeImgUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${rand}.png`;
+  return (
+    <div className="RandomPokemon">
+      <h1>Pokemon #{rand}</h1>
+      <img src={pokeImgUrl} alt="Poke #{rand} Image" />
+    </div>
+  );
+}
+```
+
+**File: `App.jsx`**
+
+```jsx
+import "./App.css";
+import RandomPokemon from "./RandomPokemon";
+
+export default function App() {
+  return (
+    <>
+      <RandomPokemon/>
+      <RandomPokemon/>
+      <RandomPokemon/>
+      <RandomPokemon/>
+    </>
+  );
+}
+```
+
+**File: `RandomPokemon.css`**
+
+```css
+.RandomPokemon{
+    border: 2px solid black;
+    width: 50%;
+    margin: auto;
+}
+
+.RandomPokemon h1{
+    color: blue;
+    font-weight: 700;
+    font-size: revert;
+}
+
+.RandomPokemon img{
+    width: 150px;
+    margin: auto;
+}
+```
