@@ -57,7 +57,7 @@
     );
     ```
 
-**  - A component sharing the same name as the file should be exported from that file.
+  - A component sharing the same name as the file should be exported from that file.
     - If you have a file named `Header.js`, the component within that file, which is also named `Header`, should be exported.
 
     ```js
@@ -70,7 +70,7 @@
 
     export default Header;
     ```
-**
+
 ## JSX Basics
 
 - JSX serves as a syntax extension for JavaScript, allowing the direct inclusion of HTML-like markup inside JavaScript.
