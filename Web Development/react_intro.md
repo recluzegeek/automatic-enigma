@@ -21,6 +21,11 @@
 - React emphasizes the reuse of components, ranging from small elements like buttons to more complex structures like video list components.
   - A single video component in react may comprised of a video thumbnail, video title, video description and a nice little like button. All this is packed up in a single video component, that we can then use in our application &mdash; reusing the video component in a **Video List Component**.
   
+## Vite &mdash; Local React Setup
+
+- Create local react application using `npm create vite@latest`
+- Run the Development server using `npm run dev`
+
 ## Setting up CodeSandBox &mdash; Streamlined Approach
 
 - CodeSandbox is the easiest way to initiate a React project.
