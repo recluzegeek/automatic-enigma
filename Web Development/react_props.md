@@ -284,26 +284,26 @@ function ParentComponent() {
 
 5. **Double Sided with Conditional Rendering (Worst Way):**
 
-    ```jsx
-    /* Worst Way */
-    //   if (roll1 === roll2) {
-    //     return (
-    //       <>
-    //         <h1>Dice Roll...</h1>  
-    //         <h2>You Win!</h2>
-    //         <p>Roll1: {roll1}</p>
-    //         <p>Roll2: {roll2}</p>
-    //       </>
-    //     );
-    //   }
-    //   return (
-    //     <>
-    //       <h3>You Lost ):</h3>
-    //       <p>Roll1: {roll1}</p>
-    //       <p>Roll2: {roll2}</p>
-    //     </>
-    //   );
-    ```
+      ```jsx
+      /* Worst Way */
+      //   if (roll1 === roll2) {
+      //     return (
+      //       <>
+      //         <h1>Dice Roll...</h1>  
+      //         <h2>You Win!</h2>
+      //         <p>Roll1: {roll1}</p>
+      //         <p>Roll2: {roll2}</p>
+      //       </>
+      //     );
+      //   }
+      //   return (
+      //     <>
+      //       <h3>You Lost ):</h3>
+      //       <p>Roll1: {roll1}</p>
+      //       <p>Roll2: {roll2}</p>
+      //     </>
+      //   );
+      ```
 
    - **Ranking:** This approach involves conditional rendering using an `if` statement.
 
@@ -321,8 +321,6 @@ function ParentComponent() {
 | 2.   | **Inspect State and Props:** Click on a component to view state and props. |
 | 3.   | **Search and Filter:** Use search and filters to find components. |
 | 4.   | **Interact with Components:** Trigger state changes and view current state. |
-
-Sure, let's simplify and add some additional context:
 
 ## Adding Dynamic Styling in React
 
@@ -419,3 +417,57 @@ In React, the `map` function is a powerful tool for rendering arrays of data wit
   ```
 
 - The `key={index}` prop assigns a unique identifier to each list item.
+
+## Slot Machine Exercise
+
+```jsx
+// SlotMachine.jsx --- Component Definition
+
+export default function SlotMachine({ array }) {
+  const selection1 = array[Math.floor(Math.random() * array.length)];
+  const selection2 = array[Math.floor(Math.random() * array.length)];
+  const selection3 = array[Math.floor(Math.random() * array.length)];
+  const isWinner = selection1 === selection2 && selection2 === selection3;
+  const color = isWinner ? "green" : "red";
+  return (
+    <div style={{ border: `2px solid ${color}`, margin:'4px' }}>
+      <h2>
+        {selection1}
+        {selection2}
+        {selection3}
+      </h2>
+      <h3 style={{ color }}>{isWinner ? "You Won!" : "You Lost!"}</h3>
+      {isWinner && <h4>Congrats 🎉</h4>}
+    </div>
+  );
+}
+```
+
+```jsx
+// App.jsx --- Component Definition
+
+import "./App.css";
+import SlotMachine from "./SlotMachine";
+
+function App() {
+  const fruitArrays = [
+    "🍎 Apple",
+    "🍌 Banana",
+    "🍊 Orange",
+    "🍓 Strawberry",
+    "🍇 Grapes",
+    "🍉 Watermelon",
+    "🍍 Pineapple",
+    "🥭 Mango",
+    "🥝 Kiwi",
+  ];
+  return (
+    <>
+      <h1>Slot Machine Challenge</h1>
+      <SlotMachine array={fruitArrays} />
+      <SlotMachine array={fruitArrays} />
+    </>
+  );
+}
+export default App;
+```
