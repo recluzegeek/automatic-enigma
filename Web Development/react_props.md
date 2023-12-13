@@ -471,3 +471,15 @@ function App() {
 }
 export default App;
 ```
+
+## Configuring ESLint &mdash; Props Validation Missing
+
+- Configure ESLint rules to enforce PropTypes usage:
+
+  ```json
+  {
+    "rules": {
+      "react/prop-types": "false"
+    }
+  }
+  ```
