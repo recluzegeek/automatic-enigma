@@ -354,6 +354,10 @@ export default function EmojiList() {
 ```
 
 1. **Map Function with Parentheses `()` vs. Curly Braces `{}`:**
+
+   [Map Function Refresher](js_array_callback_methods.md#map)
+
+   [Arrow Function Refresher](js_array_callback_methods.md#arrow-functions)
    - When using the `map` function, the arrow function inside the parentheses `()` implies an implicit return. This is suitable for single-line expressions.
    - If curly braces `{}` are used, a `return` statement is required for multiline expressions.
 
@@ -430,3 +434,188 @@ yarn add uuid
 - **Logging Instantiation:** &mdash; The `console.log("instantiating")` line is for demonstration purposes, showing that this function is called only once during the initial rendering.
    **Returning Initial State:**
 - The function returns an array containing an object with two properties: `id` (a unique identifier generated using `uuid()`) and `emoji` (set to "😊").
+
+## Deleting from Arrays — React Way
+
+[Filter Callback Function Refresher](js_array_callback_methods.md#filter)
+
+When managing a list of items in React, the process of deleting an item involves updating the state to reflect the removal of the selected item. The React way of achieving this is demonstrated using the `filter` function.
+
+**Deleting Emoji:**
+
+- The `deleteEmoji` function is responsible for removing an emoji from the state.
+  - It uses the `filter` function to create a new array (`prevEmojis.filter(e => e.id !== id)`) that excludes the emoji with the specified `id`.
+    - The state is then updated with the new array.
+
+    ```jsx
+    const deleteEmoji = (id) => {
+        setEmojis(prevEmojis => prevEmojis.filter(e => e.id !== id));
+    }
+    ```
+
+**Rendering Emojis:**
+
+- The emojis are rendered within a `span` element.
+  - Each emoji is given a unique `key` based on its `id` for efficient React rendering.
+    - The `onClick` event is set to trigger the `deleteEmoji` function, removing the respective emoji.
+
+    ```jsx
+      {emojis.map((e, index) => {
+        return (
+          <span
+            onClick={() => deleteEmoji(e.id)}
+            style={{ fontSize: "20px", cursor: "pointer" }}
+            key={e.id}
+          >
+            {e.emoji}
+          </span>
+        );
+      })}
+    ```
+
+### Deletion Process
+
+- When an emoji is clicked, the `deleteEmoji` function is called with the `id` of the clicked emoji.
+  - The `onClick={() => deleteEmoji(e.id)}` expression is a concise way in React to handle a click event and pass a specific argument `(e.id)` to the `deleteEmoji` function. This pattern prevents immediate invocation and ensures the function is called only when the component is clicked.
+- The `filter` function is employed to create a new array that excludes the emoji with the specified `id`.
+- The state is updated with this new array, resulting in a re-render with the selected emoji removed.
+
+## Common Array Updating Patterns
+
+> [Updating Arrays in State](https://react.dev/learn/updating-arrays-in-state) from [Official React Documentation](https://react.dev)
+>> Arrays are mutable in JavaScript, but you should treat them as immutable when you store them in state. Just like with objects, when you want to update an array stored in state, you need to create a new one (or make a copy of an existing one), and then set state to use the new array.
+
+Updating arrays in React involves common patterns to ensure state immutability and trigger re-renders. Below are some common array updating patterns in React:
+
+### 1. **Adding an Item:**
+
+- Use spread operator (`...`) for copying arrays. Adding a new item to an array using the spread operator:
+
+    ```js
+    const [items, setItems] = useState([]);
+
+    const addItem = (newItem) => {
+        setItems([...items, newItem]);
+    };
+    ```
+
+### 2. **Removing an Item:**
+
+- Removing an item based on its index using `filter`:
+
+    ```js
+    const removeItem = (idx) => {
+        return setItems(items.filter((_, index) => index !== idx));
+    };
+    ```
+
+### 3. **Updating an Item:**
+
+- Updating an item based on its index using `map`:
+
+    ```js
+    const updateItem = (indexToUpdate, updatedItem) => {
+        setItems(
+            items.map((item, index) =>
+                index === indexToUpdate ? updatedItem : item
+            )
+        );
+    };
+    ```
+
+    ```jsx
+    // Updating the whole array
+
+    const makeAllStar = () => {
+        setEmojis(prevEmojis => prevEmojis.map(p => {
+          return {...p, emoji: '🌟'}
+         }));
+    };
+    ```
+
+### 4. **Toggling Boolean Value:**
+
+- Toggling a boolean value in an item:
+
+    ```jsx
+    const toggleBoolean = (indexToToggle) => {
+        setItems(
+            items.map((item, index) =>
+                index === indexToToggle ? { ...item, active: !item.active } : item
+            )
+        );
+    };
+    ```
+
+### 5. **Replacing Entire Array:**
+
+- Replacing the entire array with a new one:
+
+    ```jsx
+    const replaceArray = (newArray) => {
+        setItems(newArray);
+    };
+    ```
+
+### Key-Points
+
+- Always use the spread operator (`...`) to create a new array or object to maintain immutability.
+- Use array methods like `map` and `filter` for updating and filtering items.
+- When updating specific properties of an item, create a new object with the changes.
+- Ensure the unique key property for each item when rendering in a component.
+
+These patterns help manage state changes effectively, ensuring React detects updates and triggers re-renders as needed.
+
+## Score Keeper Exercise
+
+```jsx
+import { useState } from "react";
+
+export default function ScoreKeeper({ numOfPlayers = 3, winningScore = 3 }) {
+  const scoreArr = new Array(numOfPlayers).fill(0);
+  const [scores, setScores] = useState(scoreArr);
+  const incrementScore = (idx) => {
+    // setScores((prevScore) => {
+    //   const newScore = [...prevScore];
+    //   newScore[idx] += 1;
+    //   return newScore;
+    // });
+
+    setScores((prevScore) => {
+      return prevScore.map((score, i) => {
+        return idx === i ? (score + 1) : score;
+      });
+    });
+
+    // setScores((prevScores) => {
+    //   return prevScores.map((score, i) => (i === idx ? score + 1 : score));
+    // });
+  };
+  const childLI = scores.map((score, idx) => {
+    return (
+      <div>
+        <li key={idx} style={{ display: "inline-block" }}>
+          Player {idx + 1}'s Score : {score}{" "}
+        </li>
+        <button
+          onClick={() => incrementScore(idx)}
+          style={{ marginLeft: "16px" }}
+        >
+          +1
+        </button>
+        {scores[idx] >= winningScore && (
+          <h4 style={{ display: "inline-block" }}>Winner</h4>
+        )}
+      </div>
+    );
+  });
+
+  return (
+    <>
+      <h1>Score Keeper</h1>
+      <ul>{childLI}</ul>
+      <button onClick={() => setScores(scoreArr)}>Reset</button>
+    </>
+  );
+}
+```

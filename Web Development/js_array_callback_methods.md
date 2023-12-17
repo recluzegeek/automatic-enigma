@@ -80,6 +80,8 @@ updated: 2023-10-08 23:04:29Z
 
 ## Arrow Functions
 
+[Arrow Functions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions) from [MDN Documentation](https://developer.mozilla.org)
+
 - There’s one more very simple and concise syntax for creating functions, that’s often better than Function Expressions. It’s called “arrow functions”, because it looks like this:
   - `let func = (arg1, arg2, ...argN) => expression` is equivalent to something like this
 
