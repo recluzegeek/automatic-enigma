@@ -1,6 +1,6 @@
 # Intermediate State Concepts
 
-When managing state in a React component, it's crucial to handle updates correctly, especially when the new state depends on the previous state. This documentation explores the concept of using updater functions to ensure accurate state updates in such scenarios.
+When managing state in a React component, it's crucial to handle updates correctly, especially when the new state depends on the previous state. This documentation explores the concept of using updater functions to ensure accurate state updates in such scenarios and some other crucial concepts.
 
 ## Setting State with Updater Function
 
@@ -42,35 +42,35 @@ The initial way seems to work, but it has a little problem. When you change the 
     import React, { useState } from 'react';
 
     export default function Counter() {
-    const [count, setCount] = useState(0);
+        const [count, setCount] = useState(0);
 
-    const incrementCountByOne = () => {
-        // Incorrect usage: Directly modifying the count without updating the state
-        useState(count + 1);
-    };
+        const incrementCountByOne = () => {
+            // Incorrect usage: Directly modifying the count without updating the state
+            useState(count + 1);
+        };
 
-    const incrementCountByThree = () => {
-        // Incorrect usage: Directly modifying the count without updating the state
-        useState(count + 1);
-        console.log({ count }); // Prints 0 and not the recently updated value
-        // Incorrect usage: Directly modifying the count without updating the state
-        useState(count + 1);
-        console.log({ count }); // Prints 0 and not the recently updated value
-        // Incorrect usage: Directly modifying the count without updating the state
-        useState(count + 1);
-        // Prints 0 as the component has not been re-rendered,
-        // and the recent value is not populated in count, 
-        // which still has 0 in it.
-        console.log({ count });
-    };
+        const incrementCountByThree = () => {
+            // Incorrect usage: Directly modifying the count without updating the state
+            useState(count + 1);
+            console.log({ count }); // Prints 0 and not the recently updated value
+            // Incorrect usage: Directly modifying the count without updating the state
+            useState(count + 1);
+            console.log({ count }); // Prints 0 and not the recently updated value
+            // Incorrect usage: Directly modifying the count without updating the state
+            useState(count + 1);
+            // Prints 0 as the component has not been re-rendered,
+            // and the recent value is not populated in count, 
+            // which still has 0 in it.
+            console.log({ count });
+        };
 
-    return (
-        <>
-        <p>Count is: {count}</p>
-        <button onClick={incrementCountByOne}>+1</button>
-        <button onClick={incrementCountByThree}>+3</button>
-        </>
-    );
+        return (
+            <>
+                <p>Count is: {count}</p>
+                <button onClick={incrementCountByOne}>+1</button>
+                <button onClick={incrementCountByThree}>+3</button>
+            </>
+        );
     }
     ```
 
@@ -264,31 +264,31 @@ export default function ScoreKeeper() {
 
 - To trigger a re-render, create a new object and pass it to the state-setting function:
 
-```jsx
-import { useState } from "react";
+    ```jsx
+    import { useState } from "react";
 
-export default function ScoreKeeper() {
-  const [score, setScore] = useState({ p1Score: 0, p2Score: 0 });
+    export default function ScoreKeeper() {
+    const [score, setScore] = useState({ p1Score: 0, p2Score: 0 });
 
-  function incrementPlayerOne() {
-    // Corrected: Creating a new object with the updated score
-    setScore((prevScore) => ({ ...prevScore, p1Score: prevScore.p1Score + 1 }));
-  }
+    function incrementPlayerOne() {
+        // Corrected: Creating a new object with the updated score
+        setScore((prevScore) => ({ ...prevScore, p1Score: prevScore.p1Score + 1 }));
+    }
 
-  function incrementPlayerTwo() {
-    setScore((prevScore) => ({ ...prevScore, p2Score: prevScore.p2Score + 1}));
-  }
+    function incrementPlayerTwo() {
+        setScore((prevScore) => ({ ...prevScore, p2Score: prevScore.p2Score + 1}));
+    }
 
-  return (
-    <>
-      <p>Player 1 Score: {score.p1Score}</p>
-      <p>Player 2 Score: {score.p2Score} </p>
-      <button onClick={incrementPlayerOne}>+1 Player 1</button>
-      <button onClick={incrementPlayerTwo}>+1 Player 2</button>
-    </>
-  );
-}
-```
+    return (
+        <>
+        <p>Player 1 Score: {score.p1Score}</p>
+        <p>Player 2 Score: {score.p2Score} </p>
+        <button onClick={incrementPlayerOne}>+1 Player 1</button>
+        <button onClick={incrementPlayerTwo}>+1 Player 2</button>
+        </>
+    );
+    }
+    ```
 
 #### Explanation of Corrections
 
