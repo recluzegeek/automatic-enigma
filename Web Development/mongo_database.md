@@ -79,7 +79,7 @@ updated: 2023-10-28 12:49:29
         '0': { name: 'Meggie', qty: 3 },
         '1': { name: 'burger', qty: 5 },
         '2': { name: 'mango-shake', qty: 3 },
-        _id: ObjectId("653de89f7bb234f0a203e403")
+        '_id': ObjectId("653de89f7bb234f0a203e403")
     }
     ```
 

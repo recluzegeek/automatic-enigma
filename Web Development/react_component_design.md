@@ -32,7 +32,7 @@
 ### Passing State and Functions as Props
 
 - A lot of the time, you'll have a state which is self-contained in the component(not being passed to another component), but also passing state down to child components is also common in React.
-  - `LuckyN.jsx` has an array state named `dice` which is passed to `Dice.jsx` which then loops over and pass each array value to the `Die.jsx` as prop which it renders. Such pattern are extremely common in React.
+  - **`LuckyN.jsx` has an array state named `dice` which is passed to `Dice.jsx` which then loops over and pass each array value to the `Die.jsx` as prop which it renders. Such pattern are extremely common in React.**
 
 Let's take a real-life example of a simple counter application where the counter value is stored in the state of the parent component and passed down to a child component as a prop.
 
@@ -87,9 +87,9 @@ This way, the state is lifted to the parent component, and its values are passed
 
 **Summary:**
 
-- Parent components define functions.
-- These functions are passed as props to child components.
-- Child components can then invoke these functions.
+- **Parent components define functions.**
+- **These functions are passed as props to child components.**
+- **Child components can then invoke these functions.**
 
 ### Passing Functions that Update State
 
