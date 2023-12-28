@@ -53,41 +53,7 @@ The set functions returned by `useState` are used to update the state. They can 
    };
    ```
 
-4. **API Data Fetching:**
-
-   ```jsx
-   const [data, setData] = useState(null);
-
-   // Fetch data from API
-   const fetchData = async () => {
-     const result = await fetchDataFromAPI();
-     setData(result);
-   };
-   ```
-
-5. **Theme Switching:**
-
-   ```jsx
-   const [theme, setTheme] = useState('light');
-
-   // Toggle theme
-   const toggleTheme = () => {
-     setTheme((prevTheme) => (prevTheme === 'light' ? 'dark' : 'light'));
-   };
-   ```
-
-6. **Accordion Panels:**
-
-   ```jsx
-   const [expandedPanel, setExpandedPanel] = useState(null);
-
-   // Toggle expanded panel
-   const togglePanel = (panelId) => {
-     setExpandedPanel((prevPanel) => (prevPanel === panelId ? null : panelId));
-   };
-   ```
-
-7. **Filtering and Sorting:**
+4. **Filtering and Sorting:**
 
    ```jsx
    const [filter, setFilter] = useState('');
@@ -98,7 +64,7 @@ The set functions returned by `useState` are used to update the state. They can 
    };
    ```
 
-8. **Multi-Step Forms:**
+1. **Multi-Step Forms:**
 
    ```jsx
    const [currentStep, setCurrentStep] = useState(1);
@@ -210,3 +176,21 @@ This separation between scheduling a state change, triggering a re-render, and f
   - React handles the rendering automatically when state changes. This is a key feature because it abstracts away the manual manipulation of the DOM and allows you to focus on describing how your UI should look based on the current state.
 
 In summary, your state changes are scheduled, and the actual rendering and updating of the state values happen as part of React's automatic rendering process. This separation of concerns makes it easier to reason about your UI's behavior.
+
+## States vs Props
+
+| Feature                 | State                                        | Props                                      |
+|-------------------------|----------------------------------------------|--------------------------------------------|
+| **Ownership**           | Internal data owned by the component.        | External data owned by the parent component.|
+| **Location**            | Stored in the component's memory.            | Similar to function parameters, passed from parent. |
+| **Mutability**          | Can be updated by the component itself.      | Read-only (immutable) — cannot be modified by the component. |
+| **Update Trigger**      | Updating state causes the component to re-render. | Receiving new props triggers re-render, usually when the parent component is updated. |
+| **Example Declaration** | `const [count, setCount] = useState(0);`     | `<MyComponent propValue={someValue} />`     |
+
+## Summary
+
+- State is analogous to **Components Memory**
+- Updating component state triggers React to re-render the component.
+- State allows developers to:
+  - Update the component's view by re-rendering it.
+  - Persists the local variables between renders.

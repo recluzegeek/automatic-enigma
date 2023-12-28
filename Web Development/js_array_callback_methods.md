@@ -14,6 +14,7 @@ updated: 2023-10-08 23:04:29Z
   - `reduce`
   - `some`
   - `every`
+  - `sort`
 
 - **Callback Methods** - Requires you to pass them functions as arguments.
 
@@ -217,7 +218,6 @@ updated: 2023-10-08 23:04:29Z
 | Pros                    | Useful for selecting multiple matching elements.       | Efficient when you need only the first matching element. |
 | Cons                    | Always returns an array, even with a single match.     | Can't find multiple matching elements.          |
 
-
 ## reduce
 
 - Executes the reducer function(callback) on each element of the array, resulting in a single value.
@@ -327,6 +327,59 @@ updated: 2023-10-08 23:04:29Z
   // Check whether every last letter of each word ends in "g"
   words.every( (word) => word[word.length - 1] === 'g' );
   ```
+
+### Array `sort` Method
+
+- The `sort` method is used to sort the elements of an array in place. By default, it **sorts the elements as strings** and arranges them based on their UTF-16 code units' values.
+- **Mutates the original array also...**
+
+#### Basic Usage
+
+```javascript
+const numbers = [3, 1, 4, 1, 5, 9, 12, 2, 6, 5, 3, 5];
+numbers.sort();
+console.log(numbers); // Outputs: [1, 1, 12, 2, 3, 3, 4, 5, 5, 5, 6, 9]
+
+// Sort Books in desc based on page num
+// make new array and mutate it...
+const sortByPages = books.slice().sort((a, b) => b.page - a.page);
+console.log(sortByPages);
+```
+
+#### Custom Sorting with Compare Function
+
+You can provide a compare function to define the sorting order based on specific criteria.
+
+```javascript
+const numbers = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5];
+numbers.sort((a, b) => a - b); // Ascending order
+console.log(numbers); // Outputs: [1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 9]
+
+numbers.sort((a, b) => b - a); // Descending order
+console.log(numbers); // Outputs: [9, 6, 5, 5, 5, 4, 3, 3, 2, 1, 1]
+```
+
+### Ascending (Asc) and Descending (Dsc) Sorting
+
+- Ascending order is achieved by subtracting `b` from `a` in the compare function.
+- Descending order is achieved by subtracting `a` from `b` in the compare function.
+
+### Shuffle Array
+
+Shuffling an array using the `sort` method is a bit unconventional because `sort` is intended for sorting, not shuffling.
+
+```javascript
+function shuffleArray(arr) {
+  // Using a random compare function
+  arr.sort(() => Math.random() - 0.5);
+}
+
+const numbers = [1, 2, 3, 4, 5];
+shuffleArray(numbers);
+console.log(numbers); // Outputs: Shuffled array
+```
+
+In this example, the `sort` method is given a compare function that returns a random value between -0.5 and 0.5 for each pair of elements. This random comparison effectively shuffles the array.
 
 ## Summary
 

@@ -332,32 +332,32 @@ Sure, let me explain each concept:
 - Optional chaining (`?.`) simplifies the process of accessing nested properties or calling functions on an object when the intermediate properties or functions may be `null` or `undefined`.
 - It helps avoid errors related to trying to access properties on non-existent or undefined values.
 
-```javascript
-// Sample book object with reviews from different sources
-const book = {
-  id: 123,
-  name: "The Great Book",
-  author: "John Author",
-  reviews: {
-    bookreads: {
-      score: 4.5,
+    ```javascript
+    // Sample book object with reviews from different sources
+    const book = {
+    id: 123,
+    name: "The Great Book",
+    author: "John Author",
+    reviews: {
+        bookreads: {
+        score: 4.5,
+        },
+        amazon: {
+        rating: {
+            average: 4.2,
+        },
+        },
     },
-    amazon: {
-      rating: {
-        average: 4.2,
-      },
-    },
-  },
-};
+    };
 
-// Calculate the sum of reviews using optional chaining
-const sumOfReviews =
-  book?.reviews?.bookreads?.score ?? book?.reviews?.amazon?.rating?.average ?? 0;
-//   const sumOfReviews =
-//   book?.reviews?.bookreads?.score + book?.reviews?.amazon?.rating?.average || 0;
+    // Calculate the sum of reviews using optional chaining
+    const sumOfReviews =
+    book?.reviews?.bookreads?.score ?? book?.reviews?.amazon?.rating?.average ?? 0;
+    //   const sumOfReviews =
+    //   book?.reviews?.bookreads?.score + book?.reviews?.amazon?.rating?.average || 0;
 
 
-console.log(`Sum of Reviews for "${book.name}": ${sumOfReviews}`);
-```
+    console.log(`Sum of Reviews for "${book.name}": ${sumOfReviews}`);
+    ```
 
 - The **nullish coalescing operator (??)** returns the right-hand operand if the left-hand operand is `null` or `undefined`, but **not for falsy values like 0**. In this case, it provides a clearer intent for handling default values, especially when dealing with numerical scores.
