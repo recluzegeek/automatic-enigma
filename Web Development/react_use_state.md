@@ -114,68 +114,7 @@ const ExampleComponent = () => {
 
 ## useState and Rendering (Component Lifecycle)
 
-Let's go through a simple example to illustrate the points mentioned earlier.
-
-Consider a React component using the `useState` hook:
-
-```jsx
-import React, { useState } from 'react';
-
-const ExampleComponent = () => {
-  // Step 1: State initialization - useState() populates num @ this line
-  const [num, setNum] = useState(5);
-
-  // Step 2: State change triggered by an event (e.g., button click)
-  const handleButtonClick = () => {
-    // Step 3: Calling setNum triggers a re-render
-    setNum(num + 1);
-    // Note: At this point, num is not immediately updated
-    // Step 4: Component is re-rendered, and num is updated @ Step 1
-  };
-
-  // Step 5: React renders the component
-  return (
-    <div>
-      <h1>Number: {num}</h1>
-      <button onClick={handleButtonClick}>Increment</button>
-    </div>
-  );
-};
-
-export default ExampleComponent;
-```
-
-Explanation:
-
-1. **State Initialization:**
-   - `useState(5)` initializes the state variable `num` with an initial value of 5.
-
-2. **State Change Trigger:**
-   - When the button is clicked (`handleButtonClick` function), it triggers a state change.
-
-3. **Calling setNum:**
-   - `setNum(num + 1)` is called, but `num` is not immediately updated. This triggers a scheduled re-render.
-
-4. **Component Re-render:**
-   - The component is re-rendered from top to bottom. During this process, the updated value of `num` is fetched.
-
-5. **Rendering Update:**
-   - The updated value is now reflected in the UI. React efficiently updates only the parts of the component that depend on the changed state, in this case, the display of `num`.
-
-This separation between scheduling a state change, triggering a re-render, and fetching the updated state value during the render helps React optimize performance by avoiding unnecessary and redundant renders.
-
-### Misunderstanding in React State
-
-- **Triggering Value Change:**
-  - It's crucial to note that calling `setNum()` doesn't immediately change the value of `num`. Instead, it schedules a re-render with the updated value.
-
-- **Rendering Update:**
-  - The actual update of the `num` value happens when the component is re-rendered. This is when React fetches the latest state value, and your component gets the accurate and updated `num`.
-
-- **Automatic Rendering:**
-  - React handles the rendering automatically when state changes. This is a key feature because it abstracts away the manual manipulation of the DOM and allows you to focus on describing how your UI should look based on the current state.
-
-In summary, your state changes are scheduled, and the actual rendering and updating of the state values happen as part of React's automatic rendering process. This separation of concerns makes it easier to reason about your UI's behavior.
+[Click here to Learn about Component Lifecycle](./react_working_behind_scenes.md)
 
 ## States vs Props
 

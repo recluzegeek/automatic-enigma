@@ -145,6 +145,87 @@
   }
   ```
 
+## `key` Prop
+
+- Special prop that we use to tell a [diffing algorithm](./react_working_behind_scenes.md#diffing-rules) that a certain element is **unique**, works both for DOM and React Elements.
+- Allows React to **distinguish** between multiple instances of the same component
+
+## Props Drilling
+
+Props drilling is a term used in React to describe a situation where props are passed down through multiple layers of components, causing a chain or "drill" from the top-level parent component to the bottom-level child component.
+
+### Example
+
+Consider a scenario where a top-level component (`Grandparent`) has some data that needs to be passed down to a deeply nested component (`Grandchild`). If the intermediate components (`Parent` and `Child`) don't need the data but have to pass it down to reach the `Grandchild`, it's referred to as props drilling.
+
+![props-drilling-code](imgs/props-drilling.png)
+
+In this example, the `data` prop is drilled down from `Grandparent` to `Grandchild` through `Parent` and `Child`. If the intermediate components don't need the `data` prop, it can lead to unnecessary prop passing, which is considered prop drilling. This pattern might make the code harder to maintain and understand.
+
+## Solutions to Prop Drilling
+
+- To simplify the problem of props drilling and make code more readable in larger projects, we use the `children` prop implicitly and the `element` prop explicitly. This pattern is commonly seen in libraries like React Router.
+
+### Passing `children` Prop
+
+- In React, the `children` prop is a special prop that allows you to pass components or elements as children to another component.
+- Picture it like a gap in the component that can be filled using the children prop.
+  - The children prop allow us to **pass JSX into an element** (besides regular props)
+  - An empty **hole** that can be **filled by any JSX, the component receives as children**
+- Using `children` makes components highly reusable and configurable.
+- Really useful for **generic component** that don't know their content before being used (e.g. modal)
+
+Here's a brief overview of how the `children` prop works:
+
+1. **Passing Button Component**
+
+   ```jsx
+   // Button.jsx
+   import React from 'react';
+
+   const Button = ({ children }) => {
+     return <button>{children}</button>;
+   };
+
+   // App.jsx
+   import React from 'react';
+   import Button from './Button';
+
+   const App = () => {
+     return (
+       <div>
+       // we don't close tags like <Button /> for children props
+       // Instead, follow html tags syntax
+         <Button>
+           <span>Click me</span>
+         </Button>
+       </div>
+     );
+   };
+   ```
+
+   Here, the `Button` component can receive other components (like the `span` element) as its children.
+
+   [Check out react official documentation about children props](https://react.dev/learn/passing-props-to-a-component#passing-jsx-as-children)
+
+### Using Elements as Props Instead of Children
+
+- Instead of using the children prop, you can pass elements directly as props to achieve a similar result. Here you can see difference...
+
+  ```jsx
+    // App.jsx
+    import React from 'react';
+    import Button from './Button';
+
+    const App = () => {
+      return (
+        <div>
+          <Button element={<span>Click me</span>}/>
+        </div>
+      );
+    };
+  ```
+
 ## Passing an Array as a Prop
 
 ```jsx

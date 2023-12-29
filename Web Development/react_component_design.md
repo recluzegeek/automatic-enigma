@@ -21,69 +21,11 @@
     - **Dice.jsx** &mdash; should just be showing a hand
     - **Die.jsx** &mdash; render each die component onto screen, no need for state and also we need the sum of every Die not just of a single instance, so we should lift the state up.
 
-### Building Die and Dice Components
-
-![Die component Breakdown](./imgs/2023-12-2518-22-515135918.png)
-
----
-
-![Dice Component Breakdown](./imgs/2023-12-2518-26-101035918.png)
-
 ### Passing State and Functions as Props
 
-- A lot of the time, you'll have a state which is self-contained in the component(not being passed to another component), but also passing state down to child components is also common in React.
-  - **`LuckyN.jsx` has an array state named `dice` which is passed to `Dice.jsx` which then loops over and pass each array value to the `Die.jsx` as prop which it renders. Such pattern are extremely common in React.**
+In React, sometimes the data you're working with stays within a component (it doesn't go to other components), but it's also common to share the state with child components.
 
-Let's take a real-life example of a simple counter application where the counter value is stored in the state of the parent component and passed down to a child component as a prop.
-
-  ```jsx
-  import React, { useState } from 'react';
-
-  // Parent Component
-  const CounterApp = () => {
-    const [count, setCount] = useState(0);
-
-    const increment = () => {
-      setCount((prevCount) => prevCount + 1);
-    };
-
-    const decrement = () => {
-      setCount((prevCount) => prevCount - 1);
-    };
-
-    return (
-      <div>
-        <h1>Counter App</h1>
-        <p>Count: {count}</p>
-        {/*
-          Passing functions down to child components
-        */}
-        <CounterControls count={count} onIncrement={increment} onDecrement={decrement} />
-      </div>
-    );
-  };
-
-  // Child Component
-  const CounterControls = ({ count, onIncrement, onDecrement }) => {
-    return (
-      <div>
-        // Setting the event handlers from props
-        <button onClick={onIncrement}>Increment</button>
-        <button onClick={onDecrement}>Decrement</button>
-      </div>
-    );
-  };
-
-  export default CounterApp;
-  ```
-
-In this example:
-
-- The `CounterApp` component is the parent component that manages the state (`count`) using the `useState` hook.
-- The state value (`count`) is passed down to the `CounterControls` component as a prop.
-- The `CounterControls` component receives the state as a prop and also receives functions (`onIncrement` and `onDecrement`) as props to update the state in the parent component when buttons are clicked.
-
-This way, the state is lifted to the parent component, and its values are passed down to child components as needed.
+- A common use case for passing functions as props is to allow child components to update the state of the parent. [Click here to learn more](./react_state_management.md#inverse-data-flow)
 
 **Summary:**
 
@@ -91,30 +33,9 @@ This way, the state is lifted to the parent component, and its values are passed
 - **These functions are passed as props to child components.**
 - **Child components can then invoke these functions.**
 
-### Passing Functions that Update State
+## Component Composition
 
-A common use case for passing functions as props is to allow child components to update the state of the parent.
-
-- Example:
-
-    ```jsx
-    // Parent Component
-    const ParentComponent = () => {
-      const [count, setCount] = useState(0);
-
-      const updateCount = (newCount) => {
-        setCount(newCount);
-      };
-
-      return <ChildComponent updateCount={updateCount} />;
-    };
-
-    // Child Component
-    const ChildComponent = ({ updateCount }) => {
-      return (
-        <button onClick={() => updateCount((prevCount) => prevCount + 1)}>
-          Increment Count
-        </button>
-      );
-    };
-    ```
+- Combining different components using `children` props ([learn about them by clicking here](./react_props.md#passing-children-prop)) or explicitly defined props.
+- We use component composition for:
+  - Create highly reusable and flexible components
+  - **Fix prop drilling** &mdash; great for layouts... ([learn about prop drilling here](./react_props.md#props-drilling))

@@ -32,6 +32,46 @@ Understanding the difference between local and global states, as well as when an
       - **Need in One or More Sibling Components:**
         - **Yes:** Lift the state up to a common parent component.
 
+### Derived State
+
+Derived state in React refers to state values that are calculated or derived from existing state or props. It's a technique to simplify state management and ensure that related pieces of state stay in sync without unnecessary complexity.
+
+#### Example: Shopping Cart
+
+Consider a shopping cart application with three pieces of state:
+
+```jsx
+const [cart, setCart] = useState([]); // The main state representing the items in the cart
+const [numItems, setNumItems] = useState(0); // Derived state for the number of items in the cart
+const [totalPrice, setTotalPrice] = useState(0); // Derived state for the total price of items in the cart
+```
+
+#### The Problem
+
+- Updating `cart`, `numItems`, and `totalPrice` separately can lead to synchronization issues and unnecessary re-renders.
+
+#### The Solution
+
+- Define the properties `numItems` and `totalPrice` within the `updateItem` function and assign values to them by calculating the derived values based on the necessary data.
+
+    ```jsx
+    // Function to update the cart and calculate derived properties
+    const updateCart = (newCart) => {
+    // Calculate numItems and totalPrice based on the current cart
+    const numItems = newCart.length;
+    const totalPrice = newCart.reduce((total, item) => total + item.price, 0);
+
+    // Update the cart with derived properties
+    setCart([...newCart], numItems, totalPrice);
+    };
+    ```
+
+#### Benefits
+
+1. **Synchronization:** No need to manually keep `numItems` and `totalPrice` in sync with `cart`.
+
+2. **Performance:** Avoid unnecessary re-renders by updating derived state only when the main state (`cart`) changes.
+
 ## Inverse Data Flow
 
 In React, data typically flows downward from parent components to child components through props. However, there are scenarios where **data needs to be updated in a parent component based on actions or events that occur in a child component**. This concept is known as **Inverse Data Flow**.
