@@ -9,6 +9,28 @@
 
 **Logical / Stateful Components** &mdash; Responsible for managing state and handling business logic. Has state or related logic, isn't about a specific UI
 
+## Component (Instance) Lifecycle
+
+This cycle involves three key phases: Mount/Initial Render, Re-Render (optional), and Unmount.
+
+### Mount / Initial Render
+
+- Component Instance is rendered for the very first time
+- Fresh states and Props are created
+
+### Re-Render &mdash; Optional
+
+- Happens when (we're talking in the context of component instance and not the entire application)
+  - State Changes
+  - Props Changes
+  - Parent Re-render
+  - Context Changes
+
+### Unmount
+
+- Component instance is removed and destroyed
+- State and Props are destroyed
+
 ## State Management
 
 > **Lift the state as high as needed &mdash; but no higher.**

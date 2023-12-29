@@ -37,7 +37,7 @@ This ensures that the React component state is the single source of truth for th
       <input type='text' value={description} onChange={handleInput} />
     ```
 
-4. **Prevent Default Form Behavior:**
+1. **Prevent Default Form Behavior:**
 
 - In the `onSubmit` handler of the form, prevent the default form submission behavior to avoid page refresh.
 

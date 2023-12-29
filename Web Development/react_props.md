@@ -150,6 +150,8 @@
 - Special prop that we use to tell a [diffing algorithm](./react_working_behind_scenes.md#diffing-rules) that a certain element is **unique**, works both for DOM and React Elements.
 - Allows React to **distinguish** between multiple instances of the same component
 
+### [Check out the `key` Prop Summary](./react_working_behind_scenes.md#02-react-behind-the-scenes)
+
 ## Props Drilling
 
 Props drilling is a term used in React to describe a situation where props are passed down through multiple layers of components, causing a chain or "drill" from the top-level parent component to the bottom-level child component.
