@@ -24,6 +24,30 @@
 ## Vite &mdash; Local React Setup
 
 - Create local react application using `npm create vite@latest`
+- Install `eslint`, `vite-plugin-eslint` and some other packages to basically yell at us for not writing quality code.
+
+  ```node
+  npm install eslint vite-plugin-eslint eslint-config-react-app --save-dev
+  ```
+
+- After installing those node packages, make new file named `.eslintrc.json` in the root directory to extend the eslint rules to react.
+
+  ```json
+  {
+    "extends" : "react-app"
+  }
+  ```
+
+  - Then in the `vite.config.js`, import the `vite-plugin-eslint` and extend the plugin array to include eslint value also
+
+  ```js
+  import eslint from 'vite-plugin-eslint'
+
+  export default defineConfig({
+    plugin: [react(), eslint()]
+  });
+  ```
+
 - Run the Development server using `npm run dev`
 
 ## Setting up CodeSandBox &mdash; Streamlined Approach
