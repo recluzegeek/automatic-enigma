@@ -18,6 +18,12 @@
 
 ### Reducer Hook &mdash; [useReducer](react_use_reducer_hook.md)
 
+### Memo &mdash; [memo](react_memoization.md#memo-function)
+
+### useMemo &mdash; [useMemo](react_memoization.md#usememo-hook)
+
+### useCallback &mdash; [useCallback](react_memoization.md#usecallback-hook)
+
 ### Context API
 
 - Allows us to read a state from everywhere
