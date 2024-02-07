@@ -147,10 +147,10 @@
 
 ## `key` Prop
 
-- Special prop that we use to tell a [diffing algorithm](./react_working_behind_scenes.md#diffing-rules) that a certain element is **unique**, works both for DOM and React Elements.
+- Special prop that we use to tell a [diffing algorithm](./React%20Working%20Behind%20Scenes.md#diffing-rules) that a certain element is **unique**, works both for DOM and React Elements.
 - Allows React to **distinguish** between multiple instances of the same component
 
-### [Check out the `key` Prop Summary](./react_working_behind_scenes.md#02-react-behind-the-scenes)
+### [Check out the `key` Prop Summary](./React%20Working%20Behind%20Scenes.md#02-react-behind-the-scenes)
 
 ## Props Drilling
 
@@ -160,7 +160,7 @@ Props drilling is a term used in React to describe a situation where props are p
 
 Consider a scenario where a top-level component (`Grandparent`) has some data that needs to be passed down to a deeply nested component (`Grandchild`). If the intermediate components (`Parent` and `Child`) don't need the data but have to pass it down to reach the `Grandchild`, it's referred to as props drilling.
 
-![props-drilling-code](imgs/props-drilling.png)
+![props-drilling-code](../imgs/props-drilling.png)
 
 In this example, the `data` prop is drilled down from `Grandparent` to `Grandchild` through `Parent` and `Child`. If the intermediate components don't need the `data` prop, it can lead to unnecessary prop passing, which is considered prop drilling. This pattern might make the code harder to maintain and understand.
 

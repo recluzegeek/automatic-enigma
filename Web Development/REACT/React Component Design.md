@@ -47,7 +47,7 @@ This cycle involves three key phases: Mount/Initial Render, Re-Render (optional)
 
 In React, sometimes the data you're working with stays within a component (it doesn't go to other components), but it's also common to share the state with child components.
 
-- A common use case for passing functions as props is to allow child components to update the state of the parent. [Click here to learn more](./react_state_management.md#inverse-data-flow)
+- A common use case for passing functions as props is to allow child components to update the state of the parent. [Click here to learn more](./React%20State%20Management.md#inverse-data-flow)
 
 **Summary:**
 
@@ -57,7 +57,7 @@ In React, sometimes the data you're working with stays within a component (it do
 
 ## Component Composition
 
-- Combining different components using `children` props ([learn about them by clicking here](./react_props.md#passing-children-prop)) or explicitly defined props.
+- Combining different components using `children` props ([learn about them by clicking here](./React%20Props.md#passing-children-prop)) or explicitly defined props.
 - We use component composition for:
   - Create highly reusable and flexible components
-  - **Fix prop drilling** &mdash; great for layouts... ([learn about prop drilling here](./react_props.md#props-drilling))
+  - **Fix prop drilling** &mdash; great for layouts... ([learn about prop drilling here](./React%20Props.md#props-drilling))

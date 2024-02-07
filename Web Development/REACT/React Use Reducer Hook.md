@@ -1,13 +1,13 @@
 # useReducer Hook
 
 - useReducer hook is basically a more advanced and more complex way of managing state instead of useState hook.
-- The useReducer hook works with a so called reducer function which is a [pure function](react_working_behind_scenes.md#pure-vs-impure-functions) that will always **take in the previous state** and the so-called **action** as an argument and will **then return the next state**.
+- The useReducer hook works with a so called reducer function which is a [pure function](./React%20Working%20Behind%20Scenes.md#pure-vs-impure-functions) that will always **take in the previous state** and the so-called **action** as an argument and will **then return the next state**.
 
 ## Overview
 
 - Consider this `DateCounter.jsx` component. Let's refactor this code to use useReducer instead of useState
 
-    ![date-counter-using-state](imgs/date-counter-component-using-state.png)
+    ![date-counter-using-state](../imgs/date-counter-component-using-state.png)
 
 ### Introducing useReducer
 
@@ -57,7 +57,7 @@ function reducer(state, action) {
 - One big advantage of using useReducer over something like useState is that we have all the possible state updates in our application in the reducer function &mdash; one central place and this makes it really easy to understand the entire application without having to go into all the different components and all the different functions.
   - useReducer hook centralizes all the state updating logic in one central place, which is the reducer function
 
-    ![date-counter-using-use-reducer](imgs/date-counter-component-using-reducer.png)
+    ![date-counter-using-use-reducer](../imgs/date-counter-component-using-reducer.png)
 
 ## Managing States with useReducer
 
@@ -70,7 +70,6 @@ function reducer(state, action) {
 
 - **In all these situations using useReducer instead of relying on useState can be of GREAT help**
 
-![managing-state-with-useReducer-summary](imgs/managin-state-with-useReducer.jpg)
+![managing-state-with-useReducer-summary](../imgs/managin-state-with-useReducer.jpg)
 
 ### How REDUCERS Update State
-

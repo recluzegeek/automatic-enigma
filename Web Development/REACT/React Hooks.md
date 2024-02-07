@@ -8,26 +8,26 @@
   - Manual **DOM Selections** / DOM Manipulations &mdash; `useRef`
   - Always starts with `use` like `useEffect`, `useState`
   - Enable easy **reusing non-visual logic** (everything that's not in our UI &mdash; side effects): we can **compose multiple hooks into our own custom hook**
-  - Gave Functional Components  the ability to own states and run side effects during the [lifecycle points](react_component_design.md#component-instance-lifecycle)
+  - Gave Functional Components  the ability to own states and run side effects during the [lifecycle points](React%20Component%20Design.md#component-instance-lifecycle)
 
-### State Hook &mdash; [useState](react_use_state.md)
+### State Hook &mdash; [useState](React%20Use%20State.md)
 
-### Effect Hook &mdash; [useEffect](react_use_effect.md)
+### Effect Hook &mdash; [useEffect](React%20Use%20Effect.md)
 
-### Ref Hook &mdash; [useRef](react_use_ref.md)
+### Ref Hook &mdash; [useRef](React%20Use%20Ref.md)
 
-### Reducer Hook &mdash; [useReducer](react_use_reducer_hook.md)
+### Reducer Hook &mdash; [useReducer](React%20Use%20Reducer%20Hook.md)
 
-### Memo &mdash; [memo](react_memoization.md#memo-function)
+### Memo &mdash; [memo](React%20Memoization.md)
 
-### useMemo &mdash; [useMemo](react_memoization.md#usememo-hook)
+### useMemo &mdash; [useMemo](React%20Memoization.md#usememo-hook)
 
-### useCallback &mdash; [useCallback](react_memoization.md#usecallback-hook)
+### useCallback &mdash; [useCallback](React%20Memoization.md#usecallback-hook)
 
 ### Context API
 
 - Allows us to read a state from everywhere
-- A solution to [Prop Drilling](react_props.md#props-drilling)
+- A solution to [Prop Drilling](React%20Props.md#props-drilling)
   - Passing state into multiple deeply nested child components
 
 ### What is Context API?

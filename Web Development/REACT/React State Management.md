@@ -92,7 +92,7 @@ In React, data typically flows downward from parent components to child componen
 
 ### Implemented Code
 
-![inverse-data-flow-for-state-lifting](imgs/inverse-data-flow-for-state-lifting.png)
+![inverse-data-flow-for-state-lifting](../imgs/inverse-data-flow-for-state-lifting.png)
 
 #### Explanation
 

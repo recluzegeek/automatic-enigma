@@ -140,8 +140,6 @@ created: 2023-05-28 05:28:23Z
     console.log(student)
     ```
 
-![Code Snippet Result](../_resources/959c5fca0c256218b29d386f5e3c41af.png)
-
 - ### Constructor Property
 
   - References the constructor used to construct that very specific object

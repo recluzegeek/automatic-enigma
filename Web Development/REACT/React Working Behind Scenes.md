@@ -72,12 +72,12 @@
       - Tree might rebuilt if children stayed the same (`state` is reset)
     - Same Position, **Same** Element
       - If after a render, an element at a certain position in the tree is the same as before, the element will be kept in the DOM, **including the `state`**
-        - Sometimes, this is not what we want...Then we **use the key prop** &mdash; [learn-about-key-prop-here](./react_props.md#key-prop)
+        - Sometimes, this is not what we want...Then we **use the key prop** &mdash; [learn-about-key-prop-here](./React%20Props.md#key-prop)
       - New props / attributes are passed if they changed between renders.
   - Elements with **stable key stays the same across renders**
     - When a **key stays the same across renders**, the element will be kept in the DOM (even if the position in the tree changes)
       - **Common Use Case: Assigning keys to elements in a list within a map function.**
-      ![diffing-rules-key-prop](imgs/diffing-rule-key-prop.jpg)
+      ![diffing-rules-key-prop](../imgs/diffing-rule-key-prop.jpg)
     - When a **key changes between renders**, the element will be destroyed and a new one will be created (even if position in the tree remains same)
       - **Common Use Case: To reset `state` value**
 
@@ -130,7 +130,7 @@
 - **Components must be pure when it comes to render logic**: Should return the same JSX as output on inputting same props.
 - **A render logic must produce no side effect**: no interaction with the outside world is allowed.
   - Do not perform **network requests** (API calls)
-    - Side effects are allowed and encouraged in event handler functions. There's also a special hook to register side effects (useEffect) &mdash; [learn-about-useEffect-here](./react_use_effect.)
+    - Side effects are allowed and encouraged in event handler functions. There's also a special hook to register side effects (useEffect) &mdash; [learn-about-useEffect-here](./React%20Use%20Effect.md)
   - Do not directly use the **DOM API**
   - Do not start **timers**
   - Do not **mutate objects or variable** outside the function scope &mdash; this is why we can't mutate props
@@ -141,7 +141,7 @@
 - **Just one Render and Commit per Event handler**.
 - React batches `state` updates for performance reasons and ensures that multiple `state` updates within the same synchronous block of code are processed together, leading to a more efficient rendering process.
 
-  ![state-batching](imgs/state-batching.png)
+  ![state-batching](../imgs/state-batching.png)
 
 - In this example, when the `reset` function is called in response to the button click, there will be multiple ``setState`` calls:
 
@@ -174,12 +174,12 @@ Here's how `state` batching works in this scenario:
 
 ## Practical Summary
 
-### ![01-react-behind-the-scenes](imgs/01-react-works-behind-scene.jpg)
+### ![01-react-behind-the-scenes](../imgs/01-react-works-behind-scene.jpg)
 
 ---
 
-### ![02-react-behind-the-scenes](imgs/02-react-works-behind-scene.jpg)
+### ![02-react-behind-the-scenes](../imgs/02-react-works-behind-scene.jpg)
 
 ---
 
-### ![03-react-behind-the-scenes](imgs/03-react-works-behind-scene.jpg)
+### ![03-react-behind-the-scenes](../imgs/03-react-works-behind-scene.jpg)

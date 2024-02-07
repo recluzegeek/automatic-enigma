@@ -79,4 +79,4 @@
    - To prevent default behavior, React uses `preventDefault` on the synthetic event, not by returning `false`.
    - In rare cases where capturing is needed, `capture` can be added to the event handler name.
 
-### [Click to learn the Event Summary](./react_working_behind_scenes.md#03-react-behind-the-scenes)
+### [Click to learn the Event Summary](./React%20Working%20Behind%20Scenes.md#03-react-behind-the-scenes)
