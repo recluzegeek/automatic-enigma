@@ -355,9 +355,9 @@ export default function EmojiList() {
 
 1. **Map Function with Parentheses `()` vs. Curly Braces `{}`:**
 
-   [Map Function Refresher](js_array_callback_methods.md#map)
+   [Map Function Refresher](../JS/JS%20Array%20Callback%20Methods.md#map)
 
-   [Arrow Function Refresher](js_array_callback_methods.md#arrow-functions)
+   [Arrow Function Refresher](../JS/JS%20Array%20Callback%20Methods.md#arrow-functions)
    - When using the `map` function, the arrow function inside the parentheses `()` implies an implicit return. This is suitable for single-line expressions.
    - If curly braces `{}` are used, a `return` statement is required for multiline expressions.
 
@@ -437,7 +437,7 @@ yarn add uuid
 
 ## Deleting from Arrays — React Way
 
-[Filter Callback Function Refresher](js_array_callback_methods.md#filter)
+[Filter Callback Function Refresher](../JS/JS%20Array%20Callback%20Methods.md#filter)
 
 When managing a list of items in React, the process of deleting an item involves updating the state to reflect the removal of the selected item. The React way of achieving this is demonstrated using the `filter` function.
 

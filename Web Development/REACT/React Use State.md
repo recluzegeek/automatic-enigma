@@ -114,7 +114,7 @@ const ExampleComponent = () => {
 
 ## useState and Rendering (Component Lifecycle)
 
-[Click here to Learn about Component Lifecycle](./react_component_design.md#component-instance-lifecycle)
+[Click here to Learn about Component Lifecycle](./React%20Component%20Design.md#component-instance-lifecycle)
 
 ## States vs Props
 

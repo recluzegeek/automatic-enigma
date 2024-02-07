@@ -25,3 +25,10 @@
 ```js
 <% layout('views/filename.js') %>
 ```
+
+## SQL Clients
+
+- These are good alternatives to **`phpmyadmin`**
+  - Beekeeper Studio
+  - DBeaver
+  - Navicat

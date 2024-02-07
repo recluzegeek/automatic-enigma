@@ -1,6 +1,6 @@
 # `useEffect` Hook in React: Brief Overview
 
-[Click here to refresh memory about side effects](./react_working_behind_scenes.md#functional-programming-principles) &mdash; kinda of necessary
+[Click here to refresh memory about side effects](./React%20Working%20Behind%20Scenes.md#functional-programming-principles) &mdash; kinda of necessary
 
 The `useEffect` hook in React is a tool that helps manage additional tasks in your components, like fetching data or handling subscriptions, manipulating DOM.
 
@@ -31,7 +31,7 @@ This example demonstrates fetching data as a side effect. The empty dependency a
   - **Every state variable and props used inside the effect Must be included in the dependency array**. Otherwise, we get a 'stale closure'.
 - `useEffect` is like an event listener that is listening for one dependency to change. Whenever a dependency is changed, it will execute the effect again.
 
-![useEffect-dependency-array](imgs/useEffect-dependency-array.png)
+![useEffect-dependency-array](../imgs/useEffect-dependency-array.png)
 
 ## Clean-up Function
 
