@@ -47,3 +47,10 @@ laravel new application_name
 ```
 
 These commands will install all the necessary components and set up Laravel on your Manjaro/Arch Linux system. Make sure to replace `application_name` with the desired name for your Laravel project.
+
+## Instructors
+
+- Yahoo Baba
+- Laracasts
+- Amir Kamizi + [His Blog](https://github.com/amirkamizi/learn-php?tab=readme-ov-file)
+- Bitfumes

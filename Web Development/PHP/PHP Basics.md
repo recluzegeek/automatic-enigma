@@ -6,6 +6,7 @@ PHP (Hypertext Preprocessor) is a server-side scripting language used primarily 
 
 - [PHPApprentice](https://phpapprentice.com)
 - [PHPTheRightWay](https://phptherightway.com/)
+- [Checkout the Others also](./Installation.md#instructors)
 
 ## Syntax and Variables
 
@@ -18,6 +19,19 @@ PHP (Hypertext Preprocessor) is a server-side scripting language used primarily 
     echo "Sum of 2 + 2 is " . (2+2);
 ?>
 ```
+
+> For debugging/testing purposes and for nice syntax, use `dd()` which stands for dump and die over var_dump().
+>> **One thing to keep in mind, `dd()` will stop the script's execution**.
+
+### Variable Scope
+
+- Unlike traditional programming languages like Java, Python or JS, variable scope in PHP is a bit different. Variables outside of a function (global variables) are not accessible within the functions(SHOCKED HERE!!!).
+  - To access global variables within functions, you have a few options:
+    - Pass them as parameters to the function when it's called.
+    - Use the `global` keyword inside the function to explicitly declare the variable as global.
+    - If the function is an anonymous or lambda function, you can use the `use` keyword to import variables from the outer scope.
+
+    ![php-variable-scope-img](../imgs/php_variable_scope.png)
 
 ## Single vs Double Quotes
 
@@ -170,7 +184,7 @@ In PHP, both single quotes (`''`) and double quotes (`""`) can be used to define
 - PHP ternary operator have the same syntax as of JS ternary operator:
   - `(condition) ? (value if true) : (value if false)`
 
-![php-ternary-conditonals](../imgs/php-ternary.png)
+![php-ternary-conditionals](../imgs/php-ternary.png)
 
 ### Loops
 
