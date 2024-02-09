@@ -47,9 +47,12 @@ In PHP, both single quotes (`''`) and double quotes (`""`) can be used to define
 - `echo` is a language construct, not a function, so the parentheses are optional.
   - It can take multiple parameters and does not return a value.
   - It's slightly faster compared to `print`.
-
+- **PHP Short `echo` Syntax:** If you just want to `echo` the variable value to the webpage, you don't need to use typical php syntax to do it `<?php ?>`, you can instead use a short syntax of `<?= $var_name ?>`
+  
    ```php
    <?php
+        $name = 'Dave';
+        <?= $name ?>    // echo's the variable to webpage
         echo "Hello, world!";
         echo "This ", "is ", "a ", "concatenated ", "string.";
    ?>
@@ -110,7 +113,8 @@ In PHP, both single quotes (`''`) and double quotes (`""`) can be used to define
         <title>PHP Page</title>
     </head>
     <body>
-        <h1><?php echo "Hello, world!"; ?></h1>
+        <h1>Hello, <?= $name ?>!</h1>
+        <p>Age: <?= $age ?></p>
     </body>
    </html>
    ```
@@ -118,6 +122,7 @@ In PHP, both single quotes (`''`) and double quotes (`""`) can be used to define
 ## Data Types
 
 - String: `"Hello"`
+  - Strings can be concatenated using the period (`.`)character in between them.
 - Integer: `25`
 - Float: `3.14`
 - Boolean: `true` or `false`
@@ -128,7 +133,22 @@ In PHP, both single quotes (`''`) and double quotes (`""`) can be used to define
 
 - Arithmetic: `+`, `-`, `*`, `**`, `/`, `%`
 - Assignment: `=`, `+=`, `-=`, `*=`, `/=`, `%=`
-- Comparison: `==`, `!=`, `>`, `<`, `>=`, `<=`
+- Comparison: `==`, `===`, `!=`, `>`, `<`, `>=`, `<=`
+  - `===` checks if the values are equal and of the same data type.
+
+    ```php
+    // These return true
+    1 == 1;
+    1 == '1';
+    1 == true;
+    1 == 1.0;
+    1 === 1;
+    // These return false
+    1 === '1';
+    1 === true;
+    1 === 1.0;
+    ```
+
 - Logical: `&&`, `||`, `!`
 
 ## Control Structures
@@ -145,7 +165,16 @@ In PHP, both single quotes (`''`) and double quotes (`""`) can be used to define
 ?>
 ```
 
+### Ternary Operator &mdash; Single Line Conditionals
+
+- PHP ternary operator have the same syntax as of JS ternary operator:
+  - `(condition) ? (value if true) : (value if false)`
+
+![php-ternary-conditonals](../imgs/php-ternary.png)
+
 ### Loops
+
+- [Click here to learn more about php loops](./PHP%20Loops.md)
 
 - **While Loop**
 
@@ -171,6 +200,8 @@ In PHP, both single quotes (`''`) and double quotes (`""`) can be used to define
 
 ## Functions
 
+- [Click here to read more about php functions](./PHP%20Functions.md)
+
 ```php
 <?php
     function greet($name) {
@@ -182,11 +213,39 @@ In PHP, both single quotes (`''`) and double quotes (`""`) can be used to define
 
 ## Arrays
 
+- [Click here to learn more about php arrays](https://phpapprentice.com/arrays)
+- [Master PHP Array Functions](https://startutorial.com/view/master-php-array-functions)
+- [PHP Array Functions](https://dev.to/karleb/10-php-array-functions-and-how-to-use-them-462n)
+
 ```php
 <?php
     $fruits = ["apple", "banana", "cherry"];
     echo $fruits[0]; // Output: apple
 ?>
+```
+
+- An associative array in PHP is a type of array where each element is associated with a specific key, rather than being indexed numerically like in a standard array.
+  - In associative arrays, keys can be either numeric or string values, providing a way to uniquely identify each element.
+
+Here's an example of an associative array:
+
+```php
+<?php
+    $car = ["make" => "Toyota", "model" => "Camry", "year" => 2022];
+?>
+```
+
+In this associative array:
+
+- `"make"`, `"model"`, and `"year"` are the keys.
+- `"Toyota"`, `"Camry"`, and `2022` are the corresponding values associated with each key.
+
+To access the values in an associative array, you use the keys instead of numeric indices:
+
+```php
+echo $car["make"];   // Output: Toyota
+echo $car["model"];  // Output: Camry
+echo $car["year"];   // Output: 2022
 ```
 
 ## Classes and Objects
@@ -212,16 +271,6 @@ In PHP, both single quotes (`''`) and double quotes (`""`) can be used to define
 ?>
 ```
 
-## File Handling
-
-```php
-<?php
-    $file = fopen("example.txt", "r") or die("Unable to open file!");
-    echo fread($file, filesize("example.txt"));
-    fclose($file);
-?>
-```
-
 ## Error Handling
 
 ```php
@@ -232,19 +281,5 @@ In PHP, both single quotes (`''`) and double quotes (`""`) can be used to define
     } catch (Exception $e) {
         echo "Error: " . $e->getMessage();
     }
-?>
-```
-
-## Database Interaction
-
-```php
-<?php
-    $conn = mysqli_connect("localhost", "username", "password", "database");
-    $sql = "SELECT * FROM users";
-    $result = mysqli_query($conn, $sql);
-    while ($row = mysqli_fetch_assoc($result)) {
-        echo $row['username'];
-    }
-    mysqli_close($conn);
 ?>
 ```
