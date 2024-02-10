@@ -127,7 +127,7 @@ Blade templates provide loop variables that can be used within loop constructs s
 - `'view.name'`: The name of the Blade view file you want to include.
 - `['data' => 'value']` (optional): Data to pass to the included view.
 
-### Including Subviews with `@includeWhen()` and `@includeUnless()`
+#### Including Subviews with `@includeWhen()` and `@includeUnless()`
 
 When you need to include views conditionally based on certain criteria, you can use `@includeWhen()` and `@includeUnless()` directives in Blade. These directives simplify the process of including views based on whether a condition is met or not.
 
@@ -158,3 +158,134 @@ Conversely, the `@includeUnless()` directive includes a Blade view file if a spe
 - `['name' => 'recluzegeek']` (optional): Data to pass to the included view.
 
 If the `condition_value` is false, the view specified by `'view_file'` will be included. Otherwise, it won't be included.
+
+### Template Inheritance  using `@extend()`, `@yield()` & `@section`
+
+- Template inheritance in Blade simplifies the process of creating consistent layouts for web pages in Laravel applications.
+  - Start by creating a `masterlayout.blade.php` file. This file defines the overall structure of your web pages. You can include placeholders for specific content sections using the `@yield(name)` directive.
+  - You can provide default or fallback values for `@yield()` directives in Blade templates. This ensures that if no value is provided for a particular section, a default value will be displayed instead. This is achieved using the `@yield('name', 'default_value')` directive.
+
+```php
+<!-- masterlayout.blade.php -->
+
+<html>
+<head>
+    <title>@yield('title')</title>
+</head>
+<body>
+
+<header>
+    @yield('header')
+</header>
+
+<main>
+    @yield('content', 'Content not found.')
+</main>
+
+<footer>
+    @yield('footer')
+</footer>
+
+</body>
+</html>
+```
+
+#### Extend Master Layout
+
+- Extend the master layout to create specific pages with unique content. Use the `@extends()` directive to extend the `masterlayout.blade.php` file. Then, fill in the placeholders using the `@section(name)` and `@endsection()` directives.
+
+```php
+<!-- home.blade.php -->
+
+@extends('masterlayout')
+
+@section('title', 'Home Page')
+
+@section('header')
+    <h1>Welcome to My Website</h1>
+@endsection
+
+@section('content')
+    <p>This is the content of the home page.</p>
+@endsection
+
+@section('footer')
+    <p>Contact us at example@example.com</p>
+@endsection
+```
+
+#### `hasSection()`
+
+The `@hasSection()` directive in Blade is used to check if a given section has been defined in the current template. It returns `true` if the section has been defined, and `false` otherwise.
+
+```php
+@hasSection('sidebar')
+    <div class="sidebar">
+        @yield('sidebar')
+    </div>
+@else
+    <p>No sidebar content available.</p>
+@endif
+```
+
+- If the `sidebar` section is defined in the extending view, the content within the `@hasSection('sidebar') ... @else ... @endif` block will be executed.
+- If the `sidebar` section is not defined, the content within the `@else ... @endif` block will be executed.
+
+## Javascript in Blade using `@json()`
+
+The `@json()` directive allows you to easily output JSON-encoded data directly into your JavaScript code. This is useful when you need to pass server-side data to your client-side JavaScript.
+
+  ```php
+  <script>
+      var jsonData = @json($data);
+  </script>
+  ```
+
+- `$data`: The server-side data (e.g., an array or object) that you want to output as JSON.
+
+  ```php
+  @php
+      $user = ['name' => 'John', 'age' => 30];
+  @endphp
+
+  <script>
+      var userData = @json($user);
+      console.log(userData);
+  </script>
+  ```
+
+- The `$user` array is passed to the `@json()` directive.
+- The `@json($user)` directive outputs the JSON representation of the `$user` array directly into the JavaScript code.
+
+### `@stack()` and `@push()` Directives
+
+- In Laravel's Blade templating engine, the `@stack` and `@push` directives provide a convenient way to manage and render content from multiple views or components.
+  > You can ask that `@section()` directive does the same thing as `@push()` does so whats the point of using it over something that we already know. And the answer is, if you've multiple `@section()` for the same yield name, Blade will only parse the `@section()` and will simply ignore the others. But in case of `@push()`,  every `@push()` so to say :) will be pushed onto stack and will be parsed by the Blade.
+
+| Directive   | Purpose                                                | Behavior                                                     |
+|-------------|--------------------------------------------------------|--------------------------------------------------------------|
+| `@section()`| Defines content for a specific section                 | Only the first `@section()` for a section name is parsed      |
+| `@push()`   | Adds content to a stack, allowing multiple additions  | Every `@push()` is appended to the stack and parsed          |
+
+#### `@push` Directive
+
+The `@push` directive allows you to add content to a stack. If the stack does not exist, it will be created.
+
+```php
+@push('scripts')
+    <script>
+        // JavaScript code
+    </script>
+@endpush
+```
+
+#### `@stack` Directive
+
+The `@stack` directive allows you to render the content of a stack at a specific place in your layout.
+
+```php
+<head>
+    <!-- Other head content -->
+    @stack('scripts')
+</head>
+```
