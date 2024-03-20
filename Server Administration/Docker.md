@@ -78,6 +78,16 @@
   - Run `docker stop container` to stop a running container.
   - Use `docker exec -it ubuntu` to attach the host terminal to a Docker container permanently.
 
+```docker
+docker stop docker_mariadb # to remove the port conflict
+docker rm docker_mariadb # to remove the container conflict
+docker run --name=docker_mariadb -p 3312:3306 -e MARIADB_ROOT_PASSWORD=admin -d mariadb:lates
+docker logs docker_mysql  # check logs
+docker exec -it docker_mariadb bash # enter the shell
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' docker_mariadb
+mariadb -h 172.17.0.3 -u root -p # check for the connectivity
+```
+
 - **Removing Containers and Images**:
   - Run `docker rm container` to remove a container.
   - Run `docker image rm container -f` to remove a Docker image.
