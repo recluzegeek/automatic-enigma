@@ -1,0 +1,13 @@
+# Network
+
+## OSI Model
+
+| OSI Model Layer                          | Data Unit | Protocols                                             | Devices                                |
+|------------------------------------------|-----------|-------------------------------------------------------|----------------------------------------|
+| **Application Layer** (network process to application) | Data      | DNS, DHCP, NTP, SNMP, FTP, SSH, Telnet, HTTP, POP3    | Web servers, mail servers, browsers, mail clients |
+| **Presentation Layer** (data representation and encryption) | Data      | Same as above (handles translation, encryption, etc.) | Same as above                          |
+| **Session Layer** (interhost communication) | Data      | Same as above (manages sessions between devices)      | Same as above                          |
+| **Transport Layer** (end-to-end connections and reliability) | Segments  | TCP, UDP                                              | Gateways, Load Balancers               |
+| **Network Layer** (path determination & logical addressing (IP)) | Packets   | IP, ICMP, IGMP                                        | Routers, Firewalls, Layer 3 Switches   |
+| **Data Link Layer** (physical addressing (MAC & LLC)) | Frames    | ARP, MAC, RARP                                        | Bridges, Layer 2 Switches             |
+| **Physical Layer** (media, signal and binary transmission) | Bits      | Ethernet, Token Ring, DSL, ISDN, etc.                 | Hubs, Cables, Network Interface Cards  |
