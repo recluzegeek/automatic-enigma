@@ -5,8 +5,7 @@ To install Laravel on Manjaro/Arch Linux, follow these steps:
 **Install PHP and Apache web server:**
 
 ```bash
-sudo pacman -S php apache apr apr-util composer php-apache php-cgi xdebug
-
+sudo pacman -S php apache apr apr-util composer php-wapache php-cgi xdebug
 ```
 
 **Resolving File Upload Size Bug:**
@@ -84,21 +83,6 @@ Edit the `php.ini` file and enable the required extensions like `bcmath` and `zi
 ```
 extension=pdo_mysql
 extension=mysqli
-```
-
-**Install MySQL:**
-
-```bash
-sudo pacman -S mariadb
-sudo systemctl start mysqld
-sudo mysql_secure_installation
-```
-
-**Install Composer:**
-
-```bash
-php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-sudo php composer-setup.php --install-dir=/bin --filename=composer
 ```
 
 **Install Laravel Installer:**
