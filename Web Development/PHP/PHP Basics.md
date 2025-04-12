@@ -297,3 +297,8 @@ echo $car["year"];   // Output: 2022
     }
 ?>
 ```
+
+## Namespace
+
+- `namespace` does to functions and classes what scope does to the variables.
+  - `namespace` allows us to have same function and class names and differentiate them on the basis of where they've been defined
