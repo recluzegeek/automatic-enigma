@@ -147,3 +147,98 @@ def display_points(self):
 Shape.display = display_points
 s.display()
 ```
+
+### Inheritance in Python
+
+Inheritance in python is quite easy to do. Just add the class name in the `()`, you want to inherit from.
+
+```python
+# Triangle class inheriting from Shape class
+class Triangle(Shape):
+    pass # pass means, I'm not going to write anything in this block, in future maybe i'll write
+
+t = Triangle(p)
+t.display() # calling function from parent class of Shapes
+
+# also we can add dynamically functions in the child class as well
+```
+
+#### Access Parent Class's Overridden Methods
+
+We can use the `super` keyword to access and invoke the implementation of a parent class's method that has been overridden in a subclass.
+
+```python
+class Rectangle():
+
+    def __init__(self, length, width):
+        self.length = length
+        self.width = width
+
+    def get_area(self):
+        return self.length * self.width
+
+    def perimeter(self):
+        return 2 * (self.length + self.width)
+
+    def __str__(self):
+        return "[ L: " + str(self.length) + ", W: " + str(self.width) + "]"
+
+r = Rectangle(3, 4)
+r.get_area() # 12
+
+# class Square is extending Rectangle class
+class Square(Rectangle):
+
+    def __init__(self, length):
+        # calling parent class constructor via super()
+        super().__init__(length, length)
+
+    # accessing the parent __str__ inside child __str__ with super()
+    def __str__(self):
+        return "Square: " + super().__str__()
+
+s = Square(3)
+print(s.get_area()) # 9
+print(s) # Square: [L: 3, W: 3]
+```
+
+### **Encapsulation in Python**
+
+Encapsulation is about hiding the internal state and functionality of an object. It is typically achieved using private and protected attributes (denoted by underscores).
+
+- **Single underscore (_)**: This is a convention indicating that a variable or method is intended to be protected and should not be accessed directly outside the class. However, it’s not enforced by Python.
+  
+- **Double underscore (__)**: This triggers name mangling, making the variable harder to access from outside the class, although it’s still possible to access it with the mangled name.
+
+```python
+class MyClass:
+    def __init__(self):
+        self._protected = "Protected Value"
+        self.__private = "Private Value"
+
+    def get_private(self):
+        return self.__private
+
+obj = MyClass()
+print(obj._protected)   # Allowed (but discouraged)
+print(obj.__private)    # AttributeError: 'MyClass' object has no attribute '__private'
+print(obj.get_private())  # Correct way to access private attribute
+```
+
+### **Difference Between Interface and Abstract Class**
+
+| **Concept**          | **Interface**                                           | **Abstract Class**                                       |
+|----------------------|---------------------------------------------------------|---------------------------------------------------------|
+| **Purpose**          | Defines a contract for what methods a class should implement. | Defines a base class with common functionality, can have both abstract and concrete methods. |
+| **Methods**          | All methods are abstract (no implementation).          | Can have both abstract methods and concrete methods (with implementation). |
+| **Multiple Inheritance** | A class can implement multiple interfaces.          | A class can inherit from only one abstract class.        |
+| **Usage**            | Used to define common behavior that can be implemented differently by subclasses. | Used when you have shared functionality that you want to be inherited by subclasses. |
+
+### **Difference Between Abstraction and Encapsulation**
+
+| **Concept**          | **Abstraction**                                              | **Encapsulation**                                           |
+|----------------------|--------------------------------------------------------------|-------------------------------------------------------------|
+| **Definition**       | Hiding complexity and exposing only essential features.     | Hiding the internal details of an object, restricting access. |
+| **Goal**             | Focuses on **what** an object does (the interface).         | Focuses on **how** data is stored and protected.             |
+| **Visibility**       | Abstract classes and methods cannot be instantiated directly. | Data and methods are encapsulated (via access modifiers).   |
+| **Example**          | Abstract classes and methods.                               | Private variables and methods (using `_` or `__`).           |
