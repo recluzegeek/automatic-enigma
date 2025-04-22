@@ -115,3 +115,35 @@ p2 = Point(4, 3)
 p2 # returns memory address of the p2 object
 print(p2) # prints [4, 3] because python called __str__ internally automatically
 ```
+
+### Composition in Python
+
+In Python, we can dynamically add methods to a class at runtime, similar to how "friend functions" are handled in C++, but with the full power of class methods. This flexibility allows us to define methods even after a class has already been defined.
+
+```python
+class Shape():
+
+    def __init__(self, points):
+        self.points = points
+
+    # def __str__(self):
+    #     return " -- ".join(str(point) for point in self.points)
+
+p1 = Point(5, 5)
+p2 = Point(10, 5)
+p3 = Point(5, 10)
+p = [p1, p2, p3] # right angle triangle
+
+s = Shape(p)
+print(s)
+
+# we can add methods to an already defined class as well
+# similar to JS, where functions can be set as instance variable 
+
+def display_points(self):
+    return "..".join(str(point) for point in self.points)
+
+# adding display_point function to Shape class as display method dynamically
+Shape.display = display_points
+s.display()
+```
